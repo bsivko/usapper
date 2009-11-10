@@ -26,7 +26,6 @@ __published:	// IDE-managed Components
     TMenuItem *Beginner1;
     TMenuItem *Intermediate1;
     TMenuItem *Professional1;
-    TMenuItem *Quest1;
     TMenuItem *Exit1;
     TMenuItem *Settings1;
     TMenuItem *Info1;

@@ -70,9 +70,6 @@ object Main_Form: TMain_Form
           OnClick = Custom1Click
         end
       end
-      object Quest1: TMenuItem
-        Caption = #1050#1074#1077#1089#1090
-      end
       object EndGame1: TMenuItem
         Caption = #1047#1072#1082#1086#1085#1095#1080#1090#1100
         Enabled = False

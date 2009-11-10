@@ -326,7 +326,7 @@ TMain_Form::start_game() {
     Beginner1->Enabled = false;
     Intermediate1->Enabled = false;
     Professional1->Enabled = false;
-    Quest1->Enabled = false;
+//    Quest1->Enabled = false;
     EndGame1->Enabled = true;
     Custom1->Enabled = false;
 
@@ -360,7 +360,7 @@ TMain_Form::end_game() {
     Beginner1->Enabled = true;
     Intermediate1->Enabled = true;
     Professional1->Enabled = true;
-    Quest1->Enabled = true;
+//    Quest1->Enabled = true;
     EndGame1->Enabled = false;
     Custom1->Enabled = true;
 
