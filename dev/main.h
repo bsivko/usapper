@@ -182,8 +182,6 @@ private:
     __fastcall TMain_Form(TComponent* Owner);
 };
 
-const std::string help_string = "<strong>Help</strong>";
-
 //---------------------------------------------------------------------------
 extern PACKAGE TMain_Form *Main_Form;
 //---------------------------------------------------------------------------

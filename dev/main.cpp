@@ -744,9 +744,13 @@ void __fastcall TMain_Form::Help1Click(TObject *Sender)
     if ( !m_is_init_help ) {
         m_is_init_help = true;
 
-        std::ofstream help_file( m_help_filename.c_str(), std::ios::out);
-        help_file << help_string;
-        help_file.close();
+        TResourceStream *res = new TResourceStream(
+            0,
+            "help",
+            "Custom"
+        );
+        res->SaveToFile( m_help_filename.c_str() );
+        delete res;
 
         ShellExecute(0, "open", m_help_filename.c_str(), 0, 0, SW_SHOW);
     }
