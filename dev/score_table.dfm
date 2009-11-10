@@ -1,6 +1,6 @@
 object F_Score_Table: TF_Score_Table
-  Left = 192
-  Top = 114
+  Left = 989
+  Top = 121
   BorderIcons = [biSystemMenu]
   BorderStyle = bsDialog
   Caption = #1058#1072#1073#1083#1080#1094#1072' '#1088#1077#1082#1086#1088#1076#1086#1074
@@ -13,14 +13,21 @@ object F_Score_Table: TF_Score_Table
   Font.Name = 'MS Sans Serif'
   Font.Style = []
   OldCreateOrder = False
+  Position = poScreenCenter
   PixelsPerInch = 96
   TextHeight = 13
   object Label1: TLabel
     Left = 8
     Top = 8
-    Width = 99
+    Width = 117
     Height = 13
     Caption = #1058#1072#1073#1083#1080#1094#1099' '#1088#1077#1082#1086#1088#1076#1086#1074':'
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'MS Sans Serif'
+    Font.Style = [fsBold]
+    ParentFont = False
   end
   object ComboBox1: TComboBox
     Left = 8
@@ -31,5 +38,10 @@ object F_Score_Table: TF_Score_Table
     TabOrder = 0
     Text = 'ComboBox1'
     OnChange = ComboBox1Change
+  end
+  object Timer1: TTimer
+    OnTimer = Timer1Timer
+    Left = 72
+    Top = 144
   end
 end

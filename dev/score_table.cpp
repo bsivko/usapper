@@ -13,7 +13,7 @@
 TF_Score_Table *F_Score_Table;
 //---------------------------------------------------------------------------
 __fastcall TF_Score_Table::TF_Score_Table(TComponent* Owner)
-    : TForm(Owner) {
+    : TForm(Owner), m_first_refresh(false) {
 
 }
 
@@ -46,6 +46,15 @@ TF_Score_Table::show_table(
     Canvas->Pen->Color = clSilver;
     Canvas->Brush->Color = clSilver;
     Canvas->Rectangle( 0, 0, Width, Height );
+
+    Canvas->Font->Color = clBlack;
+    Canvas->Pen->Color = clBlack;
+    Canvas->Brush->Color = clSilver;
+
+    Canvas->TextOutA(
+        ComboBox1->Left,
+        ComboBox1->Top - 2 * abs(Canvas->Font->Size),
+        "Таблицы рекордов:" );
 
     Caption = game_type.c_str();
 
@@ -151,3 +160,22 @@ void __fastcall TF_Score_Table::ComboBox1Change(TObject *Sender)
     ,   m_tables.m_tables[name] );
 }
 //---------------------------------------------------------------------------
+
+void
+TF_Score_Table::first_refresh() {
+    m_first_refresh = true;
+}
+
+void __fastcall TF_Score_Table::Timer1Timer(TObject *Sender)
+{
+    if ( m_first_refresh ) {
+        m_first_refresh = false;
+
+        ComboBox1->Items[0][ComboBox1->ItemIndex] =
+            m_tables.m_tables.begin()->first.c_str();
+
+        ComboBox1Change(Sender);
+    }
+}
+//---------------------------------------------------------------------------
+

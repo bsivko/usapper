@@ -24,7 +24,8 @@ TMain_Form *Main_Form;
 //---------------------------------------------------------------------------
 __fastcall TMain_Form::TMain_Form(TComponent* Owner)
     : TForm(Owner), m_game_condition( wait ), m_game_type( "" ), m_level(0),
-    m_game_is_active( false ), m_high_score_filename("sapper.scr")
+    m_game_is_active( false ), m_high_score_filename("sapper.scr"),
+    m_first_refresh(true)
 {
 	randomize();
 }
@@ -439,6 +440,11 @@ void __fastcall TMain_Form::Timer1Timer(TObject *Sender)
             (m_draw_tool)->set_tick( tick );
     }
 
+    if (m_first_refresh) {
+        refresh_info();
+        m_first_refresh = false;
+    }
+
     draw_field();
 }
 //---------------------------------------------------------------------------
@@ -707,28 +713,18 @@ void __fastcall TMain_Form::Records1Click(TObject *Sender)
         );
     }
 
-    F_Score_Table->set_tables( tables );
-    F_Score_Table->ShowModal();
-/*
     if (tables.m_tables.size() == 0) {
         ShowMessage(
         "На данный момент нет ни одного результата.\n"
             "Вы можете стать первым!");
         return;
     }
-    else if (tables.m_tables.size() == 1) {
-        F_Score_Table->show_table(
-            tables.m_tables.begin()->first
-        ,   tables.m_tables.begin()->second );
-
-        F_Score_Table->ShowModal();
-        return;
-    }
     else {
-        // Нужно дать выбор пользователю.
-        ShowMessage
+        F_Score_Table->set_tables( tables );
+        F_Score_Table->first_refresh();
+        F_Score_Table->ShowModal();
     }
-*/
 }
 //---------------------------------------------------------------------------
+
 

@@ -47,6 +47,7 @@ __published:	// IDE-managed Components
     TColorDialog *ColorDialog1;
     TMenuItem *Custom1;
     TMenuItem *Records1;
+    TTimer *Timer2;
     void __fastcall Exit1Click(TObject *Sender);
     void __fastcall Beginner1Click(TObject *Sender);
     void __fastcall Image1MouseDown(TObject *Sender, TMouseButton Button,
@@ -167,6 +168,9 @@ private:
     str_time( int time );
 
     std::string m_high_score_filename;
+
+    //! Первое обновление.
+    bool m_first_refresh;
 
     __fastcall TMain_Form(TComponent* Owner);
 };
