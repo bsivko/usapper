@@ -3,13 +3,13 @@
 <PROJECT>
   <MACROS>
     <VERSION value="BCB.06.00"/>
-    <PROJECT value="miner.exe"/>
-    <OBJFILES value="miner.obj main.obj field\element.obj field\field.obj 
+    <PROJECT value="sapper.exe"/>
+    <OBJFILES value="sapper.obj main.obj field\element.obj field\field.obj 
       draw_tools\builder\abstract.obj draw_tools\builder\classic.obj 
       field\generators\classic.obj field\generators\abstract.obj 
       draw_tools\builder\abstract_drawer.obj global_options.obj 
       high_scores\high_scores.obj score_table.obj author.obj"/>
-    <RESFILES value="miner.res res.res"/>
+    <RESFILES value="sapper.res res.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
     <DEFFILE value=""/>
@@ -33,7 +33,7 @@
     <LINKER value="ilink32"/>
     <USERDEFINES value="_DEBUG"/>
     <SYSDEFINES value="NO_STRICT"/>
-    <MAINSOURCE value="miner.cpp"/>
+    <MAINSOURCE value="sapper.cpp"/>
     <INCLUDEPATH value="high_scores;field\generators;draw_tools\builder;field;&quot;C:\Program Files\Borland\CBuilder6\Projects&quot;;E:\miner;$(BCB)\include;$(BCB)\include\vcl"/>
     <LIBPATH value="high_scores;field\generators;draw_tools\builder;field;&quot;C:\Program Files\Borland\CBuilder6\Projects&quot;;E:\miner;$(BCB)\lib\obj;$(BCB)\lib"/>
     <WARNINGS value="-w-par"/>
@@ -58,8 +58,8 @@
     <OTHERFILES value=""/>
   </LINKER>
   <FILELIST>
-      <FILE FILENAME="miner.res" FORMNAME="" UNITNAME="miner.res" CONTAINERID="ResTool" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="miner.cpp" FORMNAME="" UNITNAME="miner" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="sapper.res" FORMNAME="" UNITNAME="sapper.res" CONTAINERID="ResTool" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="sapper.cpp" FORMNAME="" UNITNAME="sapper" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="main.cpp" FORMNAME="Main_Form" UNITNAME="main" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="field\element.cpp" FORMNAME="" UNITNAME="element" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="field\field.cpp" FORMNAME="" UNITNAME="field" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
