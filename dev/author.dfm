@@ -3,7 +3,7 @@ object F_Author: TF_Author
   Top = 251
   BorderIcons = [biSystemMenu]
   BorderStyle = bsDialog
-  Caption = 'F_Author'
+  Caption = #1040#1074#1090#1086#1088
   ClientHeight = 251
   ClientWidth = 292
   Color = clBlack
