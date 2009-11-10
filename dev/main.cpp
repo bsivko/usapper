@@ -6,6 +6,8 @@
 #include <stdlib.h>
 
 #include <stdexcept>
+#include <fstream>
+#include <stdlib.h>
 
 #include "draw_tools/factory.hpp"
 #include "field/generators/factory.hpp"
@@ -17,6 +19,7 @@
 
 #include "main.h"
 #include "score_table.h"
+#include "author.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
@@ -25,7 +28,7 @@ TMain_Form *Main_Form;
 __fastcall TMain_Form::TMain_Form(TComponent* Owner)
     : TForm(Owner), m_game_condition( wait ), m_game_type( "" ), m_level(0),
     m_game_is_active( false ), m_high_score_filename("sapper.scr"),
-    m_first_refresh(true)
+    m_first_refresh(true), m_help_filename( "help.htm" )
 {
 	randomize();
 }
@@ -727,4 +730,36 @@ void __fastcall TMain_Form::Records1Click(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+
+void __fastcall TMain_Form::About1Click(TObject *Sender)
+{
+    F_Author->Timer1->Enabled = true;
+    F_Author->ShowModal();
+    F_Author->Timer1->Enabled = false;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMain_Form::Help1Click(TObject *Sender)
+{
+    if ( !m_is_init_help ) {
+        m_is_init_help = true;
+
+        std::ofstream help_file( m_help_filename.c_str(), std::ios::out);
+        help_file << help_string;
+        help_file.close();
+
+        ShellExecute(0, "open", m_help_filename.c_str(), 0, 0, SW_SHOW);
+    }
+}
+//---------------------------------------------------------------------------
+
+
+void __fastcall TMain_Form::FormClose(TObject *Sender,
+      TCloseAction &Action)
+{
+    if (m_is_init_help) {
+        DeleteFile( m_help_filename.c_str()  );
+    }
+}
+//---------------------------------------------------------------------------
 

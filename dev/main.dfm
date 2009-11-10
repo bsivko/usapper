@@ -15,6 +15,7 @@ object Main_Form: TMain_Form
   Menu = MainMenu1
   OldCreateOrder = False
   Position = poDefaultSizeOnly
+  OnClose = FormClose
   OnMouseDown = FormMouseDown
   OnMouseMove = FormMouseMove
   PixelsPerInch = 96
@@ -121,6 +122,7 @@ object Main_Form: TMain_Form
       Caption = #1048#1085#1092#1086#1088#1084#1072#1094#1080#1103
       object Help1: TMenuItem
         Caption = #1055#1086#1084#1086#1097#1100
+        OnClick = Help1Click
       end
       object Records1: TMenuItem
         Caption = #1056#1077#1082#1086#1088#1076#1089#1084#1077#1085#1099
@@ -128,6 +130,7 @@ object Main_Form: TMain_Form
       end
       object About1: TMenuItem
         Caption = #1054#1073' '#1072#1074#1090#1086#1088#1077
+        OnClick = About1Click
       end
     end
   end

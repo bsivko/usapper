@@ -68,6 +68,9 @@ __published:	// IDE-managed Components
     void __fastcall OptStarsClick(TObject *Sender);
     void __fastcall Custom1Click(TObject *Sender);
     void __fastcall Records1Click(TObject *Sender);
+    void __fastcall About1Click(TObject *Sender);
+    void __fastcall Help1Click(TObject *Sender);
+    void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
 private:	// User declarations
 
     //! Это то самое поле, с которым мы играем с игроком.
@@ -172,8 +175,15 @@ private:
     //! Первое обновление.
     bool m_first_refresh;
 
+    bool m_is_init_help;
+
+    std::string m_help_filename;
+
     __fastcall TMain_Form(TComponent* Owner);
 };
+
+const std::string help_string = "<strong>Help</strong>";
+
 //---------------------------------------------------------------------------
 extern PACKAGE TMain_Form *Main_Form;
 //---------------------------------------------------------------------------
