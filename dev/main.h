@@ -70,6 +70,7 @@ __published:	// IDE-managed Components
     void __fastcall About1Click(TObject *Sender);
     void __fastcall Help1Click(TObject *Sender);
     void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
+    void __fastcall Timer2Timer(TObject *Sender);
 private:	// User declarations
 
     //! Это то самое поле, с которым мы играем с игроком.

@@ -420,12 +420,6 @@ void __fastcall TMain_Form::Timer1Timer(TObject *Sender)
     ++tick;
 
     if (tick % 10 == 0) {
-        // 1 Секунда.
-        if (m_game_is_active) {
-            ++m_level_time;
-            ++m_game_time;
-            refresh_info();
-        }
 
         if ( m_field ) {
             if (m_field->is_complete() && m_game_is_active) {
@@ -630,17 +624,18 @@ void __fastcall TMain_Form::Custom1Click(TObject *Sender)
             throw std::runtime_error( "Значение по горизонтали вне диапазона 1..24" );
         }
 
-        String bombs = IntToStr(size_x * size_y);
+        String bombs = IntToStr(size_x * size_y) - 1;
 
         InputString = InputBox(
             "Настройки",
-            "Число бомб \n(все должны поместиться на поле, не более " + bombs +")",
+            "Число мин \n"
+            "(все должны поместиться на поле + одна клетка, не более " + bombs +")",
             "70"
         );
         InputString = InputString.Trim();
         int bomb_count = StrToInt(InputString);
-        if ((bomb_count < 0) || (bomb_count > StrToInt(bombs) )) {
-            throw std::runtime_error( "Некорретное число бомб." );
+        if ((bomb_count < 1) || (bomb_count > StrToInt(bombs) )) {
+            throw std::runtime_error( "Некорретное число мин." );
         }
 
         // Данные есть. Стартуем.
@@ -765,6 +760,17 @@ void __fastcall TMain_Form::FormClose(TObject *Sender,
 {
     if (m_is_init_help) {
         DeleteFile( m_help_filename.c_str()  );
+    }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMain_Form::Timer2Timer(TObject *Sender)
+{
+    // 1 Секунда.
+    if (m_game_is_active) {
+        ++m_level_time;
+        ++m_game_time;
+        refresh_info();
     }
 }
 //---------------------------------------------------------------------------

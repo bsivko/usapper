@@ -143,7 +143,8 @@ object Main_Form: TMain_Form
     Top = 64
   end
   object Timer2: TTimer
-    Left = 376
-    Top = 32
+    OnTimer = Timer2Timer
+    Left = 496
+    Top = 144
   end
 end
