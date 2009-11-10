@@ -28,7 +28,7 @@ TMain_Form *Main_Form;
 __fastcall TMain_Form::TMain_Form(TComponent* Owner)
     : TForm(Owner), m_game_condition( wait ), m_game_type( "" ), m_level(0),
     m_game_is_active( false ), m_high_score_filename("sapper.scr"),
-    m_first_refresh(true), m_help_filename( "help.htm" )
+    m_first_refresh(true), m_help_filename( "help.htm" ), m_name("")
 {
 	randomize();
 }
@@ -330,7 +330,10 @@ TMain_Form::start_game() {
     EndGame1->Enabled = true;
     Custom1->Enabled = false;
 
-    AnsiString InputString = InputBox("Вход в игру", "Ваше имя (до 10 символов)?", "");
+    AnsiString InputString = InputBox(
+        "Вход в игру",
+        "Ваше имя (до 10 символов)?",
+        m_name.c_str() );
     InputString = InputString.Trim();
     if (InputString.Length() == 0) {
         InputString = "Инкогнито";
@@ -365,7 +368,6 @@ TMain_Form::end_game() {
     m_level_time = 0;
     m_level = 0;
     m_score = 0;
-    m_name = "";
     m_game_time = 0;
 }
 
