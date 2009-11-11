@@ -3,14 +3,14 @@ object Main_Form: TMain_Form
   Top = 112
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
-  Caption = 'Miner'
+  Caption = #1057#1072#1087#1105#1088
   ClientHeight = 542
   ClientWidth = 784
   Color = clSilver
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11
-  Font.Name = 'MS Sans Serif'
+  Font.Name = 'Palatino Linotype'
   Font.Style = []
   Menu = MainMenu1
   OldCreateOrder = False
@@ -20,32 +20,53 @@ object Main_Form: TMain_Form
   OnMouseMove = FormMouseMove
   OnMouseUp = FormMouseUp
   PixelsPerInch = 96
-  TextHeight = 13
+  TextHeight = 16
   object Image1: TImage
-    Left = 89
-    Top = 0
-    Width = 695
-    Height = 542
-    Align = alClient
-    Visible = False
-    OnMouseDown = Image1MouseDown
-  end
-  object Image2: TImage
-    Left = 89
-    Top = 0
-    Width = 695
-    Height = 542
-    Align = alClient
-    Visible = False
-    OnMouseDown = Image1MouseDown
-  end
-  object Image_Info: TImage
     Left = 0
     Top = 0
-    Width = 89
-    Height = 542
-    Align = alLeft
+    Width = 784
+    Height = 512
+    Align = alClient
     Visible = False
+  end
+  object Image2: TImage
+    Left = 0
+    Top = 0
+    Width = 784
+    Height = 512
+    Align = alClient
+    Visible = False
+  end
+  object StatusBar1: TStatusBar
+    Left = 0
+    Top = 512
+    Width = 784
+    Height = 30
+    Color = clSilver
+    Font.Charset = DEFAULT_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -16
+    Font.Name = 'Palatino Linotype'
+    Font.Style = [fsBold]
+    Panels = <
+      item
+        Width = 100
+      end
+      item
+        Width = 100
+      end
+      item
+        Width = 100
+      end
+      item
+        Width = 100
+      end
+      item
+        Width = 100
+      end>
+    SimplePanel = False
+    SimpleText = '123'
+    UseSystemFont = False
   end
   object MainMenu1: TMainMenu
     Left = 552

@@ -30,6 +30,13 @@ __fastcall TMain_Form::TMain_Form(TComponent* Owner)
     m_game_is_active( false ), m_high_score_filename("sapper.scr"),
     m_first_refresh(true), m_help_filename( "help.htm" ), m_name("Инкогнито")
 {
+    const int c_name_width = 240;
+    StatusBar1->Panels->Items[0]->Width = c_name_width;
+    for( int i = 1; i < StatusBar1->Panels->Count; ++i ) {
+        StatusBar1->Panels->Items[i]->Width =
+            ( Width - c_name_width ) / ( StatusBar1->Panels->Count - 1);
+    }
+
     Beginner1Click(0);
     NewGameClick(0);
 	randomize();
@@ -45,13 +52,13 @@ std::string
 TMain_Form::str_time( int time ) {
 
     String sec = IntToStr(time % 60);
-    if (sec.Length() == 1) sec = "0" + sec;
+    while (sec.Length() <= 1) sec = "0" + sec;
 
     String min = IntToStr(time % 3600 / 60);
-    if (min.Length() == 1) min = "0" + min;
+    while (min.Length() <= 1) min = "0" + min;
 
     String hour = IntToStr(time / 60 / 60);
-    if (hour.Length() == 1) hour = "0" + hour;
+    while (hour.Length() <= 1) hour = "0" + hour;
 
     return (hour + ":" + min + ":" + sec).c_str();
 }
@@ -91,69 +98,6 @@ TMain_Form::draw_field()
                 (m_draw_tool)->shadow_copy_draw( *m_field );
         }
     }
-}
-//---------------------------------------------------------------------------
-void __fastcall TMain_Form::Image1MouseDown(TObject *Sender,
-      TMouseButton Button, TShiftState Shift, int X, int Y)
-{
-    if (!m_game_is_active)
-        // Игра неактивна.
-        return;
-
-    int index = m_field->get_element_by_click( X, Y );
-
-    if ( index == -1 )
-        // Клик в никуда.
-        return;
-
-    // Смотрим что за клик.
-    if (Button == mbLeft) {
-
-        int score = m_field->count_of_near_bombs( index );
-        m_score += m_field->count_of_near_bombs( index );
-        if ( score == 0 ) {
-            m_score += 10;
-        }
-
-        if (m_field->open( index )) {
-            kill_miner();
-            return;
-        }
-        m_field->count_of_near_bombs( index );
-    }
-    else if (Button == mbRight) {
-        if ( m_field->elements()[index].is_flag() ) {
-            m_field->elements()[index].unset_flag();
-        }
-        else {
-            m_field->elements()[index].set_flag();
-        }
-    }
-    else if (Button == mbMiddle) {
-        // Функция средней кнопки.
-        // Только для открытых клеток.
-        if ( m_field->elements()[index].is_open() ) {
-            // Число рядом стоящих флагов равно числу, написанному в клетке.
-            if ( m_field->count_of_near_flags( index ) == m_field->count_of_near_bombs( index ) ) {
-
-                // Считаем, сколько получит очков игрок.
-                // Индексы соседей.
-                std::vector<int> v_near = m_field->elements()[index].near_elements();
-                for(unsigned int i = 0; i < v_near.size(); ++i) {
-                    if ( !m_field->elements()[v_near[i]].is_open() ) {
-                        m_score += m_field->count_of_near_bombs(i);
-                    }
-                }
-                // Пытаемся открыть все пустые клетки.
-                if (m_field->open_near( index )) {
-                    kill_miner();
-                    return;
-                }
-            }
-        }
-    }
-
-    draw_field();
 }
 //---------------------------------------------------------------------------
 void __fastcall TMain_Form::Intermediate1Click(TObject *Sender)
@@ -244,7 +188,64 @@ TMain_Form::kill_miner() {
 void __fastcall TMain_Form::FormMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
-    Image1MouseDown( Sender, Button, Shift, X - Image_Info->Width, Y );
+    if (!m_game_is_active)
+        // Игра неактивна.
+        return;
+
+    int index = m_field->get_element_by_click( X, Y );
+
+    if ( index == -1 )
+        // Клик в никуда.
+        return;
+
+    // Смотрим что за клик.
+    if (Button == mbLeft) {
+
+        int score = m_field->count_of_near_bombs( index );
+        m_score += m_field->count_of_near_bombs( index );
+        if ( score == 0 ) {
+            m_score += 10;
+        }
+
+        if (m_field->open( index )) {
+            kill_miner();
+            return;
+        }
+        m_field->count_of_near_bombs( index );
+    }
+    else if (Button == mbRight) {
+        if ( m_field->elements()[index].is_flag() ) {
+            m_field->elements()[index].unset_flag();
+        }
+        else {
+            m_field->elements()[index].set_flag();
+        }
+    }
+    else if (Button == mbMiddle) {
+        // Функция средней кнопки.
+        // Только для открытых клеток.
+        if ( m_field->elements()[index].is_open() ) {
+            // Число рядом стоящих флагов равно числу, написанному в клетке.
+            if ( m_field->count_of_near_flags( index ) == m_field->count_of_near_bombs( index ) ) {
+
+                // Считаем, сколько получит очков игрок.
+                // Индексы соседей.
+                std::vector<int> v_near = m_field->elements()[index].near_elements();
+                for(unsigned int i = 0; i < v_near.size(); ++i) {
+                    if ( !m_field->elements()[v_near[i]].is_open() ) {
+                        m_score += m_field->count_of_near_bombs(i);
+                    }
+                }
+                // Пытаемся открыть все пустые клетки.
+                if (m_field->open_near( index )) {
+                    kill_miner();
+                    return;
+                }
+            }
+        }
+    }
+
+    draw_field();
 }
 //---------------------------------------------------------------------------
 
@@ -267,36 +268,29 @@ TMain_Form::end_game() {
 
 void
 TMain_Form::refresh_info() {
-    Main_Form->Canvas->Brush->Color = clSilver;
-    Main_Form->Canvas->Pen->Color = clWhite;
-    Main_Form->Canvas->Rectangle( 0, 0, Image_Info->Width, Image_Info->Height );
-    Main_Form->Canvas->Rectangle( 2, 2, Image_Info->Width-2, Image_Info->Height-2 );
-    Main_Form->Canvas->Rectangle( 4, 4, Image_Info->Width-4, Image_Info->Height-4 );
 
-    // Высота строки.
-    const int c_height = 16;
+    StatusBar1->Panels->Items[0]->Text =
+        String("Играет: ") + m_name.c_str();
 
-    Main_Form->Canvas->Font->Color = clBlack;
-    Main_Form->Canvas->TextOutA( 8, 8 + 0*c_height, "Играет:" );
-    Main_Form->Canvas->TextOutA( 8, 8 + 1*c_height, m_name.c_str() );
+    StatusBar1->Panels->Items[1]->Text =
+        String("Очки: ") + IntToStr(m_score);
 
-    Main_Form->Canvas->TextOutA( 8, 8 + 2*c_height, "Очки:" );
-    Main_Form->Canvas->TextOutA( 8, 8 + 3*c_height, IntToStr(m_score) );
-
-    Main_Form->Canvas->TextOutA( 8, 8 + 4*c_height, "Время:" );
-    Main_Form->Canvas->TextOutA( 8, 8 + 5*c_height, str_time( m_level_time ).c_str() );
+    StatusBar1->Panels->Items[2]->Text =
+        String("Время: ") + str_time( m_level_time ).c_str();
 
     String bombs = "-";
     if (m_field) {
         bombs = m_field->info().m_bomb_number;
     }
-    Main_Form->Canvas->TextOutA( 8, 8 + 6*c_height, "Бомб: " + bombs );
+    StatusBar1->Panels->Items[3]->Text =
+        String("Мин: ") + bombs;
 
     String flags = "-";
     if (m_field) {
         flags = m_field->count_of_all_flags();
     }
-    Main_Form->Canvas->TextOutA( 8, 8 + 7*c_height, "Флагов: " + flags );
+    StatusBar1->Panels->Items[4]->Text =
+        String("Флагов: ") + flags;
 }
 
 
@@ -343,8 +337,6 @@ void __fastcall TMain_Form::FormMouseMove(TObject *Sender,
     if (!m_game_is_active)
         // Игра неактивна.
         return;
-
-    X -= Image_Info->Width;
 
     int index = m_field->get_element_by_click( X, Y );
 
@@ -587,7 +579,7 @@ TMain_Form::start_classic( const field::info_t & info ) {
     static_cast<draw_tools::builder::abstract_t*>
         (m_draw_tool)->set_main(
             *(Main_Form->Canvas)
-        ,   TRect( Image_Info->Width, 0, Image1->Width + Image_Info->Width, Image1->Height) );
+        ,   TRect( 0, 0, Image1->Width, Image1->Height) );
 
     // Рисуем поле.
     draw_field();
@@ -693,35 +685,6 @@ void __fastcall TMain_Form::Triangle1Click(TObject *Sender)
     m_game_type = "Паркет: треугольники";
     m_game_condition = one_level;
 
-    if ( m_field ) {
-        delete m_field;
-        m_field = 0;
-    }
-
-    // Генерируем поле.
-    m_generator = &
-        field::generators::factory_t::get_instance(
-            field::generators::triangle
-        );
-
-    m_field = m_generator->generate( m_info );
-
-    // Формируем интерфейс для рисования поля.
-    m_draw_tool = &
-        draw_tools::factory_t::get_instance(
-            draw_tools::triangle
-        );
-
-    static_cast<draw_tools::builder::abstract_t*>
-        (m_draw_tool)->set_shadow(
-            *(Image1->Canvas)
-        ,   TRect( 0, 0, Image1->Width, Image1->Height) );
-
-    static_cast<draw_tools::builder::abstract_t*>
-        (m_draw_tool)->set_main(
-            *(Main_Form->Canvas)
-        ,   TRect( Image_Info->Width, 0, Image1->Width + Image_Info->Width, Image1->Height) );
-
     NewGameClick( Sender );
 }
 //---------------------------------------------------------------------------
@@ -775,7 +738,34 @@ void __fastcall TMain_Form::NewGameClick(TObject *Sender)
     }
     else
     if ( m_game_type == "Паркет: треугольники" ) {
+        if ( m_field ) {
+            delete m_field;
+            m_field = 0;
+        }
 
+        // Генерируем поле.
+        m_generator = &
+            field::generators::factory_t::get_instance(
+            field::generators::triangle
+            );
+
+        m_field = m_generator->generate( m_info );
+
+        // Формируем интерфейс для рисования поля.
+        m_draw_tool = &
+            draw_tools::factory_t::get_instance(
+                draw_tools::triangle
+            );
+
+        static_cast<draw_tools::builder::abstract_t*>
+            (m_draw_tool)->set_shadow(
+                *(Image1->Canvas)
+            ,   TRect( 0, 0, Image1->Width, Image1->Height) );
+
+        static_cast<draw_tools::builder::abstract_t*>
+            (m_draw_tool)->set_main(
+                *(Main_Form->Canvas)
+        ,   TRect( 0, 0, Image1->Width, Image1->Height) );
     }
     else
     if ( m_game_type == "Паркет: шестиугольники" ) {

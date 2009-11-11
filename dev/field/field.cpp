@@ -13,22 +13,32 @@ field_t::add_element( const element_t & element ) {
 int
 field_t::get_element_by_click( int x, int y ) {
 
+	int lower_distance = 100;
+	int result = -1;
+
 	for( unsigned int i = 0; i < m_elements.size(); ++i ) {
 
-        element_t & it = m_elements[i];
+		element_t & it = m_elements[i];
 
-        const int lx = it.x() - m_info.m_element_size_x / 2 + 1;
-        const int ly = it.y() - m_info.m_element_size_y / 2 + 1;
-        const int rx = it.x() + m_info.m_element_size_x / 2 - 1;
-        const int ry = it.y() + m_info.m_element_size_y / 2 - 1;
+		// Дистанции храним как квадраты, нам важно только сравнение их.
+		int distance = (it.x() - x)*(it.x() - x) + (it.y() - y) * (it.y() - y);
+
+		const int lx = it.x() - m_info.m_element_size_x / 2 + 1;
+		const int ly = it.y() - m_info.m_element_size_y / 2 + 1;
+		const int rx = it.x() + m_info.m_element_size_x / 2 - 1;
+		const int ry = it.y() + m_info.m_element_size_y / 2 - 1;
 
 		if ( (x > lx) && (x < rx) && (y > ly) && (y < ry) )
 		{
-			return static_cast<int>(i);
+			if ( distance < lower_distance )
+			{
+				result =  static_cast<int>(i);
+				lower_distance = distance;
+			}
 		}
 	}
 
-    return -1;
+	return result;
 }
 
 int

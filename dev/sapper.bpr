@@ -109,12 +109,14 @@ ProductVersion=1.0.0.0
 Comments=
 
 [HistoryLists\hlIncludePath]
-Count=1
-Item0=field\generators;draw_tools\builder;field;C:\Program Files\Borland\CBuilder6\Projects;E:\miner;$(BCB)\include;$(BCB)\include\vcl
+Count=2
+Item0=high_scores;field\generators;draw_tools\builder;field;C:\Program Files\Borland\CBuilder6\Projects;E:\miner;$(BCB)\include;$(BCB)\include\vcl
+Item1=field\generators;draw_tools\builder;field;C:\Program Files\Borland\CBuilder6\Projects;E:\miner;$(BCB)\include;$(BCB)\include\vcl
 
 [HistoryLists\hlLibraryPath]
-Count=1
-Item0=field\generators;draw_tools\builder;field;C:\Program Files\Borland\CBuilder6\Projects;E:\miner;$(BCB)\lib\obj;$(BCB)\lib
+Count=2
+Item0=high_scores;field\generators;draw_tools\builder;field;C:\Program Files\Borland\CBuilder6\Projects;E:\miner;$(BCB)\lib\obj;$(BCB)\lib
+Item1=field\generators;draw_tools\builder;field;C:\Program Files\Borland\CBuilder6\Projects;E:\miner;$(BCB)\lib\obj;$(BCB)\lib
 
 [HistoryLists\hlDebugSourcePath]
 Count=1

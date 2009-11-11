@@ -16,6 +16,7 @@
 #include "draw_tools/interface.hpp"
 #include <ExtCtrls.hpp>
 #include <Dialogs.hpp>
+#include <ComCtrls.hpp>
 //---------------------------------------------------------------------------
 class TMain_Form : public TForm
 {
@@ -33,7 +34,6 @@ __published:	// IDE-managed Components
     TMenuItem *About1;
     TImage *Image1;
     TImage *Image2;
-    TImage *Image_Info;
     TTimer *Timer1;
     TMenuItem *OptNear;
     TMenuItem *OptThis;
@@ -51,10 +51,9 @@ __published:	// IDE-managed Components
     TMenuItem *Sixangle1;
     TMenuItem *Name1;
     TMenuItem *NewGame;
+    TStatusBar *StatusBar1;
     void __fastcall Exit1Click(TObject *Sender);
     void __fastcall Beginner1Click(TObject *Sender);
-    void __fastcall Image1MouseDown(TObject *Sender, TMouseButton Button,
-          TShiftState Shift, int X, int Y);
     void __fastcall Intermediate1Click(TObject *Sender);
     void __fastcall Professional1Click(TObject *Sender);
     void __fastcall FormMouseDown(TObject *Sender, TMouseButton Button,
