@@ -113,6 +113,17 @@ class element_t {
         void
         set_blink( int sec );
 
+        //! Тип элемента.
+        int
+        type() const {
+            return m_type;
+        }
+
+        void
+        set_type( int type ) {
+            m_type = type;
+        }
+
 	private:
 
 		//! Положение центра по X в px.
@@ -135,6 +146,9 @@ class element_t {
 
         //! Конечное время для блинка.
         clock_t m_blink_time;
+
+        //! Тип элемента. Задается пользователем по своему усмотрению.
+        int m_type;
 
         //! Элементы-соседи.
         std::vector<int> m_near_elements;

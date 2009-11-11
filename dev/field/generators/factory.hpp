@@ -6,6 +6,7 @@
 #include <stdlib.h>
 
 #include "field/generators/classic.hpp"
+#include "field/generators/triangle.hpp"
 
 namespace field {
 
@@ -16,6 +17,9 @@ enum type_t {
 
 	//! Классический сапер - квадратное поле.
 	classic,
+
+    //! Паркетные треугольники.
+    triangle,
 
 	//! Сетевое поле сапера.
 	net
@@ -35,6 +39,11 @@ class factory_t {
 			if ( type == classic ) {
 				static field::generators::classic_t classic;
 				return classic;
+			}
+
+			if ( type == triangle ) {
+				static field::generators::triangle_t triangle;
+				return triangle;
 			}
 
 			char error[10];

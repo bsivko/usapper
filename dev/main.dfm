@@ -18,6 +18,7 @@ object Main_Form: TMain_Form
   OnClose = FormClose
   OnMouseDown = FormMouseDown
   OnMouseMove = FormMouseMove
+  OnMouseUp = FormMouseUp
   PixelsPerInch = 96
   TextHeight = 13
   object Image1: TImage
@@ -68,6 +69,16 @@ object Main_Form: TMain_Form
         object Custom1: TMenuItem
           Caption = #1055#1088#1086#1080#1079#1074#1086#1083#1100#1085#1072#1103
           OnClick = Custom1Click
+        end
+      end
+      object Parket1: TMenuItem
+        Caption = #1055#1072#1088#1082#1077#1090#1085#1072#1103
+        object Triangle: TMenuItem
+          Caption = #1058#1088#1077#1091#1075#1086#1083#1100#1085#1080#1082#1080
+          OnClick = TriangleClick
+        end
+        object Sixangle: TMenuItem
+          Caption = #1064#1077#1089#1090#1080#1091#1075#1086#1083#1100#1085#1080#1082#1080
         end
       end
       object EndGame1: TMenuItem

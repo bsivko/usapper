@@ -1,11 +1,12 @@
-#include "draw_tools/builder/classic.hpp"
+#include "draw_tools/builder/triangle.hpp"
 
 namespace draw_tools {
 
 namespace builder {
 
 void
-classic_t::drawer_t::draw_number( const field::element_t & element, int number ) {
+triangle_t::drawer_t::draw_number(
+    const field::element_t & element, int number ) {
 
     if (element.checked()) {
         m_canvas.Pen->Color = clBlue;
@@ -16,23 +17,19 @@ classic_t::drawer_t::draw_number( const field::element_t & element, int number )
 
     // Поле.
     m_canvas.Brush->Color = clSilver;
-    if ( number == 0) {
+    if (number == 0) {
         m_canvas.Brush->Color = clGray;
     }
-    m_canvas.Rectangle(
-        element.x() - m_info.m_element_size_x / 2
-    ,   element.y() - m_info.m_element_size_y / 2
-    ,   element.x() + m_info.m_element_size_x / 2
-    ,   element.y() + m_info.m_element_size_y / 2 );
+    draw_triangle( m_canvas, element );
 
     // Число.
-    const TColor colors[9] = {
+    const TColor colors[12] = {
         /*0*/ clWhite, clBlue, clGreen, clRed,
         /*4*/ clPurple, clNavy, clAqua, clMaroon,
-        /*8*/ clBlack
+        /*8*/ clBlack, clBlack, clBlack, clBlack
     };
 
-    if ( number <= 8 ) {
+    if ( number <= 12 ) {
         m_canvas.Font->Color = colors[ number ];
     }
     else {
@@ -40,15 +37,15 @@ classic_t::drawer_t::draw_number( const field::element_t & element, int number )
     }
     m_canvas.Font->Style = TFontStyles()<< fsBold;
     if (number == 0) return;
-    m_canvas.Font->Size = 8;
+    m_canvas.Font->Size = 7;
     m_canvas.TextOutA(
-        element.x() - m_info.m_element_size_x / 2 + 5
-    ,   element.y() - m_info.m_element_size_y / 2 + 2
+        element.x() - c_size_x / 2 + 3
+    ,   element.y() - c_size_y / 2 + 2
     ,   IntToStr(number) );
 }
 
 void
-classic_t::drawer_t::draw_unknown( const field::element_t & element ) {
+triangle_t::drawer_t::draw_unknown( const field::element_t & element ) {
 
     if (element.checked()) {
         m_canvas.Pen->Color = clBlue;
@@ -58,15 +55,11 @@ classic_t::drawer_t::draw_unknown( const field::element_t & element ) {
     }
 
     m_canvas.Brush->Color = clSilver;
-    m_canvas.Rectangle(
-        element.x() - m_info.m_element_size_x / 2
-    ,   element.y() - m_info.m_element_size_y / 2
-    ,   element.x() + m_info.m_element_size_x / 2
-    ,   element.y() + m_info.m_element_size_y / 2 );
+    draw_triangle( m_canvas, element );
 }
 
 void
-classic_t::drawer_t::draw_flag( const field::element_t & element ) {
+triangle_t::drawer_t::draw_flag( const field::element_t & element ) {
 
     if (element.checked()) {
         m_canvas.Pen->Color = clBlue;
@@ -76,17 +69,13 @@ classic_t::drawer_t::draw_flag( const field::element_t & element ) {
     }
 
     m_canvas.Brush->Color = clSilver;
-    m_canvas.Rectangle(
-        element.x() - m_info.m_element_size_x / 2
-    ,   element.y() - m_info.m_element_size_y / 2
-    ,   element.x() + m_info.m_element_size_x / 2
-    ,   element.y() + m_info.m_element_size_y / 2 );
-
-    m_canvas.Pen->Color = clMaroon;
-    m_canvas.Brush->Color = clRed;
+    draw_triangle( m_canvas, element );
 
     int x = element.x();
     int y = element.y();
+
+    m_canvas.Pen->Color = clMaroon;
+    m_canvas.Brush->Color = clRed;
 
     m_canvas.MoveTo( x-4, y-6 );
     m_canvas.LineTo( x-4, y+6 );
@@ -102,7 +91,7 @@ classic_t::drawer_t::draw_flag( const field::element_t & element ) {
 }
 
 void
-classic_t::drawer_t::draw_explode_bomb( const field::element_t & element ) {
+triangle_t::drawer_t::draw_explode_bomb( const field::element_t & element ) {
 
     if (element.checked()) {
         m_canvas.Pen->Color = clBlue;
@@ -112,17 +101,13 @@ classic_t::drawer_t::draw_explode_bomb( const field::element_t & element ) {
     }
 
     m_canvas.Brush->Color = clSilver;
-    m_canvas.Rectangle(
-        element.x() - m_info.m_element_size_x / 2
-    ,   element.y() - m_info.m_element_size_y / 2
-    ,   element.x() + m_info.m_element_size_x / 2
-    ,   element.y() + m_info.m_element_size_y / 2 );
+    draw_triangle( m_canvas, element );
 
     m_canvas.Pen->Color = clRed;
 
     int x = element.x();
     int y = element.y();
-
+    
     m_canvas.MoveTo( x-4, y-4 );
     m_canvas.LineTo( x+5, y+5 );
     m_canvas.MoveTo( x-4, y+4 );
@@ -136,9 +121,10 @@ classic_t::drawer_t::draw_explode_bomb( const field::element_t & element ) {
 
 //! Нарисовать связь между точками.
 void
-classic_t::drawer_t::draw_link(
-    const field::element_t & element1,
-    const field::element_t & element2 ) {
+triangle_t::drawer_t::draw_link(
+    const field::element_t & element1
+,   const field::element_t & element2 ) {
+
     m_canvas.Pen->Color = clBlue;
     m_canvas.MoveTo( element1.x(), element1.y() );
     m_canvas.LineTo( element2.x(), element2.y() );
@@ -146,7 +132,7 @@ classic_t::drawer_t::draw_link(
 
 
 void
-classic_t::draw(
+triangle_t::draw(
 	const field::field_t & field ) {
 
     // Этим рисовальщиком рисуем.
@@ -158,7 +144,6 @@ classic_t::draw(
 
     // Рисуются только сами поля, без связующих элементов графа.
     drawer.draw_elements( field );
-
 //    drawer.draw_net( field );
 }
 

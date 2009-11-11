@@ -59,12 +59,6 @@ void __fastcall TMain_Form::Beginner1Click(TObject *Sender)
     clear_old_game();
     start_game();
 
-    // Генерируем поле.
-    m_generator = &
-        field::generators::factory_t::get_instance(
-            field::generators::classic
-        );
-
     // Данные для Beginner.
     field::info_t info;
     info.m_element_size_x = c_element_x;
@@ -78,27 +72,7 @@ void __fastcall TMain_Form::Beginner1Click(TObject *Sender)
     m_game_type = "Классика: начинающие";
     m_game_condition = one_level;
 
-    // Генерируем поле.
-    m_field = m_generator->generate( info );
-
-    // Формируем интерфейс для рисования поля.
-    m_draw_tool = &
-        draw_tools::factory_t::get_instance(
-            draw_tools::classic
-        );
-
-    static_cast<draw_tools::builder::abstract_t*>
-        (m_draw_tool)->set_shadow(
-            *(Image1->Canvas)
-        ,   TRect( 0, 0, Image1->Width, Image1->Height) );
-
-    static_cast<draw_tools::builder::abstract_t*>
-        (m_draw_tool)->set_main(
-            *(Main_Form->Canvas)
-        ,   TRect( Image_Info->Width, 0, Image1->Width + Image_Info->Width, Image1->Height) );
-
-    // Рисуем поле.
-    draw_field();
+    start_classic( info );
 }
 
 
@@ -184,12 +158,6 @@ void __fastcall TMain_Form::Intermediate1Click(TObject *Sender)
     clear_old_game();
     start_game();
 
-    // Генерируем поле.
-    m_generator = &
-        field::generators::factory_t::get_instance(
-            field::generators::classic
-        );
-
     // Данные для Intermediate.
     field::info_t info;
     info.m_element_size_x = c_element_x;
@@ -203,39 +171,13 @@ void __fastcall TMain_Form::Intermediate1Click(TObject *Sender)
     m_game_type = "Классика: любители";
     m_game_condition = one_level;
 
-    // Генерируем поле.
-    m_field = m_generator->generate( info );
-
-    // Формируем интерфейс для рисования поля.
-    m_draw_tool = &
-        draw_tools::factory_t::get_instance(
-            draw_tools::classic
-        );
-
-    static_cast<draw_tools::builder::abstract_t*>
-        (m_draw_tool)->set_shadow(
-            *(Image1->Canvas)
-        ,   TRect( 0, 0, Image1->Width, Image1->Height) );
-
-    static_cast<draw_tools::builder::abstract_t*>
-        (m_draw_tool)->set_main(
-            *(Main_Form->Canvas)
-        ,   TRect( Image_Info->Width, 0, Image1->Width + Image_Info->Width, Image1->Height) );
-
-    // Рисуем поле.
-    draw_field();
+    start_classic( info );
 }
 //---------------------------------------------------------------------------
 void __fastcall TMain_Form::Professional1Click(TObject *Sender)
 {
     clear_old_game();
     start_game();
-
-    // Генерируем поле.
-    m_generator = &
-        field::generators::factory_t::get_instance(
-            field::generators::classic
-        );
 
     // Данные для Professional.
     field::info_t info;
@@ -250,28 +192,7 @@ void __fastcall TMain_Form::Professional1Click(TObject *Sender)
     m_game_type = "Классика: профессионалы";
     m_game_condition = one_level;
 
-    // Генерируем поле.
-    m_field = m_generator->generate( info );
-
-    // Формируем интерфейс для рисования поля.
-    m_draw_tool = &
-        draw_tools::factory_t::get_instance(
-            draw_tools::classic
-        );
-
-    static_cast<draw_tools::builder::abstract_t*>
-        (m_draw_tool)->set_shadow(
-            *(Image1->Canvas)
-        ,   TRect( 0, 0, Image1->Width, Image1->Height) );
-
-    static_cast<draw_tools::builder::abstract_t*>
-        (m_draw_tool)->set_main(
-            *(Main_Form->Canvas)
-        ,   TRect( Image_Info->Width, 0, Image1->Width + Image_Info->Width, Image1->Height) );
-
-    // Рисуем поле.
-    draw_field();
-
+    start_classic( info );
 }
 
 void
@@ -408,6 +329,7 @@ TMain_Form::refresh_info() {
 
 void __fastcall TMain_Form::EndGame1Click(TObject *Sender)
 {
+    level_complete();
     end_game();
 }
 //---------------------------------------------------------------------------
@@ -461,9 +383,11 @@ void __fastcall TMain_Form::FormMouseMove(TObject *Sender,
 
     int index = m_field->get_element_by_click( X, Y );
 
+    m_field->uncheck_all();
+
     if ( index == -1 ) {
         // Под мышой нет элементов.
-        m_field->uncheck_all();
+        draw_field();
         return;
     }
 
@@ -643,12 +567,6 @@ void __fastcall TMain_Form::Custom1Click(TObject *Sender)
         clear_old_game();
         start_game();
 
-        // Генерируем поле.
-        m_generator = &
-            field::generators::factory_t::get_instance(
-                field::generators::classic
-            );
-
         // Данные для Custom.
         field::info_t info;
         info.m_element_size_x = c_element_x;
@@ -662,27 +580,7 @@ void __fastcall TMain_Form::Custom1Click(TObject *Sender)
         m_game_condition = custom;
         m_game_type = "Классика: произвольное поле";
 
-        // Генерируем поле.
-        m_field = m_generator->generate( info );
-
-        // Формируем интерфейс для рисования поля.
-        m_draw_tool = &
-            draw_tools::factory_t::get_instance(
-                draw_tools::classic
-            );
-
-        static_cast<draw_tools::builder::abstract_t*>
-            (m_draw_tool)->set_shadow(
-                *(Image1->Canvas)
-            ,   TRect( 0, 0, Image1->Width, Image1->Height) );
-
-        static_cast<draw_tools::builder::abstract_t*>
-            (m_draw_tool)->set_main(
-                *(Main_Form->Canvas)
-            ,   TRect( Image_Info->Width, 0, Image1->Width + Image_Info->Width, Image1->Height) );
-
-        // Рисуем поле.
-        draw_field();
+        start_classic( info );
     }
     catch( EConvertError & ex ) {
         ShowMessage( "Ошибка преобразования. \nВводить нужно корректные данные.");
@@ -694,6 +592,37 @@ void __fastcall TMain_Form::Custom1Click(TObject *Sender)
     refresh_info();
 }
 //---------------------------------------------------------------------------
+
+void
+TMain_Form::start_classic( const field::info_t & info ) {
+
+    // Генерируем поле.
+    m_generator = &
+        field::generators::factory_t::get_instance(
+            field::generators::classic
+        );
+
+    m_field = m_generator->generate( info );
+
+    // Формируем интерфейс для рисования поля.
+    m_draw_tool = &
+        draw_tools::factory_t::get_instance(
+            draw_tools::classic
+        );
+
+    static_cast<draw_tools::builder::abstract_t*>
+        (m_draw_tool)->set_shadow(
+            *(Image1->Canvas)
+        ,   TRect( 0, 0, Image1->Width, Image1->Height) );
+
+    static_cast<draw_tools::builder::abstract_t*>
+        (m_draw_tool)->set_main(
+            *(Main_Form->Canvas)
+        ,   TRect( Image_Info->Width, 0, Image1->Width + Image_Info->Width, Image1->Height) );
+
+    // Рисуем поле.
+    draw_field();
+}
 
 
 void __fastcall TMain_Form::Records1Click(TObject *Sender)
@@ -772,6 +701,60 @@ void __fastcall TMain_Form::Timer2Timer(TObject *Sender)
         ++m_game_time;
         refresh_info();
     }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMain_Form::TriangleClick(TObject *Sender)
+{
+    clear_old_game();
+    start_game();
+
+    // Данные для Triangle.
+    field::info_t info;
+    info.m_element_size_x = 27;
+    info.m_element_size_y = 24;
+    info.m_size_x = 20;
+    info.m_size_y = 20;
+    info.m_bomb_number = 80;
+    info.m_size_px_x = Image1->Width;
+    info.m_size_px_y = Image1->Height - c_dy_menu;
+
+    m_game_type = "Паркет: треугольники";
+    m_game_condition = one_level;
+
+    // Генерируем поле.
+    m_generator = &
+        field::generators::factory_t::get_instance(
+            field::generators::triangle
+        );
+
+    m_field = m_generator->generate( info );
+
+    // Формируем интерфейс для рисования поля.
+    m_draw_tool = &
+        draw_tools::factory_t::get_instance(
+            draw_tools::triangle
+        );
+
+    static_cast<draw_tools::builder::abstract_t*>
+        (m_draw_tool)->set_shadow(
+            *(Image1->Canvas)
+        ,   TRect( 0, 0, Image1->Width, Image1->Height) );
+
+    static_cast<draw_tools::builder::abstract_t*>
+        (m_draw_tool)->set_main(
+            *(Main_Form->Canvas)
+        ,   TRect( Image_Info->Width, 0, Image1->Width + Image_Info->Width, Image1->Height) );
+
+    // Рисуем поле.
+    draw_field();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMain_Form::FormMouseUp(TObject *Sender,
+      TMouseButton Button, TShiftState Shift, int X, int Y)
+{
+//    ShowMessage(  m_field->get_element_by_click( X- Image_Info->Width, Y ) );
 }
 //---------------------------------------------------------------------------
 

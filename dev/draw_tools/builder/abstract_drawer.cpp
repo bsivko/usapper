@@ -16,17 +16,17 @@ abstract_drawer_t::draw_elements( const field::field_t & field ) {
         elements_t::const_iterator it = &elements[i];
 
         if ( m_blink && it->is_blink() ) {
-            draw_unknown( it->x(), it->y(), it->checked() );
+            draw_unknown( *it );
             continue;
         }
 
         // Неоткрытое поле.
         if (!it->is_open()) {
             if (it->is_flag()) {
-                draw_flag( it->x(), it->y(), it->checked() );
+                draw_flag( *it );
             }
             else {
-                draw_unknown( it->x(), it->y(), it->checked() );
+                draw_unknown( *it );
             }
             continue;
         }
@@ -35,12 +35,12 @@ abstract_drawer_t::draw_elements( const field::field_t & field ) {
 
         // Бомба.
         if ( it->is_bomb() ) {
-            draw_explode_bomb( it->x(), it->y(), it->checked() );
+            draw_explode_bomb( *it );
             continue;
         }
 
         // Остается только число.
-        draw_number( it->x(), it->y(), field.count_of_near_bombs(i), it->checked() );
+        draw_number( *it, field.count_of_near_bombs(i) );
     }
 }
 
@@ -54,10 +54,8 @@ abstract_drawer_t::draw_net( const field::field_t & field ) {
 	for( unsigned int i = 0; i < elements.size(); ++i ) {
     	for( unsigned int j = 0; j < elements[i].near_elements().size(); ++j ) {
             draw_link(
-                elements[i].x()
-            ,   elements[i].y()
-            ,   elements[elements[i].near_elements()[j]].x()
-            ,   elements[elements[i].near_elements()[j]].y()
+                elements[i]
+            ,   elements[elements[i].near_elements()[j]]
             );
         }
     }

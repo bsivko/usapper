@@ -6,6 +6,7 @@
 #include <stdlib.h>
 
 #include "draw_tools/builder/classic.hpp"
+#include "draw_tools/builder/triangle.hpp"
 
 namespace draw_tools {
 
@@ -14,6 +15,9 @@ enum type_t {
 
 	//! Классический сапер - квадратное поле.
 	classic,
+
+    //! Паркетные треугольники.
+    triangle,
 
 	//! Сетевое поле сапера.
 	net
@@ -33,6 +37,11 @@ class factory_t {
 			if ( type == classic ) {
 				static draw_tools::builder::classic_t classic;
 				return classic;
+			}
+
+			if ( type == triangle ) {
+				static draw_tools::builder::triangle_t triangle;
+				return triangle;
 			}
 
 			char error[10];

@@ -1,6 +1,8 @@
 #if !defined(_DRAW_TOOL__INTERFACE_DRAWER_HPP__INCLUDED_)
 #define _DRAW_TOOL__INTERFACE_DRAWER_HPP__INCLUDED_
 
+#include "field/element.hpp"
+
 namespace draw_tools {
 
 namespace builder {
@@ -11,27 +13,28 @@ class interface_drawer_t {
 	public:
 		//! Нарисовать число.
 		virtual void
-		draw_number( int x, int y, int number, bool check = false ) = 0;
+		draw_number( const field::element_t & element, int number ) = 0;
 
 		//! Нарисовать неизвестное поле.
 		virtual void
-		draw_unknown( int x, int y, bool check = false ) = 0;
+		draw_unknown( const field::element_t & element ) = 0;
 
 		//! Нарисовать флажок.
 		virtual void
-		draw_flag( int x, int y, bool check = false ) = 0;
+		draw_flag( const field::element_t & element ) = 0;
 
 		//! Нарисовать взорванную бомбу.
 		virtual void
-		draw_explode_bomb( int x, int y, bool check = false ) = 0;
+		draw_explode_bomb( const field::element_t & element ) = 0;
 
 		//! Нарисовать связь между точками.
 		virtual void
-		draw_link( int x1, int y1, int x2, int y2 ) = 0;
+		draw_link(
+            const field::element_t & element1
+        ,   const field::element_t & element2 ) = 0;
 
 		virtual
 		~interface_drawer_t() {}
-
 };
 
 } // namespace builder

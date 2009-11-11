@@ -47,6 +47,9 @@ __published:	// IDE-managed Components
     TMenuItem *Custom1;
     TMenuItem *Records1;
     TTimer *Timer2;
+    TMenuItem *Parket1;
+    TMenuItem *Triangle;
+    TMenuItem *Sixangle;
     void __fastcall Exit1Click(TObject *Sender);
     void __fastcall Beginner1Click(TObject *Sender);
     void __fastcall Image1MouseDown(TObject *Sender, TMouseButton Button,
@@ -71,6 +74,9 @@ __published:	// IDE-managed Components
     void __fastcall Help1Click(TObject *Sender);
     void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
     void __fastcall Timer2Timer(TObject *Sender);
+    void __fastcall TriangleClick(TObject *Sender);
+    void __fastcall FormMouseUp(TObject *Sender, TMouseButton Button,
+          TShiftState Shift, int X, int Y);
 private:	// User declarations
 
     //! Ёто то самое поле, с которым мы играем с игроком.
@@ -127,6 +133,10 @@ private:	// User declarations
     //! ѕройден уровень.
     void
     level_complete();
+
+    //! —тартовать классическую игру.
+    void
+    start_classic( const field::info_t & info );
 
 public:		// User declarations
     //! ¬ каком состо€нии сейчас находитс€ игра.

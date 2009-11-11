@@ -1,16 +1,18 @@
-#if !defined(_DRAW_TOOL__BUILDER__CLASSIC_HPP__INCLUDED_)
-#define _DRAW_TOOL__BUILDER__CLASSIC_HPP__INCLUDED_
+#if !defined(_DRAW_TOOL__BUILDER__TRIANGLE_HPP__INCLUDED_)
+#define _DRAW_TOOL__BUILDER__TRIANGLE_HPP__INCLUDED_
 
 #include "draw_tools/builder/abstract.hpp"
 #include "draw_tools/builder/interface_drawer.hpp"
 #include "draw_tools/builder/abstract_drawer.hpp"
+
+#include <Types.hpp>
 
 namespace draw_tools {
 
 namespace builder {
 
 //! Инструмента для рисования в C++ Builder, классика.
-class classic_t : public abstract_t {
+class triangle_t : public abstract_t {
 
     //! Рисовальщик на канве.
     class drawer_t : public abstract_drawer_t {
@@ -44,6 +46,34 @@ class classic_t : public abstract_t {
 
             const field::info_t & m_info;
             TCanvas & m_canvas;
+
+            static const int c_size_x = 15;
+            static const int c_size_y = 12;
+
+            //! Нарисовать треугольник.
+            void
+            draw_triangle( TCanvas & canvas, const field::element_t & element  ) {
+
+                int x = element.x();
+                int y = element.y();
+                if ( element.type() == 0 ) {
+                    Types::TPoint points[4];
+                    points[0] = Point(x, y-c_size_y);
+                    points[1] = Point(x+c_size_x, y+c_size_y);
+                    points[2] = Point(x-c_size_x, y+c_size_y);
+                    points[3] = Point(x, y-c_size_y);
+                    canvas.Polygon( points, 3 );
+                }
+                else if ( element.type() == 1 ) {
+                    Types::TPoint points[4];
+                    points[0] = Point(x, y+c_size_y);
+                    points[1] = Point(x+c_size_x, y-c_size_y);
+                    points[2] = Point(x-c_size_x, y-c_size_y);
+                    points[3] = Point(x, y+c_size_y);
+                    canvas.Polygon( points, 3 );
+                }
+                return;
+            }
     };
 
 	public:
@@ -54,7 +84,7 @@ class classic_t : public abstract_t {
 			const field::field_t & field );
 
 		virtual
-		~classic_t() {}
+		~triangle_t() {}
 };
 
 } // namespace builder
