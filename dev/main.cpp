@@ -250,6 +250,8 @@ TMain_Form::start_game() {
 //    Quest1->Enabled = false;
     EndGame1->Enabled = true;
     Custom1->Enabled = false;
+    Triangle1->Enabled = false;
+    Sixangle1->Enabled = false;
 
     AnsiString InputString = InputBox(
         "¬ход в игру",
@@ -284,6 +286,8 @@ TMain_Form::end_game() {
 //    Quest1->Enabled = true;
     EndGame1->Enabled = false;
     Custom1->Enabled = true;
+    Triangle1->Enabled = true;
+    Sixangle1->Enabled = true;
 
     m_game_is_active = false;
     m_level_time = 0;
@@ -333,8 +337,6 @@ void __fastcall TMain_Form::EndGame1Click(TObject *Sender)
     end_game();
 }
 //---------------------------------------------------------------------------
-
-
 
 void __fastcall TMain_Form::Timer1Timer(TObject *Sender)
 {
@@ -704,7 +706,7 @@ void __fastcall TMain_Form::Timer2Timer(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TMain_Form::TriangleClick(TObject *Sender)
+void __fastcall TMain_Form::Triangle1Click(TObject *Sender)
 {
     clear_old_game();
     start_game();

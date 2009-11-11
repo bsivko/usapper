@@ -73,11 +73,11 @@ object Main_Form: TMain_Form
       end
       object Parket1: TMenuItem
         Caption = #1055#1072#1088#1082#1077#1090#1085#1072#1103
-        object Triangle: TMenuItem
+        object Triangle1: TMenuItem
           Caption = #1058#1088#1077#1091#1075#1086#1083#1100#1085#1080#1082#1080
-          OnClick = TriangleClick
+          OnClick = Triangle1Click
         end
-        object Sixangle: TMenuItem
+        object Sixangle1: TMenuItem
           Caption = #1064#1077#1089#1090#1080#1091#1075#1086#1083#1100#1085#1080#1082#1080
         end
       end

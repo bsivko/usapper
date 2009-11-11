@@ -48,8 +48,8 @@ __published:	// IDE-managed Components
     TMenuItem *Records1;
     TTimer *Timer2;
     TMenuItem *Parket1;
-    TMenuItem *Triangle;
-    TMenuItem *Sixangle;
+    TMenuItem *Triangle1;
+    TMenuItem *Sixangle1;
     void __fastcall Exit1Click(TObject *Sender);
     void __fastcall Beginner1Click(TObject *Sender);
     void __fastcall Image1MouseDown(TObject *Sender, TMouseButton Button,
@@ -74,7 +74,7 @@ __published:	// IDE-managed Components
     void __fastcall Help1Click(TObject *Sender);
     void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
     void __fastcall Timer2Timer(TObject *Sender);
-    void __fastcall TriangleClick(TObject *Sender);
+    void __fastcall Triangle1Click(TObject *Sender);
     void __fastcall FormMouseUp(TObject *Sender, TMouseButton Button,
           TShiftState Shift, int X, int Y);
 private:	// User declarations

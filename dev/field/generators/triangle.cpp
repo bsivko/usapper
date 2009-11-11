@@ -50,8 +50,6 @@ triangle_t::generate( const info_t & info ) {
     // Горизонтальные.
     for( unsigned int i = 0; i < elements.size(); ++i ) {
 
-        int p = (i * 2) % 2;
-
         switch ( (i / info.m_size_x) % 4 ) {
             // Первая с вертикали V.
             case 0: {
