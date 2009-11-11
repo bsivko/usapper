@@ -28,8 +28,10 @@ TMain_Form *Main_Form;
 __fastcall TMain_Form::TMain_Form(TComponent* Owner)
     : TForm(Owner), m_game_condition( wait ), m_game_type( "" ), m_level(0),
     m_game_is_active( false ), m_high_score_filename("sapper.scr"),
-    m_first_refresh(true), m_help_filename( "help.htm" ), m_name("")
+    m_first_refresh(true), m_help_filename( "help.htm" ), m_name("Инкогнито")
 {
+    Beginner1Click(0);
+    NewGameClick(0);
 	randomize();
 }
 //---------------------------------------------------------------------------
@@ -56,25 +58,26 @@ TMain_Form::str_time( int time ) {
 //---------------------------------------------------------------------------
 void __fastcall TMain_Form::Beginner1Click(TObject *Sender)
 {
-    clear_old_game();
-    start_game();
+    if ( m_game_is_active ) {
+        end_game();
+    }
+    clear_gametype_checks();
+    Beginner1->Checked = true;
 
     // Данные для Beginner.
-    field::info_t info;
-    info.m_element_size_x = c_element_x;
-    info.m_element_size_y = c_element_y;
-    info.m_size_x = 9;
-    info.m_size_y = 9;
-    info.m_bomb_number = 10;
-    info.m_size_px_x = Image1->Width;
-    info.m_size_px_y = Image1->Height - c_dy_menu;
+    m_info.m_element_size_x = c_element_x;
+    m_info.m_element_size_y = c_element_y;
+    m_info.m_size_x = 9;
+    m_info.m_size_y = 9;
+    m_info.m_bomb_number = 10;
+    m_info.m_size_px_x = Image1->Width;
+    m_info.m_size_px_y = Image1->Height - c_dy_menu;
 
     m_game_type = "Классика: начинающие";
     m_game_condition = one_level;
 
-    start_classic( info );
+    NewGameClick( Sender );
 }
-
 
 void
 TMain_Form::draw_field()
@@ -155,44 +158,48 @@ void __fastcall TMain_Form::Image1MouseDown(TObject *Sender,
 //---------------------------------------------------------------------------
 void __fastcall TMain_Form::Intermediate1Click(TObject *Sender)
 {
-    clear_old_game();
-    start_game();
+    if ( m_game_is_active ) {
+        end_game();
+    }
+    clear_gametype_checks();
+    Intermediate1->Checked = true;
 
     // Данные для Intermediate.
-    field::info_t info;
-    info.m_element_size_x = c_element_x;
-    info.m_element_size_y = c_element_y;
-    info.m_size_x = 16;
-    info.m_size_y = 16;
-    info.m_bomb_number = 40;
-    info.m_size_px_x = Image1->Width;
-    info.m_size_px_y = Image1->Height - c_dy_menu;
+    m_info.m_element_size_x = c_element_x;
+    m_info.m_element_size_y = c_element_y;
+    m_info.m_size_x = 16;
+    m_info.m_size_y = 16;
+    m_info.m_bomb_number = 40;
+    m_info.m_size_px_x = Image1->Width;
+    m_info.m_size_px_y = Image1->Height - c_dy_menu;
 
     m_game_type = "Классика: любители";
     m_game_condition = one_level;
 
-    start_classic( info );
+    NewGameClick( Sender );
 }
 //---------------------------------------------------------------------------
 void __fastcall TMain_Form::Professional1Click(TObject *Sender)
 {
-    clear_old_game();
-    start_game();
+    if ( m_game_is_active ) {
+        end_game();
+    }
+    clear_gametype_checks();
+    Professional1->Checked = true;
 
     // Данные для Professional.
-    field::info_t info;
-    info.m_element_size_x = c_element_x;
-    info.m_element_size_y = c_element_y;
-    info.m_size_x = 30;
-    info.m_size_y = 16;
-    info.m_bomb_number = 99;
-    info.m_size_px_x = Image1->Width;
-    info.m_size_px_y = Image1->Height - c_dy_menu;
+    m_info.m_element_size_x = c_element_x;
+    m_info.m_element_size_y = c_element_y;
+    m_info.m_size_x = 30;
+    m_info.m_size_y = 16;
+    m_info.m_bomb_number = 99;
+    m_info.m_size_px_x = Image1->Width;
+    m_info.m_size_px_y = Image1->Height - c_dy_menu;
 
     m_game_type = "Классика: профессионалы";
     m_game_condition = one_level;
 
-    start_classic( info );
+    NewGameClick( Sender );
 }
 
 void
@@ -230,7 +237,6 @@ TMain_Form::kill_miner() {
         // Останавливем игровой процесс.
         end_game();
     }
-
 }
 
 //---------------------------------------------------------------------------
@@ -244,51 +250,14 @@ void __fastcall TMain_Form::FormMouseDown(TObject *Sender,
 
 void
 TMain_Form::start_game() {
-    Beginner1->Enabled = false;
-    Intermediate1->Enabled = false;
-    Professional1->Enabled = false;
-//    Quest1->Enabled = false;
-    EndGame1->Enabled = true;
-    Custom1->Enabled = false;
-    Triangle1->Enabled = false;
-    Sixangle1->Enabled = false;
-
-    AnsiString InputString = InputBox(
-        "Вход в игру",
-        "Ваше имя (до 10 символов)?",
-        m_name.c_str() );
-    InputString = InputString.Trim();
-    if (InputString.Length() == 0) {
-        InputString = "Инкогнито";
-    }
-    if (InputString.Length() > 10) {
-        InputString = InputString.SubString(0, 10);
-    }
-    m_name = InputString.c_str();
-
     m_score = 0;
-
     Main_Form->Refresh();
-
     m_game_is_active = true;
-
     refresh_info();
 }
 
 void
 TMain_Form::end_game() {
-
-//    clear_old_game();
-
-    Beginner1->Enabled = true;
-    Intermediate1->Enabled = true;
-    Professional1->Enabled = true;
-//    Quest1->Enabled = true;
-    EndGame1->Enabled = false;
-    Custom1->Enabled = true;
-    Triangle1->Enabled = true;
-    Sixangle1->Enabled = true;
-
     m_game_is_active = false;
     m_level_time = 0;
     m_level = 0;
@@ -331,12 +300,6 @@ TMain_Form::refresh_info() {
 }
 
 
-void __fastcall TMain_Form::EndGame1Click(TObject *Sender)
-{
-    level_complete();
-    end_game();
-}
-//---------------------------------------------------------------------------
 
 void __fastcall TMain_Form::Timer1Timer(TObject *Sender)
 {
@@ -565,24 +528,23 @@ void __fastcall TMain_Form::Custom1Click(TObject *Sender)
         }
 
         // Данные есть. Стартуем.
-
-        clear_old_game();
-        start_game();
+        if ( m_game_is_active ) {
+            end_game();
+        }
 
         // Данные для Custom.
-        field::info_t info;
-        info.m_element_size_x = c_element_x;
-        info.m_element_size_y = c_element_y;
-        info.m_size_x = size_x;
-        info.m_size_y = size_y;
-        info.m_bomb_number = bomb_count;
-        info.m_size_px_x = Image1->Width;
-        info.m_size_px_y = Image1->Height - c_dy_menu;
+        m_info.m_element_size_x = c_element_x;
+        m_info.m_element_size_y = c_element_y;
+        m_info.m_size_x = size_x;
+        m_info.m_size_y = size_y;
+        m_info.m_bomb_number = bomb_count;
+        m_info.m_size_px_x = Image1->Width;
+        m_info.m_size_px_y = Image1->Height - c_dy_menu;
 
         m_game_condition = custom;
         m_game_type = "Классика: произвольное поле";
 
-        start_classic( info );
+        NewGameClick( Sender );
     }
     catch( EConvertError & ex ) {
         ShowMessage( "Ошибка преобразования. \nВводить нужно корректные данные.");
@@ -597,6 +559,11 @@ void __fastcall TMain_Form::Custom1Click(TObject *Sender)
 
 void
 TMain_Form::start_classic( const field::info_t & info ) {
+
+    if (m_field) {
+        delete m_field;
+        m_field = 0;
+    }
 
     // Генерируем поле.
     m_generator = &
@@ -708,21 +675,28 @@ void __fastcall TMain_Form::Timer2Timer(TObject *Sender)
 
 void __fastcall TMain_Form::Triangle1Click(TObject *Sender)
 {
-    clear_old_game();
-    start_game();
+    if ( m_game_is_active ) {
+        end_game();
+    }
+    clear_gametype_checks();
+    Triangle1->Checked = true;
 
     // Данные для Triangle.
-    field::info_t info;
-    info.m_element_size_x = 27;
-    info.m_element_size_y = 24;
-    info.m_size_x = 20;
-    info.m_size_y = 20;
-    info.m_bomb_number = 80;
-    info.m_size_px_x = Image1->Width;
-    info.m_size_px_y = Image1->Height - c_dy_menu;
+    m_info.m_element_size_x = 27;
+    m_info.m_element_size_y = 24;
+    m_info.m_size_x = 20;
+    m_info.m_size_y = 20;
+    m_info.m_bomb_number = 80;
+    m_info.m_size_px_x = Image1->Width;
+    m_info.m_size_px_y = Image1->Height - c_dy_menu;
 
     m_game_type = "Паркет: треугольники";
     m_game_condition = one_level;
+
+    if ( m_field ) {
+        delete m_field;
+        m_field = 0;
+    }
 
     // Генерируем поле.
     m_generator = &
@@ -730,7 +704,7 @@ void __fastcall TMain_Form::Triangle1Click(TObject *Sender)
             field::generators::triangle
         );
 
-    m_field = m_generator->generate( info );
+    m_field = m_generator->generate( m_info );
 
     // Формируем интерфейс для рисования поля.
     m_draw_tool = &
@@ -748,8 +722,7 @@ void __fastcall TMain_Form::Triangle1Click(TObject *Sender)
             *(Main_Form->Canvas)
         ,   TRect( Image_Info->Width, 0, Image1->Width + Image_Info->Width, Image1->Height) );
 
-    // Рисуем поле.
-    draw_field();
+    NewGameClick( Sender );
 }
 //---------------------------------------------------------------------------
 
@@ -757,6 +730,80 @@ void __fastcall TMain_Form::FormMouseUp(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
 //    ShowMessage(  m_field->get_element_by_click( X- Image_Info->Width, Y ) );
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMain_Form::Name1Click(TObject *Sender)
+{
+    AnsiString InputString = InputBox(
+        "Настройки пользователя",
+        "Ваше имя (до 10 символов)?",
+        m_name.c_str() );
+    InputString = InputString.Trim();
+    if (InputString.Length() == 0) {
+        InputString = "Инкогнито";
+    }
+    if (InputString.Length() > 10) {
+        InputString = InputString.SubString(0, 10);
+    }
+    m_name = InputString.c_str();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMain_Form::NewGameClick(TObject *Sender)
+{
+    if ( m_game_is_active ) {
+        end_game();
+    }
+
+    clear_old_game();
+
+    if ( m_game_type == "Классика: начинающие" ) {
+        start_classic( m_info );
+    }
+    else
+    if ( m_game_type == "Классика: любители" ) {
+        start_classic( m_info );
+    }
+    else
+    if ( m_game_type == "Классика: профессионалы" ) {
+        start_classic( m_info );
+    }
+    else
+    if ( m_game_type == "Классика: произвольное поле" ) {
+        start_classic( m_info );
+    }
+    else
+    if ( m_game_type == "Паркет: треугольники" ) {
+
+    }
+    else
+    if ( m_game_type == "Паркет: шестиугольники" ) {
+
+    }
+
+    start_game();
+}
+
+void
+TMain_Form::clear_gametype_checks() {
+    Beginner1->Checked = false;
+    Intermediate1->Checked = false;
+    Professional1->Checked = false;
+    Triangle1->Checked = false;
+    Sixangle1->Checked = false;
+    Custom1->Checked = false;
+}
+
+//---------------------------------------------------------------------------
+
+void __fastcall TMain_Form::Sixangle1Click(TObject *Sender)
+{
+    if ( m_game_is_active ) {
+        end_game();
+    }
+    clear_gametype_checks();
+    Sixangle1->Checked = true;
 }
 //---------------------------------------------------------------------------
 

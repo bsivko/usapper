@@ -33,7 +33,6 @@ __published:	// IDE-managed Components
     TMenuItem *About1;
     TImage *Image1;
     TImage *Image2;
-    TMenuItem *EndGame1;
     TImage *Image_Info;
     TTimer *Timer1;
     TMenuItem *OptNear;
@@ -50,6 +49,8 @@ __published:	// IDE-managed Components
     TMenuItem *Parket1;
     TMenuItem *Triangle1;
     TMenuItem *Sixangle1;
+    TMenuItem *Name1;
+    TMenuItem *NewGame;
     void __fastcall Exit1Click(TObject *Sender);
     void __fastcall Beginner1Click(TObject *Sender);
     void __fastcall Image1MouseDown(TObject *Sender, TMouseButton Button,
@@ -58,7 +59,6 @@ __published:	// IDE-managed Components
     void __fastcall Professional1Click(TObject *Sender);
     void __fastcall FormMouseDown(TObject *Sender, TMouseButton Button,
           TShiftState Shift, int X, int Y);
-    void __fastcall EndGame1Click(TObject *Sender);
     void __fastcall Timer1Timer(TObject *Sender);
     void __fastcall FormMouseMove(TObject *Sender, TShiftState Shift,
           int X, int Y);
@@ -77,6 +77,9 @@ __published:	// IDE-managed Components
     void __fastcall Triangle1Click(TObject *Sender);
     void __fastcall FormMouseUp(TObject *Sender, TMouseButton Button,
           TShiftState Shift, int X, int Y);
+    void __fastcall Name1Click(TObject *Sender);
+    void __fastcall NewGameClick(TObject *Sender);
+    void __fastcall Sixangle1Click(TObject *Sender);
 private:	// User declarations
 
     //! Это то самое поле, с которым мы играем с игроком.
@@ -138,6 +141,9 @@ private:	// User declarations
     void
     start_classic( const field::info_t & info );
 
+    void
+    clear_gametype_checks();
+
 public:		// User declarations
     //! В каком состоянии сейчас находится игра.
     enum game_condition_t {
@@ -188,6 +194,9 @@ private:
     bool m_is_init_help;
 
     std::string m_help_filename;
+
+    //! Info по игре.
+    field::info_t m_info;
 
     __fastcall TMain_Form(TComponent* Owner);
 };

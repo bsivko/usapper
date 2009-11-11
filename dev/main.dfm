@@ -52,10 +52,15 @@ object Main_Form: TMain_Form
     Top = 72
     object Game1: TMenuItem
       Caption = #1048#1075#1088#1072
+      object NewGame: TMenuItem
+        Caption = #1053#1086#1074#1072#1103
+        OnClick = NewGameClick
+      end
       object Classic1: TMenuItem
         Caption = #1050#1083#1072#1089#1089#1080#1095#1077#1089#1082#1072#1103
         object Beginner1: TMenuItem
           Caption = #1053#1072#1095#1080#1085#1072#1102#1097#1080#1081
+          Checked = True
           OnClick = Beginner1Click
         end
         object Intermediate1: TMenuItem
@@ -79,12 +84,8 @@ object Main_Form: TMain_Form
         end
         object Sixangle1: TMenuItem
           Caption = #1064#1077#1089#1090#1080#1091#1075#1086#1083#1100#1085#1080#1082#1080
+          OnClick = Sixangle1Click
         end
-      end
-      object EndGame1: TMenuItem
-        Caption = #1047#1072#1082#1086#1085#1095#1080#1090#1100
-        Enabled = False
-        OnClick = EndGame1Click
       end
       object Exit1: TMenuItem
         Caption = #1042#1099#1093#1086#1076
@@ -93,6 +94,10 @@ object Main_Form: TMain_Form
     end
     object Settings1: TMenuItem
       Caption = #1053#1072#1089#1090#1088#1086#1081#1082#1080
+      object Name1: TMenuItem
+        Caption = #1055#1088#1077#1076#1089#1090#1072#1074#1080#1090#1100#1089#1103
+        OnClick = Name1Click
+      end
       object OptNear: TMenuItem
         Caption = #1042#1099#1076#1077#1083#1077#1085#1080#1077' '#1089#1086#1089#1077#1076#1085#1080#1093' '#1082#1083#1077#1090#1086#1082
         OnClick = OptNearClick

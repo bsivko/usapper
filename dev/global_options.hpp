@@ -49,7 +49,7 @@ class global_options_t {
 
 		// Singleton.
 		global_options_t() : 
-			m_blink_time(2)
+			m_blink_time(0)
 		,	m_background_color(0)
 		,	m_background_type(mono) 
 		{}
