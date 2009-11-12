@@ -828,7 +828,7 @@ void __fastcall TMain_Form::NewGameClick(TObject *Sender)
          // Формируем интерфейс для рисования поля.
         m_draw_tool = &
             draw_tools::factory_t::get_instance(
-                draw_tools::net
+                draw_tools::classic
             );
 
         standard_field_create = true;
