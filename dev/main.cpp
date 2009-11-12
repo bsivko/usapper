@@ -207,17 +207,20 @@ void __fastcall TMain_Form::FormMouseDown(TObject *Sender,
             m_generator->set_bombs( *m_field, index );
         }
 
-        if (m_field->open( index )) {
-            kill_miner();
-            return;
-        }
+        // По флагу кликать бесполезно.
+        if ( !m_field->elements()[index].is_flag() ) {
+            if (m_field->open( index )) {
+                kill_miner();
+                return;
+            }
 
-        int score = m_field->count_of_near_bombs( index );
-        m_score += score;
-        if ( score == 0 ) {
-            m_score += 10;
+            int score = m_field->count_of_near_bombs( index );
+            m_score += score;
+            if ( score == 0 ) {
+                m_score += 10;
+            }
+            refresh_info();
         }
-        refresh_info();
     }
     else if (Button == mbRight) {
         if ( m_field->elements()[index].is_flag() ) {

@@ -65,7 +65,7 @@ triangle_t::drawer_t::draw_flag( const field::element_t & element ) {
         m_canvas.Pen->Color = clBlue;
     }
     else {
-        m_canvas.Pen->Color = clGray;
+        m_canvas.Pen->Color = clBlack;
     }
 
     m_canvas.Brush->Color = clSilver;
@@ -107,7 +107,7 @@ triangle_t::drawer_t::draw_explode_bomb( const field::element_t & element ) {
 
     int x = element.x();
     int y = element.y() + (2 -  element.type() * 4);
-    
+
     m_canvas.MoveTo( x-4, y-4 );
     m_canvas.LineTo( x+5, y+5 );
     m_canvas.MoveTo( x-4, y+4 );
@@ -117,6 +117,24 @@ triangle_t::drawer_t::draw_explode_bomb( const field::element_t & element ) {
     m_canvas.LineTo( x+7, y );
     m_canvas.MoveTo( x, y+6 );
     m_canvas.LineTo( x, y-7 );
+}
+
+void
+triangle_t::drawer_t::draw_flag_error( const field::element_t & element ) {
+    draw_flag( element );
+
+    m_canvas.Pen->Color = clRed;
+    m_canvas.Pen->Width = 2;
+
+    int x = element.x();
+    int y = element.y();
+
+    m_canvas.MoveTo( x-4, y-4 );
+    m_canvas.LineTo( x+5, y+5 );
+    m_canvas.MoveTo( x-4, y+4 );
+    m_canvas.LineTo( x+5, y-5 );
+
+    m_canvas.Pen->Width = 1;
 }
 
 //! Нарисовать связь между точками.

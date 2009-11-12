@@ -19,7 +19,7 @@ element_t::element_t( int x, int y, bool is_bomb ) :
 void
 element_t::open() {
     m_is_open = true;
-    m_is_flag = false;
+//    m_is_flag = false;
     set_blink( global_options_t::get_instance().blink_time() );
 }
 

@@ -65,7 +65,7 @@ fiveangle_t::drawer_t::draw_flag( const field::element_t & element ) {
         m_canvas.Pen->Color = clBlue;
     }
     else {
-        m_canvas.Pen->Color = clGray;
+        m_canvas.Pen->Color = clBlack;
     }
 
     m_canvas.Brush->Color = clSilver;
@@ -128,6 +128,24 @@ fiveangle_t::drawer_t::draw_link(
     m_canvas.Pen->Color = clBlue;
     m_canvas.MoveTo( element1.x(), element1.y() );
     m_canvas.LineTo( element2.x(), element2.y() );
+}
+
+void
+fiveangle_t::drawer_t::draw_flag_error( const field::element_t & element ) {
+    draw_flag( element );
+
+    m_canvas.Pen->Color = clRed;
+    m_canvas.Pen->Width = 2;
+
+    int x = element.x();
+    int y = element.y();
+
+    m_canvas.MoveTo( x-4, y-4 );
+    m_canvas.LineTo( x+5, y+5 );
+    m_canvas.MoveTo( x-4, y+4 );
+    m_canvas.LineTo( x+5, y-5 );
+
+    m_canvas.Pen->Width = 1;
 }
 
 

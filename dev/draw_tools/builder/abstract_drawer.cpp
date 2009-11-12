@@ -39,6 +39,11 @@ abstract_drawer_t::draw_elements( const field::field_t & field ) {
             continue;
         }
 
+        if (it->is_flag()) {
+            draw_flag_error( *it );
+            continue;
+        }
+
         // Остается только число.
         draw_number( *it, field.count_of_near_bombs(i) );
     }

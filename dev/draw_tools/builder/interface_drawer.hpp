@@ -27,6 +27,10 @@ class interface_drawer_t {
 		virtual void
 		draw_explode_bomb( const field::element_t & element ) = 0;
 
+		//! Нарисовать ошибку установки флага.
+		virtual void
+		draw_flag_error( const field::element_t & element ) = 0;
+
 		//! Нарисовать связь между точками.
 		virtual void
 		draw_link(

@@ -36,6 +36,10 @@ class classic_t : public abstract_t {
             virtual void
             draw_explode_bomb( const field::element_t & element );
 
+    		//! Нарисовать ошибку установки флага.
+    		virtual void
+	    	draw_flag_error( const field::element_t & element );
+
     		//! Нарисовать связь между точками.
     		virtual void
 	    	draw_link(

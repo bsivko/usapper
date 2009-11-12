@@ -54,6 +54,8 @@ class triangle_t : public abstract_t {
             void
             draw_triangle( TCanvas & canvas, const field::element_t & element  ) {
 
+                canvas.Pen->Width = 2;
+
                 int x = element.x();
                 int y = element.y();
                 if ( element.type() == 0 ) {
@@ -72,6 +74,8 @@ class triangle_t : public abstract_t {
                     points[3] = Point(x, y+c_size_y);
                     canvas.Polygon( points, 3 );
                 }
+                canvas.Pen->Width = 1;
+
                 return;
             }
     };
@@ -85,6 +89,12 @@ class triangle_t : public abstract_t {
 
 		virtual
 		~triangle_t() {}
+    private:
+        void
+        set_link(
+            unsigned int i
+        ,   unsigned int j
+        ,   std::vector<field::element_t> & elements );
 };
 
 } // namespace builder
