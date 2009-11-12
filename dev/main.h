@@ -55,6 +55,7 @@ __published:	// IDE-managed Components
     TMenuItem *Fiveangle1;
     TMenuItem *Graph1;
     TMenuItem *StatNet1;
+    TMenuItem *ChessHorse1;
     void __fastcall Exit1Click(TObject *Sender);
     void __fastcall Beginner1Click(TObject *Sender);
     void __fastcall Intermediate1Click(TObject *Sender);
@@ -84,6 +85,7 @@ __published:	// IDE-managed Components
     void __fastcall Sixangle1Click(TObject *Sender);
     void __fastcall Fiveangle1Click(TObject *Sender);
     void __fastcall StatNet1Click(TObject *Sender);
+    void __fastcall ChessHorse1Click(TObject *Sender);
 private:	// User declarations
 
     //! Это то самое поле, с которым мы играем с игроком.

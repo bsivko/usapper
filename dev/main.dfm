@@ -118,6 +118,10 @@ object Main_Form: TMain_Form
           Caption = #1057#1090#1072#1090#1080#1095#1077#1089#1082#1072#1103' '#1089#1077#1090#1100
           OnClick = StatNet1Click
         end
+        object ChessHorse1: TMenuItem
+          Caption = #1064#1072#1093#1084#1072#1090#1085#1099#1081' '#1082#1086#1085#1100
+          OnClick = ChessHorse1Click
+        end
       end
       object Exit1: TMenuItem
         Caption = #1042#1099#1093#1086#1076

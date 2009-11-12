@@ -10,6 +10,7 @@
 #include "field/generators/sixangle.hpp"
 #include "field/generators/fiveangle.hpp"
 #include "field/generators/stat_net.hpp"
+#include "field/generators/chess_horse.hpp"
 
 namespace field {
 
@@ -32,6 +33,9 @@ enum type_t {
 
     //! Статическая сеть.
     stat_net,
+
+    //! Шахматный конь.
+    chess_horse,
 
 	//! Сетевое поле сапера.
 	net
@@ -71,6 +75,11 @@ class factory_t {
 			if ( type == stat_net ) {
 				static field::generators::stat_net_t stat_net;
 				return stat_net;
+			}
+
+			if ( type == chess_horse ) {
+				static field::generators::chess_horse_t chess_horse;
+				return chess_horse;
 			}
 
 			char error[10];

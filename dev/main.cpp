@@ -608,7 +608,7 @@ void __fastcall TMain_Form::Records1Click(TObject *Sender)
 
         if (tables.m_tables.size() == 0) {
             ShowMessage(
-            "На данный момент нет ни одного результата.\n"
+                "На данный момент нет ни одного результата.\n"
                 "Вы можете стать первым!");
             return;
         }
@@ -730,6 +730,8 @@ void __fastcall TMain_Form::NewGameClick(TObject *Sender)
         end_game();
     }
 
+    bool standard_field_create = false;
+
     clear_old_game();
 
     if ( m_game_type == "Классика: начинающие" ) {
@@ -749,10 +751,6 @@ void __fastcall TMain_Form::NewGameClick(TObject *Sender)
     }
     else
     if ( m_game_type == "Паркет: треугольники" ) {
-        if ( m_field ) {
-            delete m_field;
-            m_field = 0;
-        }
 
         // Генерируем поле.
         m_generator = &
@@ -760,30 +758,16 @@ void __fastcall TMain_Form::NewGameClick(TObject *Sender)
             field::generators::triangle
             );
 
-        m_field = m_generator->generate( m_info );
-
         // Формируем интерфейс для рисования поля.
         m_draw_tool = &
             draw_tools::factory_t::get_instance(
                 draw_tools::triangle
             );
 
-        static_cast<draw_tools::builder::abstract_t*>
-            (m_draw_tool)->set_shadow(
-                *(Image1->Canvas)
-            ,   TRect( 0, 0, Image1->Width, Image1->Height) );
-
-        static_cast<draw_tools::builder::abstract_t*>
-            (m_draw_tool)->set_main(
-                *(Main_Form->Canvas)
-        ,   TRect( 0, 0, Image1->Width, Image1->Height) );
+        standard_field_create = true;
     }
     else
     if ( m_game_type == "Паркет: шестиугольники" ) {
-        if ( m_field ) {
-            delete m_field;
-            m_field = 0;
-        }
 
         // Генерируем поле.
         m_generator = &
@@ -791,30 +775,16 @@ void __fastcall TMain_Form::NewGameClick(TObject *Sender)
             field::generators::sixangle
             );
 
-        m_field = m_generator->generate( m_info );
-
         // Формируем интерфейс для рисования поля.
         m_draw_tool = &
             draw_tools::factory_t::get_instance(
                 draw_tools::sixangle
             );
 
-        static_cast<draw_tools::builder::abstract_t*>
-            (m_draw_tool)->set_shadow(
-                *(Image1->Canvas)
-            ,   TRect( 0, 0, Image1->Width, Image1->Height) );
-
-        static_cast<draw_tools::builder::abstract_t*>
-            (m_draw_tool)->set_main(
-                *(Main_Form->Canvas)
-        ,   TRect( 0, 0, Image1->Width, Image1->Height) );
+        standard_field_create = true;
     }
     else
     if ( m_game_type == "Паркет: пятиугольники" ) {
-        if ( m_field ) {
-            delete m_field;
-            m_field = 0;
-        }
 
         // Генерируем поле.
         m_generator = &
@@ -822,30 +792,16 @@ void __fastcall TMain_Form::NewGameClick(TObject *Sender)
             field::generators::fiveangle
             );
 
-        m_field = m_generator->generate( m_info );
-
         // Формируем интерфейс для рисования поля.
         m_draw_tool = &
             draw_tools::factory_t::get_instance(
                 draw_tools::fiveangle
             );
 
-        static_cast<draw_tools::builder::abstract_t*>
-            (m_draw_tool)->set_shadow(
-                *(Image1->Canvas)
-            ,   TRect( 0, 0, Image1->Width, Image1->Height) );
-
-        static_cast<draw_tools::builder::abstract_t*>
-            (m_draw_tool)->set_main(
-                *(Main_Form->Canvas)
-        ,   TRect( 0, 0, Image1->Width, Image1->Height) );
+        standard_field_create = true;
     }
     else
     if ( m_game_type == "Графы: статическая сеть" ) {
-        if ( m_field ) {
-            delete m_field;
-            m_field = 0;
-        }
 
         // Генерируем поле.
         m_generator = &
@@ -853,13 +809,34 @@ void __fastcall TMain_Form::NewGameClick(TObject *Sender)
             field::generators::stat_net
             );
 
-        m_field = m_generator->generate( m_info );
-
-        // Формируем интерфейс для рисования поля.
+         // Формируем интерфейс для рисования поля.
         m_draw_tool = &
             draw_tools::factory_t::get_instance(
                 draw_tools::net
             );
+
+         standard_field_create = true;
+    }
+    if ( m_game_type == "Графы: шахматный конь" ) {
+
+        // Генерируем поле.
+        m_generator = &
+            field::generators::factory_t::get_instance(
+            field::generators::chess_horse
+            );
+
+         // Формируем интерфейс для рисования поля.
+        m_draw_tool = &
+            draw_tools::factory_t::get_instance(
+                draw_tools::net
+            );
+
+        standard_field_create = true;
+    }
+
+    if (standard_field_create) {
+
+        m_field = m_generator->generate( m_info );
 
         static_cast<draw_tools::builder::abstract_t*>
             (m_draw_tool)->set_shadow(
@@ -885,6 +862,7 @@ TMain_Form::clear_gametype_checks() {
     Custom1->Checked = false;
     Fiveangle1->Checked = false;
     StatNet1->Checked = false;
+    ChessHorse1->Checked = false;
 }
 
 //---------------------------------------------------------------------------
@@ -956,6 +934,30 @@ void __fastcall TMain_Form::StatNet1Click(TObject *Sender)
     m_info.m_size_px_y = Image1->Height - c_dy_menu;
 
     m_game_type = "Графы: статическая сеть";
+    m_game_condition = one_level;
+
+    NewGameClick( Sender );
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMain_Form::ChessHorse1Click(TObject *Sender)
+{
+    if ( m_game_is_active ) {
+        end_game();
+    }
+    clear_gametype_checks();
+    ChessHorse1->Checked = true;
+
+    // Данные для ChessHorse.
+    m_info.m_element_size_x = 18;
+    m_info.m_element_size_y = 18;
+    m_info.m_size_x = 24;
+    m_info.m_size_y = 24;
+    m_info.m_bomb_number = 100;
+    m_info.m_size_px_x = Image1->Width;
+    m_info.m_size_px_y = Image1->Height - c_dy_menu;
+
+    m_game_type = "Графы: шахматный конь";
     m_game_condition = one_level;
 
     NewGameClick( Sender );
