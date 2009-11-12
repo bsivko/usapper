@@ -7,6 +7,8 @@
 
 #include "draw_tools/builder/classic.hpp"
 #include "draw_tools/builder/triangle.hpp"
+#include "draw_tools/builder/sixangle.hpp"
+
 
 namespace draw_tools {
 
@@ -18,6 +20,9 @@ enum type_t {
 
     //! Паркетные треугольники.
     triangle,
+
+    //! Паркетные шестиугольники.
+    sixangle,
 
 	//! Сетевое поле сапера.
 	net
@@ -44,10 +49,16 @@ class factory_t {
 				return triangle;
 			}
 
+			if ( type == sixangle ) {
+				static draw_tools::builder::sixangle_t sixangle;
+				return sixangle;
+			}
+
 			char error[10];
 			itoa( type, error, 10 );
 
-			throw std::runtime_error( std::string("Unknown type of draw tool:") + error );
+			throw std::runtime_error(
+                std::string("Unknown type of draw tool:") + error );
 		}
 };
 

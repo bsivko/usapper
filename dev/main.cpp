@@ -677,8 +677,8 @@ void __fastcall TMain_Form::Triangle1Click(TObject *Sender)
     m_info.m_element_size_x = 27;
     m_info.m_element_size_y = 24;
     m_info.m_size_x = 20;
-    m_info.m_size_y = 20;
-    m_info.m_bomb_number = 60;
+    m_info.m_size_y = 30;
+    m_info.m_bomb_number = 90;
     m_info.m_size_px_x = Image1->Width;
     m_info.m_size_px_y = Image1->Height - c_dy_menu;
 
@@ -769,7 +769,34 @@ void __fastcall TMain_Form::NewGameClick(TObject *Sender)
     }
     else
     if ( m_game_type == "Паркет: шестиугольники" ) {
+        if ( m_field ) {
+            delete m_field;
+            m_field = 0;
+        }
 
+        // Генерируем поле.
+        m_generator = &
+            field::generators::factory_t::get_instance(
+            field::generators::sixangle
+            );
+
+        m_field = m_generator->generate( m_info );
+
+        // Формируем интерфейс для рисования поля.
+        m_draw_tool = &
+            draw_tools::factory_t::get_instance(
+                draw_tools::sixangle
+            );
+
+        static_cast<draw_tools::builder::abstract_t*>
+            (m_draw_tool)->set_shadow(
+                *(Image1->Canvas)
+            ,   TRect( 0, 0, Image1->Width, Image1->Height) );
+
+        static_cast<draw_tools::builder::abstract_t*>
+            (m_draw_tool)->set_main(
+                *(Main_Form->Canvas)
+        ,   TRect( 0, 0, Image1->Width, Image1->Height) );
     }
 
     start_game();
@@ -794,6 +821,20 @@ void __fastcall TMain_Form::Sixangle1Click(TObject *Sender)
     }
     clear_gametype_checks();
     Sixangle1->Checked = true;
+
+    // Данные для Sixangle.
+    m_info.m_element_size_x = 27;
+    m_info.m_element_size_y = 27;
+    m_info.m_size_x = 18;
+    m_info.m_size_y = 30;
+    m_info.m_bomb_number = 100;
+    m_info.m_size_px_x = Image1->Width;
+    m_info.m_size_px_y = Image1->Height - c_dy_menu;
+
+    m_game_type = "Паркет: шестиугольники";
+    m_game_condition = one_level;
+
+    NewGameClick( Sender );
 }
 //---------------------------------------------------------------------------
 

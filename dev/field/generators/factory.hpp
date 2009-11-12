@@ -7,6 +7,7 @@
 
 #include "field/generators/classic.hpp"
 #include "field/generators/triangle.hpp"
+#include "field/generators/sixangle.hpp"
 
 namespace field {
 
@@ -20,6 +21,9 @@ enum type_t {
 
     //! Паркетные треугольники.
     triangle,
+
+    //! Паркетные шестиугольники.
+    sixangle,
 
 	//! Сетевое поле сапера.
 	net
@@ -46,10 +50,16 @@ class factory_t {
 				return triangle;
 			}
 
+			if ( type == sixangle ) {
+				static field::generators::sixangle_t sixangle;
+				return sixangle;
+			}
+
 			char error[10];
 			itoa( type, error, 10 );
 
-			throw std::runtime_error( std::string("Unknown type of field generator:") + error );
+			throw std::runtime_error(
+                std::string("Unknown type of field generator:") + error );
 		}
 };
 

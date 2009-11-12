@@ -9,7 +9,8 @@
       field\generators\classic.obj field\generators\abstract.obj 
       draw_tools\builder\abstract_drawer.obj global_options.obj 
       high_scores\high_scores.obj score_table.obj author.obj 
-      field\generators\triangle.obj draw_tools\builder\triangle.obj"/>
+      field\generators\triangle.obj draw_tools\builder\triangle.obj 
+      draw_tools\builder\sixangle.obj field\generators\sixangle.obj"/>
     <RESFILES value="sapper.res res.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -25,7 +26,7 @@
       inetdbbde.bpi inetdbxpress.bpi inetdb.bpi nmfast.bpi webdsnap.bpi 
       bcbie.bpi websnap.bpi soaprtl.bpi dclocx.bpi dbexpress.bpi dbxcds.bpi 
       indy.bpi bcb2kaxserver.bpi"/>
-    <PATHCPP value=".;field;field;draw_tools\builder;draw_tools\builder;field\generators;field\generators;draw_tools\builder;high_scores;field\generators;draw_tools\builder"/>
+    <PATHCPP value=".;field;field;draw_tools\builder;draw_tools\builder;field\generators;field\generators;draw_tools\builder;high_scores;field\generators;draw_tools\builder;draw_tools\builder;field\generators"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -76,6 +77,8 @@
       <FILE FILENAME="res.res" FORMNAME="" UNITNAME="res.res" CONTAINERID="ResTool" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="field\generators\triangle.cpp" FORMNAME="" UNITNAME="triangle.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="draw_tools\builder\triangle.cpp" FORMNAME="" UNITNAME="triangle" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="draw_tools\builder\sixangle.cpp" FORMNAME="" UNITNAME="sixangle.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="field\generators\sixangle.cpp" FORMNAME="" UNITNAME="sixangle" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
