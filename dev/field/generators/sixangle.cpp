@@ -64,14 +64,14 @@ sixangle_t::generate( const info_t & info ) {
 //        if ( i % info.m_size_x != 0  ) {
 
             if ( (i / info.m_size_x) % 2 == 0 ) {
-                if ( i >= info.m_size_x ) {
+                if ( i >= static_cast<unsigned int>(info.m_size_x) ) {
                     set_link( i, i - info.m_size_x, elements );
                 }
                 set_link( i, i + info.m_size_x, elements );
             }
             else {
                 if ( (i+1) % info.m_size_x != 0 ) {
-                    if ( i >= info.m_size_x  ) {
+                    if ( i >= static_cast<unsigned int>(info.m_size_x)  ) {
                         set_link( i, i - info.m_size_x + 1, elements );
                     }
                     set_link( i, i + info.m_size_x + 1, elements );
