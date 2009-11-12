@@ -678,7 +678,7 @@ void __fastcall TMain_Form::Triangle1Click(TObject *Sender)
     m_info.m_element_size_y = 24;
     m_info.m_size_x = 20;
     m_info.m_size_y = 20;
-    m_info.m_bomb_number = 80;
+    m_info.m_bomb_number = 60;
     m_info.m_size_px_x = Image1->Width;
     m_info.m_size_px_y = Image1->Height - c_dy_menu;
 

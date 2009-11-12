@@ -37,10 +37,10 @@ triangle_t::drawer_t::draw_number(
     }
     m_canvas.Font->Style = TFontStyles()<< fsBold;
     if (number == 0) return;
-    m_canvas.Font->Size = 7;
+    m_canvas.Font->Size = 6;
     m_canvas.TextOutA(
         element.x() - c_size_x / 2 + 3
-    ,   element.y() - c_size_y / 2 + 2
+    ,   element.y() - c_size_y / 2 + (2 -  element.type() * 4)
     ,   IntToStr(number) );
 }
 
@@ -71,8 +71,8 @@ triangle_t::drawer_t::draw_flag( const field::element_t & element ) {
     m_canvas.Brush->Color = clSilver;
     draw_triangle( m_canvas, element );
 
-    int x = element.x();
-    int y = element.y();
+    int x = element.x() + 2;
+    int y = element.y() + (2 -  element.type() * 4);
 
     m_canvas.Pen->Color = clMaroon;
     m_canvas.Brush->Color = clRed;
@@ -106,7 +106,7 @@ triangle_t::drawer_t::draw_explode_bomb( const field::element_t & element ) {
     m_canvas.Pen->Color = clRed;
 
     int x = element.x();
-    int y = element.y();
+    int y = element.y() + (2 -  element.type() * 4);
     
     m_canvas.MoveTo( x-4, y-4 );
     m_canvas.LineTo( x+5, y+5 );
