@@ -31,7 +31,7 @@ classic_t::generate( const info_t & info ) {
 
     // Создаем связи.
 
-    // Горизонтальные.
+    // Внутри блока.
     for( unsigned int i = 0; i < elements.size(); ++i ) {
         if ( ((i+1) % info.m_size_y) != 0 ) {
             // Вправо.

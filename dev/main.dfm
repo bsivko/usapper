@@ -107,6 +107,10 @@ object Main_Form: TMain_Form
           Caption = #1064#1077#1089#1090#1080#1091#1075#1086#1083#1100#1085#1080#1082#1080
           OnClick = Sixangle1Click
         end
+        object Fiveangle1: TMenuItem
+          Caption = #1055#1103#1090#1080#1091#1075#1086#1083#1100#1085#1080#1082#1080
+          OnClick = Fiveangle1Click
+        end
       end
       object Exit1: TMenuItem
         Caption = #1042#1099#1093#1086#1076

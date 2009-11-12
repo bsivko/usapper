@@ -52,6 +52,7 @@ __published:	// IDE-managed Components
     TMenuItem *Name1;
     TMenuItem *NewGame;
     TStatusBar *StatusBar1;
+    TMenuItem *Fiveangle1;
     void __fastcall Exit1Click(TObject *Sender);
     void __fastcall Beginner1Click(TObject *Sender);
     void __fastcall Intermediate1Click(TObject *Sender);
@@ -79,6 +80,7 @@ __published:	// IDE-managed Components
     void __fastcall Name1Click(TObject *Sender);
     void __fastcall NewGameClick(TObject *Sender);
     void __fastcall Sixangle1Click(TObject *Sender);
+    void __fastcall Fiveangle1Click(TObject *Sender);
 private:	// User declarations
 
     //! Это то самое поле, с которым мы играем с игроком.

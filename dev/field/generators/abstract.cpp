@@ -23,7 +23,7 @@ abstract_t::set_bombs( field::field_t & field, int index ) {
 	int count = 0;
 	for( unsigned int i = 0; i < elements.size(); ++i ) {
 
-		if ( elements[i].is_bomb() || ( i != index ) )
+		if ( (!elements[i].is_bomb()) && ( static_cast<int>(i) != index ) )
 		{
 			++count;
 		}
@@ -61,18 +61,13 @@ abstract_t::set_bombs( field::field_t & field, int index ) {
 
 	// Согласно сформированному массиву ставим бомбы во множестве.
 	int pos = 0;
-	for( elements_t::iterator it = elements.begin();
-		it != elements.end();
-		++it ) {
+	for( unsigned int i = 0; i < elements.size(); ++i ) {
 
-		if ( !it->is_bomb() )
+		if ( (!elements[i].is_bomb()) && ( static_cast<int>(i) != index ) )
 		{
 			if (to_fill[pos])
 			{
-                // Cast допустим, так как set сформирован на основании hash'a,
-                // без участия is_bomb.
-                element_t & element = const_cast<element_t &>(*it);
-				element.set_bomb();
+				elements[i].set_bomb();
 			}
 			++pos;
 		}

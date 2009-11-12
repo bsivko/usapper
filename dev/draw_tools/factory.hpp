@@ -8,6 +8,7 @@
 #include "draw_tools/builder/classic.hpp"
 #include "draw_tools/builder/triangle.hpp"
 #include "draw_tools/builder/sixangle.hpp"
+#include "draw_tools/builder/fiveangle.hpp"
 
 
 namespace draw_tools {
@@ -23,6 +24,9 @@ enum type_t {
 
     //! Паркетные шестиугольники.
     sixangle,
+
+    //! Паркетные пятиугольники.
+    fiveangle,
 
 	//! Сетевое поле сапера.
 	net
@@ -52,6 +56,11 @@ class factory_t {
 			if ( type == sixangle ) {
 				static draw_tools::builder::sixangle_t sixangle;
 				return sixangle;
+			}
+
+			if ( type == fiveangle ) {
+				static draw_tools::builder::fiveangle_t fiveangle;
+				return fiveangle;
 			}
 
 			char error[10];
