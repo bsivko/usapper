@@ -169,9 +169,6 @@ triangle_t::generate( const info_t & info ) {
         );
     }
 
-    // Ставим бомбы.
-	set_bombs( *result, info.m_bomb_number );
-
     return result;
 }
 

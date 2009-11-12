@@ -28,7 +28,8 @@ TMain_Form *Main_Form;
 __fastcall TMain_Form::TMain_Form(TComponent* Owner)
     : TForm(Owner), m_game_condition( wait ), m_game_type( "" ), m_level(0),
     m_game_is_active( false ), m_high_score_filename("sapper.scr"),
-    m_first_refresh(true), m_help_filename( "help.htm" ), m_name("Инкогнито")
+    m_first_refresh(true), m_help_filename( "help.htm" ), m_name("Инкогнито"),
+    m_level_is_active( false )
 {
     const int c_name_width = 240;
     StatusBar1->Panels->Items[0]->Width = c_name_width;
@@ -201,17 +202,23 @@ void __fastcall TMain_Form::FormMouseDown(TObject *Sender,
     // Смотрим что за клик.
     if (Button == mbLeft) {
 
-        int score = m_field->count_of_near_bombs( index );
-        m_score += m_field->count_of_near_bombs( index );
-        if ( score == 0 ) {
-            m_score += 10;
+        if (!m_level_is_active) {
+            m_level_is_active = true;
+            // Необхидимо расставить мины.
+            m_generator->set_bombs( *m_field, index );
         }
 
         if (m_field->open( index )) {
             kill_miner();
             return;
         }
-        m_field->count_of_near_bombs( index );
+
+        int score = m_field->count_of_near_bombs( index );
+        m_score += score;
+        if ( score == 0 ) {
+            m_score += 10;
+        }
+        refresh_info();
     }
     else if (Button == mbRight) {
         if ( m_field->elements()[index].is_flag() ) {
@@ -254,12 +261,14 @@ TMain_Form::start_game() {
     m_score = 0;
     Main_Form->Refresh();
     m_game_is_active = true;
+    m_level_is_active = false;
     refresh_info();
 }
 
 void
 TMain_Form::end_game() {
-    m_game_is_active = false;
+    m_game_is_active = false;      
+    m_level_is_active = false;
     m_level_time = 0;
     m_level = 0;
     m_score = 0;
@@ -292,8 +301,6 @@ TMain_Form::refresh_info() {
     StatusBar1->Panels->Items[4]->Text =
         String("Флагов: ") + flags;
 }
-
-
 
 void __fastcall TMain_Form::Timer1Timer(TObject *Sender)
 {
@@ -377,24 +384,24 @@ TMain_Form::level_complete() {
     // Если уровень один, то завершаем игру с записей в таблицу рекордов.
     // Если несколько, то переходим к следующему.
 
-    if ( m_game_condition == one_level ) {
+    m_score +=
+        m_field->info().m_bomb_number * m_field->info().m_bomb_number
+        /
+        (10 + m_level_time);
 
-        m_score +=
-            m_field->info().m_bomb_number * m_field->info().m_bomb_number
-            /
-            (10 + m_level_time);
-
-        // Дополнительные очки за флаги.
-        for( unsigned int i = 0; i < m_field->elements().size(); ++i ) {
-            if (
-                m_field->elements()[i].is_flag() &&
-                m_field->elements()[i].is_bomb()
-            ) {
-                m_score += 5;
-            }
+    // Дополнительные очки за флаги.
+    for( unsigned int i = 0; i < m_field->elements().size(); ++i ) {
+        if (
+            m_field->elements()[i].is_flag() &&
+            m_field->elements()[i].is_bomb()
+        ) {
+            m_score += 5;
         }
+    }
 
-        refresh_info();
+    refresh_info();
+
+    if ( m_game_condition == one_level ) {
 
         try {
             // Сохраняем результат.
@@ -419,6 +426,8 @@ TMain_Form::level_complete() {
 
         // Останавливем игровой процесс.
         end_game();
+    }
+    else {
     }
 }
 
@@ -657,7 +666,7 @@ void __fastcall TMain_Form::FormClose(TObject *Sender,
 void __fastcall TMain_Form::Timer2Timer(TObject *Sender)
 {
     // 1 Секунда.
-    if (m_game_is_active) {
+    if (m_game_is_active && m_level_is_active) {
         ++m_level_time;
         ++m_game_time;
         refresh_info();

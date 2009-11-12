@@ -11,19 +11,19 @@ namespace field {
 namespace generators {
 
 void
-abstract_t::set_bombs( field::field_t & field, int number ) {
+abstract_t::set_bombs( field::field_t & field, int index ) {
 
     using field::field_t::elements_t;
+
+    int number = field.info().m_bomb_number;
 
 	elements_t & elements = field.elements();
 
 	// —читаем число свободных.
 	int count = 0;
-	for( elements_t::iterator it = elements.begin();
-		it != elements.end();
-		++it ) {
+	for( unsigned int i = 0; i < elements.size(); ++i ) {
 
-		if ( !it->is_bomb() )
+		if ( elements[i].is_bomb() || ( i != index ) )
 		{
 			++count;
 		}
@@ -47,8 +47,9 @@ abstract_t::set_bombs( field::field_t & field, int number ) {
 	// ‘ормируем массив на заполнение.
 	std::vector<bool> to_fill;
 	to_fill.reserve( count );
-	for( int i = 0; i < count; ++i ) 
+	for( int i = 0; i < count; ++i )
 		to_fill.push_back( false );
+
 	for( int i = 0; i < number; ++i) {
 		int pos;
 		do {

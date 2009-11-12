@@ -11,10 +11,10 @@ namespace generators {
 class abstract_t : public field::generators::interface_t {
 
 	public:
-		//! Усановить заданное число бомб в указанном поле.
+		//! Усановить мины в указанном поле.
 		//! \throw если бомбы не устанавливаются (поле пустое или ставить некуда бомбы).
-		static void
-		set_bombs( field::field_t & field, int number );
+        virtual void
+        set_bombs( field::field_t & field, int index );
 };
 
 } // namespace generators
