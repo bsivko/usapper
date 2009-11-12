@@ -9,6 +9,7 @@
 #include "field/generators/triangle.hpp"
 #include "field/generators/sixangle.hpp"
 #include "field/generators/fiveangle.hpp"
+#include "field/generators/stat_net.hpp"
 
 namespace field {
 
@@ -28,6 +29,9 @@ enum type_t {
 
     //! Паркетные пятиугольники.
     fiveangle,
+
+    //! Статическая сеть.
+    stat_net,
 
 	//! Сетевое поле сапера.
 	net
@@ -62,6 +66,11 @@ class factory_t {
 			if ( type == fiveangle ) {
 				static field::generators::fiveangle_t fiveangle;
 				return fiveangle;
+			}
+
+			if ( type == stat_net ) {
+				static field::generators::stat_net_t stat_net;
+				return stat_net;
 			}
 
 			char error[10];

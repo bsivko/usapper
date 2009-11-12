@@ -6,19 +6,6 @@ namespace field {
 
 namespace generators {
 
-void
-set_link(
-    unsigned int i
-,   unsigned int j
-,   std::vector<field::element_t> & elements ) {
-
-    if ((i < elements.size()) && (j < elements.size())) {
-        elements.at(i).near_elements().push_back( j );
-        elements.at(j).near_elements().push_back( i );
-    }
-}
-
-
 field::field_t *
 triangle_t::generate( const info_t & info ) {
 

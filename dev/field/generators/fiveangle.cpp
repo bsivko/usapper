@@ -6,24 +6,6 @@ namespace field {
 
 namespace generators {
 
-void
-set_link(
-    int i
-,   int j
-,   std::vector<field::element_t> & elements ) {
-
-    if (
-        (i < static_cast<int>(elements.size())) &&
-        (j < static_cast<int>(elements.size()))
-    ) {
-        if (( i >= 0 ) && (j >= 0)) {
-            elements.at(i).near_elements().push_back( j );
-            elements.at(j).near_elements().push_back( i );
-        }
-    }
-}
-
-
 field::field_t *
 fiveangle_t::generate( const info_t & info ) {
 

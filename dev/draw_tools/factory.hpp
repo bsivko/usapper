@@ -9,6 +9,7 @@
 #include "draw_tools/builder/triangle.hpp"
 #include "draw_tools/builder/sixangle.hpp"
 #include "draw_tools/builder/fiveangle.hpp"
+#include "draw_tools/builder/net.hpp"
 
 
 namespace draw_tools {
@@ -61,6 +62,11 @@ class factory_t {
 			if ( type == fiveangle ) {
 				static draw_tools::builder::fiveangle_t fiveangle;
 				return fiveangle;
+			}
+
+			if ( type == net ) {
+				static draw_tools::builder::net_t net;
+				return net;
 			}
 
 			char error[10];

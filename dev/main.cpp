@@ -605,6 +605,18 @@ void __fastcall TMain_Form::Records1Click(TObject *Sender)
         tables = high_scores::high_scores_t::get_instance().get_info(
             m_high_score_filename
         );
+
+        if (tables.m_tables.size() == 0) {
+            ShowMessage(
+            "На данный момент нет ни одного результата.\n"
+                "Вы можете стать первым!");
+            return;
+        }
+        else {
+            F_Score_Table->set_tables( tables );
+            F_Score_Table->first_refresh();
+            F_Score_Table->ShowModal();
+        }
     }
     catch( std::runtime_error & ex ) {
         ShowMessage(
@@ -612,18 +624,6 @@ void __fastcall TMain_Form::Records1Click(TObject *Sender)
             "Причина:\n" +
             ex.what()
         );
-    }
-
-    if (tables.m_tables.size() == 0) {
-        ShowMessage(
-        "На данный момент нет ни одного результата.\n"
-            "Вы можете стать первым!");
-        return;
-    }
-    else {
-        F_Score_Table->set_tables( tables );
-        F_Score_Table->first_refresh();
-        F_Score_Table->ShowModal();
     }
 }
 //---------------------------------------------------------------------------
@@ -840,6 +840,37 @@ void __fastcall TMain_Form::NewGameClick(TObject *Sender)
                 *(Main_Form->Canvas)
         ,   TRect( 0, 0, Image1->Width, Image1->Height) );
     }
+    else
+    if ( m_game_type == "Графы: статическая сеть" ) {
+        if ( m_field ) {
+            delete m_field;
+            m_field = 0;
+        }
+
+        // Генерируем поле.
+        m_generator = &
+            field::generators::factory_t::get_instance(
+            field::generators::stat_net
+            );
+
+        m_field = m_generator->generate( m_info );
+
+        // Формируем интерфейс для рисования поля.
+        m_draw_tool = &
+            draw_tools::factory_t::get_instance(
+                draw_tools::net
+            );
+
+        static_cast<draw_tools::builder::abstract_t*>
+            (m_draw_tool)->set_shadow(
+                *(Image1->Canvas)
+            ,   TRect( 0, 0, Image1->Width, Image1->Height) );
+
+        static_cast<draw_tools::builder::abstract_t*>
+            (m_draw_tool)->set_main(
+                *(Main_Form->Canvas)
+        ,   TRect( 0, 0, Image1->Width, Image1->Height) );
+    }
 
     start_game();
 }
@@ -853,6 +884,7 @@ TMain_Form::clear_gametype_checks() {
     Sixangle1->Checked = false;
     Custom1->Checked = false;
     Fiveangle1->Checked = false;
+    StatNet1->Checked = false;
 }
 
 //---------------------------------------------------------------------------
@@ -899,6 +931,31 @@ void __fastcall TMain_Form::Fiveangle1Click(TObject *Sender)
     m_info.m_size_px_y = Image1->Height - c_dy_menu;
 
     m_game_type = "Паркет: пятиугольники";
+    m_game_condition = one_level;
+
+    NewGameClick( Sender );
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMain_Form::StatNet1Click(TObject *Sender)
+{
+    if ( m_game_is_active ) {
+        end_game();
+    }
+    clear_gametype_checks();
+    StatNet1->Checked = true;
+
+    // Данные для StatNet.
+    m_info.m_element_size_x = 18;
+    m_info.m_element_size_y = 18;
+    m_info.m_size_x = 0;
+    m_info.m_size_y = 0;
+    m_info.m_bomb_number = 80;
+    m_info.m_elements_number = 400;
+    m_info.m_size_px_x = Image1->Width;
+    m_info.m_size_px_y = Image1->Height - c_dy_menu;
+
+    m_game_type = "Графы: статическая сеть";
     m_game_condition = one_level;
 
     NewGameClick( Sender );

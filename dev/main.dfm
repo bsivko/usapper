@@ -112,6 +112,13 @@ object Main_Form: TMain_Form
           OnClick = Fiveangle1Click
         end
       end
+      object Graph1: TMenuItem
+        Caption = #1043#1088#1072#1092#1099
+        object StatNet1: TMenuItem
+          Caption = #1057#1090#1072#1090#1080#1095#1077#1089#1082#1072#1103' '#1089#1077#1090#1100
+          OnClick = StatNet1Click
+        end
+      end
       object Exit1: TMenuItem
         Caption = #1042#1099#1093#1086#1076
         OnClick = Exit1Click

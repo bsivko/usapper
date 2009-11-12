@@ -11,7 +11,8 @@
       high_scores\high_scores.obj score_table.obj author.obj 
       field\generators\triangle.obj draw_tools\builder\triangle.obj 
       draw_tools\builder\sixangle.obj field\generators\sixangle.obj 
-      field\generators\fiveangle.obj draw_tools\builder\fiveangle.obj"/>
+      field\generators\fiveangle.obj draw_tools\builder\fiveangle.obj 
+      field\generators\stat_net.obj draw_tools\builder\net.obj"/>
     <RESFILES value="sapper.res res.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -27,7 +28,7 @@
       inetdbbde.bpi inetdbxpress.bpi inetdb.bpi nmfast.bpi webdsnap.bpi 
       bcbie.bpi websnap.bpi soaprtl.bpi dclocx.bpi dbexpress.bpi dbxcds.bpi 
       indy.bpi bcb2kaxserver.bpi"/>
-    <PATHCPP value=".;field;field;draw_tools\builder;draw_tools\builder;field\generators;field\generators;draw_tools\builder;high_scores;field\generators;draw_tools\builder;draw_tools\builder;field\generators;field\generators;draw_tools\builder"/>
+    <PATHCPP value=".;field;field;draw_tools\builder;draw_tools\builder;field\generators;field\generators;draw_tools\builder;high_scores;field\generators;draw_tools\builder;draw_tools\builder;field\generators;field\generators;draw_tools\builder;field\generators;draw_tools\builder"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -82,6 +83,8 @@
       <FILE FILENAME="field\generators\sixangle.cpp" FORMNAME="" UNITNAME="sixangle" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="field\generators\fiveangle.cpp" FORMNAME="" UNITNAME="fiveangle.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="draw_tools\builder\fiveangle.cpp" FORMNAME="" UNITNAME="fiveangle" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="field\generators\stat_net.cpp" FORMNAME="" UNITNAME="stat_net" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="draw_tools\builder\net.cpp" FORMNAME="" UNITNAME="net" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

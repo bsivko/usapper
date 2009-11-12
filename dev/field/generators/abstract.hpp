@@ -15,6 +15,12 @@ class abstract_t : public field::generators::interface_t {
 		//! \throw если бомбы не устанавливаются (поле пустое или ставить некуда бомбы).
         virtual void
         set_bombs( field::field_t & field, int index );
+
+        static void
+        set_link(
+            int i
+        ,   int j
+        ,   std::vector<field::element_t> & elements );
 };
 
 } // namespace generators

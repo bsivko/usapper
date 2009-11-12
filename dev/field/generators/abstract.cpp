@@ -11,6 +11,23 @@ namespace field {
 namespace generators {
 
 void
+abstract_t::set_link(
+    int i
+,   int j
+,   std::vector<field::element_t> & elements ) {
+
+    if (
+        (i < static_cast<int>(elements.size())) &&
+        (j < static_cast<int>(elements.size()))
+    ) {
+        if (( i >= 0 ) && (j >= 0)) {
+            elements.at(i).near_elements().push_back( j );
+            elements.at(j).near_elements().push_back( i );
+        }
+    }
+}
+
+void
 abstract_t::set_bombs( field::field_t & field, int index ) {
 
     using field::field_t::elements_t;
