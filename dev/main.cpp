@@ -294,18 +294,15 @@ TMain_Form::refresh_info() {
         String("Время: ") + str_time( m_level_time ).c_str();
 
     String bombs = "-";
+    String flags = "-";
     if (m_field) {
-        bombs = m_field->info().m_bomb_number;
+        bombs = m_field->info().m_bomb_number - m_field->count_of_all_flags();
     }
     StatusBar1->Panels->Items[3]->Text =
         String("Мин: ") + bombs;
 
-    String flags = "-";
-    if (m_field) {
-        flags = m_field->count_of_all_flags();
-    }
-    StatusBar1->Panels->Items[4]->Text =
-        String("Флагов: ") + flags;
+//    StatusBar1->Panels->Items[4]->Text =
+//        String("Флагов: ") + flags;
 }
 
 void __fastcall TMain_Form::Timer1Timer(TObject *Sender)
@@ -1039,12 +1036,19 @@ void __fastcall TMain_Form::OptLoadClick(TObject *Sender)
 {
     if (OpenPictureDialog1->Execute()) {
 
-        ImageFon->Picture->LoadFromFile( OpenPictureDialog1->FileName );
+        try {
+            ImageFon->Picture->LoadFromFile( OpenPictureDialog1->FileName );
 
-        OptLoad->Checked = true;
+            OptLoad->Checked = true;
 
-        global_options_t::get_instance().set_background_type(
-            global_options_t::picture );
+            global_options_t::get_instance().set_background_type(
+                global_options_t::picture );
+        }
+        catch( EInvalidGraphic & ex ) {
+            ShowMessage(
+                "Неподдерживаемый формат изображения.\n"
+                "Рекомендуемый формат: BMP OS/2 24bit" );
+        }
     }
 }
 //---------------------------------------------------------------------------
