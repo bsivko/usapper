@@ -188,9 +188,11 @@ TMain_Form::kill_miner() {
 void __fastcall TMain_Form::FormMouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
-    if (!m_game_is_active)
+    if (!m_game_is_active) {
+        NewGameClick( Sender );
         // Игра неактивна.
         return;
+    }
 
     int index = m_field->get_element_by_click( X, Y );
 
@@ -227,7 +229,9 @@ void __fastcall TMain_Form::FormMouseDown(TObject *Sender,
             m_field->elements()[index].unset_flag();
         }
         else {
-            m_field->elements()[index].set_flag();
+            if ( !m_field->elements()[index].is_open() ) {
+                m_field->elements()[index].set_flag();
+            }
         }
     }
     else if (Button == mbMiddle) {

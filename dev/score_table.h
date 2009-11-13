@@ -18,6 +18,7 @@ __published:	// IDE-managed Components
     TComboBox *ComboBox1;
     TTimer *Timer1;
     TLabel *Label1;
+    TImage *Image1;
     void __fastcall ComboBox1Change(TObject *Sender);
     void __fastcall Timer1Timer(TObject *Sender);
 private:	// User declarations
@@ -38,6 +39,9 @@ public:		// User declarations
     void
     set_tables(
         const high_scores::tables_t & tables );
+
+    //! Имя первопоказываемой таблицы.
+    std::string m_first_name;
 
     __fastcall TF_Score_Table(TComponent* Owner);
 };

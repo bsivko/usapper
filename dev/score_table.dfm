@@ -29,6 +29,13 @@ object F_Score_Table: TF_Score_Table
     Font.Style = [fsBold]
     ParentFont = False
   end
+  object Image1: TImage
+    Left = 0
+    Top = 56
+    Width = 371
+    Height = 202
+    Align = alBottom
+  end
   object ComboBox1: TComboBox
     Left = 8
     Top = 24

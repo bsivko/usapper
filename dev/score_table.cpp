@@ -13,7 +13,7 @@
 TF_Score_Table *F_Score_Table;
 //---------------------------------------------------------------------------
 __fastcall TF_Score_Table::TF_Score_Table(TComponent* Owner)
-    : TForm(Owner), m_first_refresh(false) {
+    : TForm(Owner), m_first_refresh(false), m_first_name("") {
 
 }
 
@@ -29,6 +29,9 @@ TF_Score_Table::set_tables(
         it != m_tables.m_tables.end();
         ++it
     ) {
+        if (m_first_name.size() == 0) {
+            m_first_name = (it->first).c_str();
+        }
         ComboBox1->Items->Add( (it->first).c_str() );
     }
     ComboBox1->Text = ComboBox1->Items[0][0];
@@ -43,6 +46,8 @@ TF_Score_Table::show_table(
     const std::string & game_type
 ,   const high_scores::one_table_t & one_table ) {
 
+    TCanvas * Canvas = Image1->Canvas;
+
     Canvas->Pen->Color = clSilver;
     Canvas->Brush->Color = clSilver;
     Canvas->Rectangle( 0, 0, Width, Height );
@@ -50,11 +55,6 @@ TF_Score_Table::show_table(
     Canvas->Font->Color = clBlack;
     Canvas->Pen->Color = clBlack;
     Canvas->Brush->Color = clSilver;
-
-    Canvas->TextOutA(
-        ComboBox1->Left,
-        ComboBox1->Top - 2 * abs(Canvas->Font->Size),
-        "Таблицы рекордов:" );
 
     Caption = game_type.c_str();
 
@@ -70,7 +70,7 @@ TF_Score_Table::show_table(
     const int c_x_alive = 30;
 
     // Позиция отображения строчки по вертикали.
-    int y_pos = 60;
+    int y_pos = 0;
 
     int number = 1;
 
@@ -172,9 +172,9 @@ void __fastcall TF_Score_Table::Timer1Timer(TObject *Sender)
         m_first_refresh = false;
 
         ComboBox1->Items[0][ComboBox1->ItemIndex] =
-            m_tables.m_tables.begin()->first.c_str();
+            m_first_name.c_str();
 
-        ComboBox1Change(Sender);
+//        ComboBox1Change(Sender);
     }
 }
 //---------------------------------------------------------------------------
