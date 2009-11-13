@@ -1,4 +1,5 @@
 #include "field/generators/labirint.hpp"
+#include "global_options.hpp"
 
 #include <vector>
 #include <math.h>
@@ -61,13 +62,6 @@ class square_t {
 
         int m_size_x;
         int m_size_y;
-};
-
-struct coord_t {
-    int m_x;
-    int m_y;
-    coord_t( int x, int y ) : m_x(x), m_y(y) {
-    }
 };
 
 field::field_t *

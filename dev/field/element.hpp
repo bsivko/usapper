@@ -124,6 +124,27 @@ class element_t {
             m_type = type;
         }
 
+        void *
+        data() const {
+            return m_data;
+        }
+
+        void
+        set_data(void * p) {
+            if (m_data) {
+                delete m_data;
+                m_data = 0;
+            }
+            m_data = p;
+        }
+
+        virtual ~element_t() {
+            if (m_data) {
+                delete m_data;
+                m_data = 0;
+            }
+        }
+
 	private:
 
 		//! Положение центра по X в px.
@@ -150,8 +171,15 @@ class element_t {
         //! Тип элемента. Задается пользователем по своему усмотрению.
         int m_type;
 
+        //! Произвольные данные, ассоциированные с элементом.
+        /*! \attention Создавать извне, удалять через set_data(0)
+            или автоматически в деструкторе.
+        */
+        void * m_data;
+
         //! Элементы-соседи.
         std::vector<int> m_near_elements;
+
 };
 
 } // namespace field
