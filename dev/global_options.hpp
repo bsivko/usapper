@@ -9,6 +9,8 @@ class global_options_t {
 		enum background_type_t {
 			// Монохромный цвет.
 			mono
+            // Картинка.
+        ,   picture
 			// Снег.
 		,	snow
 			// Звезды.

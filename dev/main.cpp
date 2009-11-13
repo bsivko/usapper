@@ -565,12 +565,7 @@ void __fastcall TMain_Form::Custom1Click(TObject *Sender)
 //---------------------------------------------------------------------------
 
 void
-TMain_Form::start_classic( const field::info_t & info ) {
-
-    if (m_field) {
-        delete m_field;
-        m_field = 0;
-    }
+TMain_Form::start_classic() {
 
     // Генерируем поле.
     m_generator = &
@@ -578,26 +573,11 @@ TMain_Form::start_classic( const field::info_t & info ) {
             field::generators::classic
         );
 
-    m_field = m_generator->generate( info );
-
     // Формируем интерфейс для рисования поля.
     m_draw_tool = &
         draw_tools::factory_t::get_instance(
             draw_tools::classic
         );
-
-    static_cast<draw_tools::builder::abstract_t*>
-        (m_draw_tool)->set_shadow(
-            *(Image1->Canvas)
-        ,   TRect( 0, 0, Image1->Width, Image1->Height) );
-
-    static_cast<draw_tools::builder::abstract_t*>
-        (m_draw_tool)->set_main(
-            *(Main_Form->Canvas)
-        ,   TRect( 0, 0, Image1->Width, Image1->Height) );
-
-    // Рисуем поле.
-    draw_field();
 }
 
 
@@ -734,24 +714,24 @@ void __fastcall TMain_Form::NewGameClick(TObject *Sender)
         end_game();
     }
 
-    bool standard_field_create = false;
+    bool standard_field_create = true;
 
     clear_old_game();
 
     if ( m_game_type == "Классика: начинающие" ) {
-        start_classic( m_info );
+        start_classic();
     }
     else
     if ( m_game_type == "Классика: любители" ) {
-        start_classic( m_info );
+        start_classic();
     }
     else
     if ( m_game_type == "Классика: профессионалы" ) {
-        start_classic( m_info );
+        start_classic();
     }
     else
     if ( m_game_type == "Классика: произвольное поле" ) {
-        start_classic( m_info );
+        start_classic();
     }
     else
     if ( m_game_type == "Паркет: треугольники" ) {
@@ -767,8 +747,6 @@ void __fastcall TMain_Form::NewGameClick(TObject *Sender)
             draw_tools::factory_t::get_instance(
                 draw_tools::triangle
             );
-
-        standard_field_create = true;
     }
     else
     if ( m_game_type == "Паркет: шестиугольники" ) {
@@ -784,8 +762,6 @@ void __fastcall TMain_Form::NewGameClick(TObject *Sender)
             draw_tools::factory_t::get_instance(
                 draw_tools::sixangle
             );
-
-        standard_field_create = true;
     }
     else
     if ( m_game_type == "Паркет: четырехугольники" ) {
@@ -801,8 +777,6 @@ void __fastcall TMain_Form::NewGameClick(TObject *Sender)
             draw_tools::factory_t::get_instance(
                 draw_tools::fiveangle
             );
-
-        standard_field_create = true;
     }
     else
     if ( m_game_type == "Графы: статическая сеть" ) {
@@ -818,8 +792,6 @@ void __fastcall TMain_Form::NewGameClick(TObject *Sender)
             draw_tools::factory_t::get_instance(
                 draw_tools::net
             );
-
-         standard_field_create = true;
     }
     else
     if ( m_game_type == "Графы: шахматный конь" ) {
@@ -835,8 +807,6 @@ void __fastcall TMain_Form::NewGameClick(TObject *Sender)
             draw_tools::factory_t::get_instance(
                 draw_tools::classic
             );
-
-        standard_field_create = true;
     }
     else
     if ( m_game_type == "Графы: лабиринт" ) {
@@ -852,8 +822,6 @@ void __fastcall TMain_Form::NewGameClick(TObject *Sender)
             draw_tools::factory_t::get_instance(
                 draw_tools::classic
             );
-
-        standard_field_create = true;
     }
 
     if (standard_field_create) {
@@ -869,6 +837,9 @@ void __fastcall TMain_Form::NewGameClick(TObject *Sender)
             (m_draw_tool)->set_main(
                 *(Main_Form->Canvas)
         ,   TRect( 0, 0, Image1->Width, Image1->Height) );
+
+        static_cast<draw_tools::builder::abstract_t*>
+            (m_draw_tool)->set_fon( ImageFon );
     }
 
     start_game();
@@ -1009,6 +980,72 @@ void __fastcall TMain_Form::Labirint1Click(TObject *Sender)
     m_game_condition = one_level;
 
     NewGameClick( Sender );
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMain_Form::OptOpalesceClick(TObject *Sender)
+{
+    // Пользователь выбирает цвета.
+    ShowMessage(
+        "Выберите два цвета перелива.\n"
+        "Первый будет сверху, второй - снизу.\n"
+        "Отмена любого из цветов вызовет отмену установки нового фона." );
+
+    TColor top;
+    TColor bottom;
+
+    if (ColorDialog1->Execute()) {
+        top = ColorDialog1->Color;
+    }
+    else return;
+    if (ColorDialog1->Execute()) {
+        bottom = ColorDialog1->Color;
+    }
+    else return;
+
+    global_options_t::get_instance().set_background_type(
+        global_options_t::picture );
+
+    // Формируем картинку в виде перелива.
+    ImageFon->Width = Width;
+    ImageFon->Height = Height;
+    int top_red = (top & 0x0ff0000) / 0x010000;
+    int top_green = (top & 0x000ff00) / 0x0100;
+    int top_blue = (top & 0x00000ff) / 0x01;
+
+    int bottom_red = (bottom & 0x0ff0000) / 0x010000;
+    int bottom_green = (bottom & 0x000ff00) / 0x0100;
+    int bottom_blue = (bottom & 0x00000ff) / 0x01;
+
+    for( int i = 0; i < Height; ++i) {
+
+        int red_value = top_red * (Height - i) / Height + bottom_red * i / Height;
+        int green_value = top_green * (Height - i) / Height + bottom_green * i / Height;
+        int blue_value = top_blue * (Height - i) / Height + bottom_blue * i / Height;
+
+        ImageFon->Canvas->Pen->Color = TColor(
+            red_value * 0x010000 + green_value * 0x0100 + blue_value * 0x01);
+        ImageFon->Canvas->MoveTo(0, i);
+        ImageFon->Canvas->LineTo(Width, i);
+    }
+
+    OptOpalesce->Checked = true;
+    Main_Form->Refresh();
+    refresh_info();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMain_Form::OptLoadClick(TObject *Sender)
+{
+    if (OpenPictureDialog1->Execute()) {
+
+        ImageFon->Picture->LoadFromFile( OpenPictureDialog1->FileName );
+
+        OptLoad->Checked = true;
+
+        global_options_t::get_instance().set_background_type(
+            global_options_t::picture );
+    }
 }
 //---------------------------------------------------------------------------
 

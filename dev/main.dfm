@@ -29,12 +29,13 @@ object Main_Form: TMain_Form
     Align = alClient
     Visible = False
   end
-  object Image2: TImage
+  object ImageFon: TImage
     Left = 0
     Top = 0
     Width = 784
     Height = 512
     Align = alClient
+    Stretch = True
     Visible = False
   end
   object StatusBar1: TStatusBar
@@ -169,6 +170,16 @@ object Main_Form: TMain_Form
           RadioItem = True
           OnClick = OptStarsClick
         end
+        object OptOpalesce: TMenuItem
+          Caption = #1055#1077#1088#1077#1083#1080#1074
+          RadioItem = True
+          OnClick = OptOpalesceClick
+        end
+        object OptLoad: TMenuItem
+          Caption = #1047#1072#1075#1088#1091#1079#1080#1090#1100' '#1080#1079' '#1092#1072#1081#1083#1072
+          RadioItem = True
+          OnClick = OptLoadClick
+        end
       end
     end
     object Info1: TMenuItem
@@ -202,5 +213,9 @@ object Main_Form: TMain_Form
     OnTimer = Timer2Timer
     Left = 496
     Top = 144
+  end
+  object OpenPictureDialog1: TOpenPictureDialog
+    Left = 392
+    Top = 120
   end
 end

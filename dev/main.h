@@ -17,6 +17,7 @@
 #include <ExtCtrls.hpp>
 #include <Dialogs.hpp>
 #include <ComCtrls.hpp>
+#include <ExtDlgs.hpp>
 //---------------------------------------------------------------------------
 class TMain_Form : public TForm
 {
@@ -33,7 +34,7 @@ __published:	// IDE-managed Components
     TMenuItem *Help1;
     TMenuItem *About1;
     TImage *Image1;
-    TImage *Image2;
+    TImage *ImageFon;
     TTimer *Timer1;
     TMenuItem *OptNear;
     TMenuItem *OptThis;
@@ -57,6 +58,9 @@ __published:	// IDE-managed Components
     TMenuItem *StatNet1;
     TMenuItem *ChessHorse1;
     TMenuItem *Labirint1;
+    TMenuItem *OptOpalesce;
+    TMenuItem *OptLoad;
+    TOpenPictureDialog *OpenPictureDialog1;
     void __fastcall Exit1Click(TObject *Sender);
     void __fastcall Beginner1Click(TObject *Sender);
     void __fastcall Intermediate1Click(TObject *Sender);
@@ -88,6 +92,8 @@ __published:	// IDE-managed Components
     void __fastcall StatNet1Click(TObject *Sender);
     void __fastcall ChessHorse1Click(TObject *Sender);
     void __fastcall Labirint1Click(TObject *Sender);
+    void __fastcall OptOpalesceClick(TObject *Sender);
+    void __fastcall OptLoadClick(TObject *Sender);
 private:	// User declarations
 
     //! Это то самое поле, с которым мы играем с игроком.
@@ -147,7 +153,7 @@ private:	// User declarations
 
     //! Стартовать классическую игру.
     void
-    start_classic( const field::info_t & info );
+    start_classic();
 
     void
     clear_gametype_checks();

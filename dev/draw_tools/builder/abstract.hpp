@@ -36,6 +36,11 @@ class abstract_t : public draw_tools::interface_t {
             m_main_rect = rect;
         }
 
+        void
+        set_fon( TImage * fon ) {
+            m_image_fon = fon;
+        }
+
 		//! Нарисовать поле на теневом и скопировать в основное.
 		void
 		shadow_copy_draw(
@@ -94,6 +99,8 @@ class abstract_t : public draw_tools::interface_t {
         TCanvas * m_main_canvas;
         //! Теневой приемник.
         TRect m_main_rect;
+        //! Картинка фона.
+        TImage * m_image_fon;
 
         //! Находимся сейчас в состоянии подмига или нет.
         bool m_blink;

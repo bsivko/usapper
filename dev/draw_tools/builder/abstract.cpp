@@ -28,6 +28,10 @@ abstract_t::draw_backgound() {
 
             break;
         }
+        case global_options_t::picture : {
+            m_shadow_canvas->CopyRect( m_shadow_rect, m_image_fon->Canvas, m_shadow_rect );
+            break;
+        }
         case global_options_t::snow : {
 
             // Число снежинок.
