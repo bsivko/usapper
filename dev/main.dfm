@@ -1,6 +1,6 @@
 object Main_Form: TMain_Form
-  Left = 190
-  Top = 112
+  Left = 191
+  Top = 120
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
   Caption = #1057#1072#1087#1105#1088
@@ -108,12 +108,12 @@ object Main_Form: TMain_Form
           OnClick = Sixangle1Click
         end
         object Fiveangle1: TMenuItem
-          Caption = #1055#1103#1090#1080#1091#1075#1086#1083#1100#1085#1080#1082#1080
+          Caption = #1063#1077#1090#1099#1088#1077#1093#1091#1075#1086#1083#1100#1085#1080#1082#1080
           OnClick = Fiveangle1Click
         end
       end
       object Graph1: TMenuItem
-        Caption = #1043#1088#1072#1092#1099
+        Caption = #1043#1088#1072#1092#1086#1074#1072#1103
         object StatNet1: TMenuItem
           Caption = #1057#1090#1072#1090#1080#1095#1077#1089#1082#1072#1103' '#1089#1077#1090#1100
           OnClick = StatNet1Click
@@ -121,6 +121,10 @@ object Main_Form: TMain_Form
         object ChessHorse1: TMenuItem
           Caption = #1064#1072#1093#1084#1072#1090#1085#1099#1081' '#1082#1086#1085#1100
           OnClick = ChessHorse1Click
+        end
+        object Labirint1: TMenuItem
+          Caption = #1051#1072#1073#1080#1088#1080#1085#1090
+          OnClick = Labirint1Click
         end
       end
       object Exit1: TMenuItem

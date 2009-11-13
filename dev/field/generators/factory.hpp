@@ -11,6 +11,8 @@
 #include "field/generators/fiveangle.hpp"
 #include "field/generators/stat_net.hpp"
 #include "field/generators/chess_horse.hpp"
+#include "field/generators/labirint.hpp"
+
 
 namespace field {
 
@@ -36,6 +38,9 @@ enum type_t {
 
     //! Шахматный конь.
     chess_horse,
+
+	//! Лабиринт.
+	labirint,
 
 	//! Сетевое поле сапера.
 	net
@@ -80,6 +85,11 @@ class factory_t {
 			if ( type == chess_horse ) {
 				static field::generators::chess_horse_t chess_horse;
 				return chess_horse;
+			}
+
+			if ( type == labirint ) {
+				static field::generators::labirint_t labirint;
+				return labirint;
 			}
 
 			char error[10];

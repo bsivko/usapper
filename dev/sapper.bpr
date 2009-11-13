@@ -13,7 +13,7 @@
       draw_tools\builder\sixangle.obj field\generators\sixangle.obj 
       field\generators\fiveangle.obj draw_tools\builder\fiveangle.obj 
       field\generators\stat_net.obj draw_tools\builder\net.obj 
-      field\generators\chess_horse.obj"/>
+      field\generators\chess_horse.obj field\generators\labirint.obj"/>
     <RESFILES value="sapper.res res.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -29,7 +29,7 @@
       inetdbbde.bpi inetdbxpress.bpi inetdb.bpi nmfast.bpi webdsnap.bpi 
       bcbie.bpi websnap.bpi soaprtl.bpi dclocx.bpi dbexpress.bpi dbxcds.bpi 
       indy.bpi bcb2kaxserver.bpi"/>
-    <PATHCPP value=".;field;field;draw_tools\builder;draw_tools\builder;field\generators;field\generators;draw_tools\builder;high_scores;field\generators;draw_tools\builder;draw_tools\builder;field\generators;field\generators;draw_tools\builder;field\generators;draw_tools\builder;field\generators"/>
+    <PATHCPP value=".;field;field;draw_tools\builder;draw_tools\builder;field\generators;field\generators;draw_tools\builder;high_scores;field\generators;draw_tools\builder;draw_tools\builder;field\generators;field\generators;draw_tools\builder;field\generators;draw_tools\builder;field\generators;field\generators"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -87,6 +87,7 @@
       <FILE FILENAME="field\generators\stat_net.cpp" FORMNAME="" UNITNAME="stat_net" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="draw_tools\builder\net.cpp" FORMNAME="" UNITNAME="net" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="field\generators\chess_horse.cpp" FORMNAME="" UNITNAME="chess_horse" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="field\generators\labirint.cpp" FORMNAME="" UNITNAME="labirint" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
