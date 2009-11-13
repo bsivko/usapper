@@ -127,6 +127,10 @@ object Main_Form: TMain_Form
           Caption = #1051#1072#1073#1080#1088#1080#1085#1090
           OnClick = Labirint1Click
         end
+        object Tetris1: TMenuItem
+          Caption = #1058#1077#1090#1088#1080#1089
+          OnClick = Tetris1Click
+        end
       end
       object Exit1: TMenuItem
         Caption = #1042#1099#1093#1086#1076

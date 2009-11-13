@@ -820,6 +820,22 @@ void __fastcall TMain_Form::NewGameClick(TObject *Sender)
                 draw_tools::classic
             );
     }
+    else
+    if ( m_game_type == "Графы: тетрис" ) {
+
+        // Генерируем поле.
+        m_generator = &
+            field::generators::factory_t::get_instance(
+            field::generators::tetris
+            );
+
+        // Формируем интерфейс для рисования поля.
+        m_draw_tool = &
+            draw_tools::factory_t::get_instance(
+                draw_tools::tetris
+            );
+    }
+    else return;
 
     if (standard_field_create) {
 
@@ -854,6 +870,7 @@ TMain_Form::clear_gametype_checks() {
     StatNet1->Checked = false;
     ChessHorse1->Checked = false;
     Labirint1->Checked = false;
+    Tetris1->Checked = false;
 }
 
 //---------------------------------------------------------------------------
@@ -1050,6 +1067,30 @@ void __fastcall TMain_Form::OptLoadClick(TObject *Sender)
                 "Рекомендуемый формат: BMP OS/2 24bit" );
         }
     }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMain_Form::Tetris1Click(TObject *Sender)
+{
+    if ( m_game_is_active ) {
+        end_game();
+    }
+    clear_gametype_checks();
+    Tetris1->Checked = true;
+
+    // Данные для Tetris.
+    m_info.m_element_size_x = 18;
+    m_info.m_element_size_y = 18;
+    m_info.m_size_x = 24;
+    m_info.m_size_y = 24;
+    m_info.m_bomb_number = 100;
+    m_info.m_size_px_x = Image1->Width;
+    m_info.m_size_px_y = Image1->Height - c_dy_menu;
+
+    m_game_type = "Графы: тетрис";
+    m_game_condition = one_level;
+
+    NewGameClick( Sender );
 }
 //---------------------------------------------------------------------------
 

@@ -1,5 +1,5 @@
 object F_Score_Table: TF_Score_Table
-  Left = 989
+  Left = 893
   Top = 121
   BorderIcons = [biSystemMenu]
   BorderStyle = bsDialog

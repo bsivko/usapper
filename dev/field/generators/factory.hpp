@@ -12,6 +12,7 @@
 #include "field/generators/stat_net.hpp"
 #include "field/generators/chess_horse.hpp"
 #include "field/generators/labirint.hpp"
+#include "field/generators/tetris.hpp"
 
 
 namespace field {
@@ -42,6 +43,9 @@ enum type_t {
 	//! Лабиринт.
 	labirint,
 
+    //! Тетрис.
+    tetris,
+
 	//! Сетевое поле сапера.
 	net
 };
@@ -58,39 +62,45 @@ class factory_t {
 		get_instance( const type_t & type ) {
 
 			if ( type == classic ) {
-				static field::generators::classic_t classic;
-				return classic;
+				static field::generators::classic_t singleton;
+				return singleton;
 			}
 
 			if ( type == triangle ) {
-				static field::generators::triangle_t triangle;
-				return triangle;
+				static field::generators::triangle_t singleton;
+				return singleton;
 			}
 
 			if ( type == sixangle ) {
-				static field::generators::sixangle_t sixangle;
-				return sixangle;
+				static field::generators::sixangle_t singleton;
+				return singleton;
 			}
 
 			if ( type == fiveangle ) {
-				static field::generators::fiveangle_t fiveangle;
-				return fiveangle;
+				static field::generators::fiveangle_t singleton;
+				return singleton;
 			}
 
 			if ( type == stat_net ) {
-				static field::generators::stat_net_t stat_net;
-				return stat_net;
+				static field::generators::stat_net_t singleton;
+				return singleton;
 			}
 
 			if ( type == chess_horse ) {
-				static field::generators::chess_horse_t chess_horse;
-				return chess_horse;
+				static field::generators::chess_horse_t singleton;
+				return singleton;
 			}
 
 			if ( type == labirint ) {
-				static field::generators::labirint_t labirint;
-				return labirint;
+				static field::generators::labirint_t singleton;
+				return singleton;
 			}
+
+			if ( type == tetris ) {
+				static field::generators::tetris_t singleton;
+				return singleton;
+			}
+
 
 			char error[10];
 			itoa( type, error, 10 );
