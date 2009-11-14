@@ -131,7 +131,7 @@ object Main_Form: TMain_Form
       object Block1: TMenuItem
         Caption = #1041#1083#1086#1082#1086#1074#1072#1103
         object Duplex1: TMenuItem
-          Caption = #1044#1091#1087#1083#1077#1082#1089
+          Caption = #1044#1091#1073#1083#1100
           OnClick = Duplex1Click
         end
         object Triplex1: TMenuItem

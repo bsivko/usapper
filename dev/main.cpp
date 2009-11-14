@@ -824,7 +824,7 @@ void __fastcall TMain_Form::NewGameClick(TObject *Sender)
     if (
         ( m_game_type == "Блоковая: тетрис" ) ||
         ( m_game_type == "Блоковая: триплекс" ) ||
-        ( m_game_type == "Блоковая: дуплекс" )
+        ( m_game_type == "Блоковая: дубль" )
         )
          {
 
@@ -1109,7 +1109,7 @@ void __fastcall TMain_Form::Duplex1Click(TObject *Sender)
         end_game();
     }
     clear_gametype_checks();
-    Tetris1->Checked = true;
+    Duplex1->Checked = true;
 
     // Данные для Duplex.
     m_info.m_element_size_x = 18;
@@ -1122,7 +1122,7 @@ void __fastcall TMain_Form::Duplex1Click(TObject *Sender)
     // Duplex.
     m_info.m_tag = 2;
 
-    m_game_type = "Блоковая: дуплекс";
+    m_game_type = "Блоковая: дубль";
     m_game_condition = one_level;
 
     NewGameClick( Sender );
@@ -1135,7 +1135,7 @@ void __fastcall TMain_Form::Triplex1Click(TObject *Sender)
         end_game();
     }
     clear_gametype_checks();
-    Tetris1->Checked = true;
+    Triplex1->Checked = true;
 
     // Данные для Triplex.
     m_info.m_element_size_x = 18;
