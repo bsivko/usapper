@@ -1,5 +1,5 @@
 #include "field/generators/labirint.hpp"
-#include "global_options.hpp"
+#include "coord.hpp"
 
 #include <vector>
 #include <math.h>
