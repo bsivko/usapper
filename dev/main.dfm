@@ -3,7 +3,7 @@ object Main_Form: TMain_Form
   Top = 120
   BorderIcons = [biSystemMenu, biMinimize]
   BorderStyle = bsSingle
-  Caption = #1057#1072#1087#1105#1088
+  Caption = 'USapper'
   ClientHeight = 542
   ClientWidth = 784
   Color = clSilver
@@ -208,7 +208,7 @@ object Main_Form: TMain_Form
         OnClick = Records1Click
       end
       object About1: TMenuItem
-        Caption = #1054#1073' '#1072#1074#1090#1086#1088#1077
+        Caption = #1040#1074#1090#1086#1088#1089#1090#1074#1086
         OnClick = About1Click
       end
     end
