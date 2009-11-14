@@ -30,6 +30,11 @@ __fastcall TMain_Form::TMain_Form(TComponent* Owner)
     m_first_refresh(true), m_help_filename( "help.htm" ), m_name("Инкогнито"),
     m_level_is_active( false )
 {
+    global_options_t::get_instance().set_background_type(
+        global_options_t::picture );
+
+    set_opalesce( clBlue, clBlack );
+
     const int c_name_width = 240;
     StatusBar1->Panels->Items[0]->Width = c_name_width;
     for( int i = 1; i < StatusBar1->Panels->Count; ++i ) {
@@ -45,6 +50,34 @@ __fastcall TMain_Form::TMain_Form(TComponent* Owner)
 void __fastcall TMain_Form::Exit1Click(TObject *Sender)
 {
     Close();
+}
+
+void
+TMain_Form::set_opalesce( const TColor & top, const TColor & bottom ) {
+
+    // Формируем картинку в виде перелива.
+    ImageFon->Width = Width;
+    ImageFon->Height = Height;
+    int top_red = (top & 0x0ff0000) / 0x010000;
+    int top_green = (top & 0x000ff00) / 0x0100;
+    int top_blue = (top & 0x00000ff) / 0x01;
+
+    int bottom_red = (bottom & 0x0ff0000) / 0x010000;
+    int bottom_green = (bottom & 0x000ff00) / 0x0100;
+    int bottom_blue = (bottom & 0x00000ff) / 0x01;
+
+    for( int i = 0; i < Height; ++i) {
+
+        int red_value = top_red * (Height - i) / Height + bottom_red * i / Height;
+        int green_value = top_green * (Height - i) / Height + bottom_green * i / Height;
+        int blue_value = top_blue * (Height - i) / Height + bottom_blue * i / Height;
+
+        ImageFon->Canvas->Pen->Color = TColor(
+            red_value * 0x010000 + green_value * 0x0100 + blue_value * 0x01);
+        ImageFon->Canvas->MoveTo(0, i);
+        ImageFon->Canvas->LineTo(Width, i);
+    }
+
 }
 
 //! Получить время в виде строки ЧЧ:ММ:СС.
@@ -702,6 +735,8 @@ void __fastcall TMain_Form::Name1Click(TObject *Sender)
         InputString = InputString.SubString(0, 10);
     }
     m_name = InputString.c_str();
+
+    refresh_info();
 }
 //---------------------------------------------------------------------------
 
@@ -1024,31 +1059,10 @@ void __fastcall TMain_Form::OptOpalesceClick(TObject *Sender)
     }
     else return;
 
+    set_opalesce( top, bottom );
+
     global_options_t::get_instance().set_background_type(
         global_options_t::picture );
-
-    // Формируем картинку в виде перелива.
-    ImageFon->Width = Width;
-    ImageFon->Height = Height;
-    int top_red = (top & 0x0ff0000) / 0x010000;
-    int top_green = (top & 0x000ff00) / 0x0100;
-    int top_blue = (top & 0x00000ff) / 0x01;
-
-    int bottom_red = (bottom & 0x0ff0000) / 0x010000;
-    int bottom_green = (bottom & 0x000ff00) / 0x0100;
-    int bottom_blue = (bottom & 0x00000ff) / 0x01;
-
-    for( int i = 0; i < Height; ++i) {
-
-        int red_value = top_red * (Height - i) / Height + bottom_red * i / Height;
-        int green_value = top_green * (Height - i) / Height + bottom_green * i / Height;
-        int blue_value = top_blue * (Height - i) / Height + bottom_blue * i / Height;
-
-        ImageFon->Canvas->Pen->Color = TColor(
-            red_value * 0x010000 + green_value * 0x0100 + blue_value * 0x01);
-        ImageFon->Canvas->MoveTo(0, i);
-        ImageFon->Canvas->LineTo(Width, i);
-    }
 
     OptOpalesce->Checked = true;
     Main_Form->Refresh();

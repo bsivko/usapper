@@ -165,6 +165,11 @@ private:	// User declarations
     void
     clear_gametype_checks();
 
+    //! Установить перелив-фон.
+    void
+    set_opalesce( const TColor & top, const TColor & bottom );
+
+
 public:		// User declarations
     //! В каком состоянии сейчас находится игра.
     enum game_condition_t {

@@ -171,7 +171,6 @@ object Main_Form: TMain_Form
         Caption = #1060#1086#1085
         object OptMono: TMenuItem
           Caption = #1052#1086#1085#1086#1083#1080#1090#1085#1099#1081
-          Checked = True
           RadioItem = True
           OnClick = OptMonoClick
         end
@@ -187,6 +186,7 @@ object Main_Form: TMain_Form
         end
         object OptOpalesce: TMenuItem
           Caption = #1055#1077#1088#1077#1083#1080#1074
+          Checked = True
           RadioItem = True
           OnClick = OptOpalesceClick
         end
