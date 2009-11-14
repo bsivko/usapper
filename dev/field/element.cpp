@@ -12,8 +12,7 @@ element_t::element_t( int x, int y, bool is_bomb ) :
 ,   m_is_bomb( is_bomb )
 ,   m_is_flag( false )
 ,   m_checked( false )
-,   m_type( 0 )
-,   m_data( 0 )  {
+,   m_type( 0 ) {
     set_blink( 0 );
 }
 

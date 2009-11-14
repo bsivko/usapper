@@ -301,7 +301,7 @@ high_scores_t::make_sign( const std::string & content ) {
     unsigned int value = 3361;
     for( unsigned int i = 0; i < content.size(); ++i ) {
 
-        unsigned int mult = static_cast<unsigned int>(256 + content[i]) + 1;
+        unsigned int mult = static_cast<unsigned int>(256 + content[i] + i % 101) + 1;
 
         value *= mult;
         // Ключ - простое число.

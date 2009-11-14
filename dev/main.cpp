@@ -821,7 +821,12 @@ void __fastcall TMain_Form::NewGameClick(TObject *Sender)
             );
     }
     else
-    if ( m_game_type == "Графы: тетрис" ) {
+    if (
+        ( m_game_type == "Блоковая: тетрис" ) ||
+        ( m_game_type == "Блоковая: триплекс" ) ||
+        ( m_game_type == "Блоковая: дуплекс" )
+        )
+         {
 
         // Генерируем поле.
         m_generator = &
@@ -871,6 +876,8 @@ TMain_Form::clear_gametype_checks() {
     ChessHorse1->Checked = false;
     Labirint1->Checked = false;
     Tetris1->Checked = false;
+    Triplex1->Checked = false;
+    Duplex1->Checked = false;
 }
 
 //---------------------------------------------------------------------------
@@ -1081,13 +1088,67 @@ void __fastcall TMain_Form::Tetris1Click(TObject *Sender)
     // Данные для Tetris.
     m_info.m_element_size_x = 18;
     m_info.m_element_size_y = 18;
-    m_info.m_size_x = 24;
-    m_info.m_size_y = 24;
+    m_info.m_size_x = 40;
+    m_info.m_size_y = 26;
+    m_info.m_bomb_number = 80;
+    m_info.m_size_px_x = Image1->Width;
+    m_info.m_size_px_y = Image1->Height - c_dy_menu;
+    // Тетрис.
+    m_info.m_tag = 4;
+
+    m_game_type = "Блоковая: тетрис";
+    m_game_condition = one_level;
+
+    NewGameClick( Sender );
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMain_Form::Duplex1Click(TObject *Sender)
+{
+    if ( m_game_is_active ) {
+        end_game();
+    }
+    clear_gametype_checks();
+    Tetris1->Checked = true;
+
+    // Данные для Duplex.
+    m_info.m_element_size_x = 18;
+    m_info.m_element_size_y = 18;
+    m_info.m_size_x = 40;
+    m_info.m_size_y = 26;
     m_info.m_bomb_number = 100;
     m_info.m_size_px_x = Image1->Width;
     m_info.m_size_px_y = Image1->Height - c_dy_menu;
+    // Duplex.
+    m_info.m_tag = 2;
 
-    m_game_type = "Графы: тетрис";
+    m_game_type = "Блоковая: дуплекс";
+    m_game_condition = one_level;
+
+    NewGameClick( Sender );
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMain_Form::Triplex1Click(TObject *Sender)
+{
+    if ( m_game_is_active ) {
+        end_game();
+    }
+    clear_gametype_checks();
+    Tetris1->Checked = true;
+
+    // Данные для Triplex.
+    m_info.m_element_size_x = 18;
+    m_info.m_element_size_y = 18;
+    m_info.m_size_x = 40;
+    m_info.m_size_y = 27;
+    m_info.m_bomb_number = 100;
+    m_info.m_size_px_x = Image1->Width;
+    m_info.m_size_px_y = Image1->Height - c_dy_menu;
+    // Triplex.
+    m_info.m_tag = 3;
+
+    m_game_type = "Блоковая: триплекс";
     m_game_condition = one_level;
 
     NewGameClick( Sender );

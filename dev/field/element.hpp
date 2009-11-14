@@ -33,7 +33,7 @@ class element_t {
 
         void
 		set_y( int y ) {
-			m_x = y;
+			m_y = y;
 		}
 
 		bool
@@ -127,6 +127,11 @@ class element_t {
         }
 
         std::vector <coord_t> &
+        blocks() {
+            return m_blocks;
+        }
+
+        const std::vector <coord_t> &
         blocks() const {
             return m_blocks;
         }

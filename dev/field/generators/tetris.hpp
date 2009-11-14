@@ -14,6 +14,10 @@ class tetris_t : public field::generators::abstract_t {
 		virtual field::field_t *
 		generate( const info_t & info );
 
+        //! Попытаться добавить линк.
+        void
+        try_to_add_link(
+            std::vector<element_t> & elements, int l1, int l2 );
 };
 
 } // namespace generators

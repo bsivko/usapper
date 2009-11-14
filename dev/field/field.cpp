@@ -20,22 +20,50 @@ field_t::get_element_by_click( int x, int y ) {
 
 		element_t & it = m_elements[i];
 
-		// Дистанции храним как квадраты, нам важно только сравнение их.
-		int distance = (it.x() - x)*(it.x() - x) + (it.y() - y) * (it.y() - y);
+        if (it.blocks().size() == 0) {
 
-		const int lx = it.x() - m_info.m_element_size_x / 2 + 1;
-		const int ly = it.y() - m_info.m_element_size_y / 2 + 1;
-		const int rx = it.x() + m_info.m_element_size_x / 2 - 1;
-		const int ry = it.y() + m_info.m_element_size_y / 2 - 1;
+    		// Дистанции храним как квадраты, нам важно только сравнение их.
+	    	int distance = (it.x() - x)*(it.x() - x) + (it.y() - y) * (it.y() - y);
 
-		if ( (x > lx) && (x < rx) && (y > ly) && (y < ry) )
-		{
-			if ( distance < lower_distance )
-			{
-				result =  static_cast<int>(i);
-				lower_distance = distance;
-			}
-		}
+    		const int lx = it.x() - m_info.m_element_size_x / 2 + 1;
+	    	const int ly = it.y() - m_info.m_element_size_y / 2 + 1;
+		    const int rx = it.x() + m_info.m_element_size_x / 2 - 1;
+    		const int ry = it.y() + m_info.m_element_size_y / 2 - 1;
+
+    		if ( (x > lx) && (x < rx) && (y > ly) && (y < ry) )
+	    	{
+		    	if ( distance < lower_distance )
+    			{
+	    			result =  static_cast<int>(i);
+		    		lower_distance = distance;
+    			}
+	    	}
+        }
+        else {
+        	for( unsigned int j = 0; j < it.blocks().size(); ++j ) {
+
+                int e_x = (it.blocks()[j].m_x - it.blocks()[0].m_x) * m_info.m_element_size_x + it.x();
+                int e_y = (it.blocks()[j].m_y - it.blocks()[0].m_y) * m_info.m_element_size_y + it.y();
+
+        		// Дистанции храним как квадраты, нам важно только сравнение их.
+	        	int distance = (e_x - x)*(e_x - x) + (e_y - y) * (e_y - y);
+
+        		const int lx = e_x - m_info.m_element_size_x / 2 + 1;
+	          	const int ly = e_y - m_info.m_element_size_y / 2 + 1;
+	    	    const int rx = e_x + m_info.m_element_size_x / 2 - 1;
+        		const int ry = e_y + m_info.m_element_size_y / 2 - 1;
+
+    	        if ( (x > lx) && (x < rx) && (y > ly) && (y < ry) )
+    	    	{
+	    	    	if ( distance < lower_distance )
+    	    		{
+	    	    		result =  static_cast<int>(i);
+    		    		lower_distance = distance;
+        			}
+	    	    }
+
+            }
+        }
 	}
 
 	return result;

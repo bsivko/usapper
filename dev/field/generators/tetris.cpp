@@ -150,10 +150,38 @@ try_to_add_near(
     near.push_back( coord_t(x, y) );
 }
 
+//! Попытаться добавить линк.
+void
+tetris_t::try_to_add_link(
+    std::vector<element_t> & elements, int l1, int l2 ) {
+
+    if (l1 == l2)
+        return;
+
+    // Проверяем есть ли уже такой линк.
+    std::vector<int> near1 = elements[l1].near_elements();
+    for( unsigned int i = 0; i < near1.size(); ++i ) {
+        if (near1[i] == l2) {
+            return;
+        }
+    }
+    std::vector<int> near2 = elements[l2].near_elements();
+    for( unsigned int i = 0; i < near2.size(); ++i ) {
+        if (near1[i] == l1) {
+            return;
+        }
+    }
+    set_link( l1, l2, elements );
+}
+
 field::field_t *
 tetris_t::generate( const info_t & info ) {
 
     randomize();
+
+    // Алгоритм эвристический. Потому не всегда получает решение.
+    // TODO : через отдельную функцию.
+    int fatal_count = 500;
 
 	// Объект на возврат.
 	field::field_t * result = new field::field_t( info );
@@ -167,7 +195,7 @@ tetris_t::generate( const info_t & info ) {
     int next = 0;
 
     // Число блоков в фигуре (тетрис - 4).
-    const int c_blocks_count = 4;
+    const int c_blocks_count = info.m_tag;
 
     std::vector<element_t> elements;
     // Устанавливаем по числу фигур.
@@ -175,8 +203,8 @@ tetris_t::generate( const info_t & info ) {
 
     int center_x = info.m_size_px_x / 2;
     int center_y = info.m_size_px_y / 2;
-    int start_x = center_x - (info.m_size_x * (0 + info.m_element_size_x) )/8*3;
-    int start_y = center_y - (info.m_size_y * info.m_element_size_y);
+    int start_x = center_x - (info.m_size_x * info.m_element_size_x)/2;
+    int start_y = center_y - (info.m_size_y * info.m_element_size_y)/2;
 
     // Задаем никакой тип.
     for( unsigned int i = 0; i < elements.size(); ++i ) {
@@ -324,6 +352,11 @@ tetris_t::generate( const info_t & info ) {
                 if (*it % c_blocks_count != 0) {
                     we_can = false;
                     min_is_on = false;
+                    --fatal_count;
+                    if (fatal_count < 0) {
+                        delete result;
+                        return generate(info);
+                    }
                     break;
                 }
             }
@@ -335,6 +368,7 @@ tetris_t::generate( const info_t & info ) {
             square = square_copy;
             elements[next].blocks() = blocks;
             ++next;
+            fatal_count = 200;
         }
 
         // Поле закончилось?
@@ -354,90 +388,36 @@ tetris_t::generate( const info_t & info ) {
 	}
 
     // Создаем связи.
-    /*
-    for( unsigned int i = 0; i < elements.size(); ++i ) {
+    for( int i = 0; i < square.size_x(); ++i ) {
+        for( int j = 0; j < square.size_y(); ++j ) {
 
-        // В четверке.
-        switch( i % 4 ) {
-            case 0 :
-                set_link( i, i+1, elements );
-                set_link( i, i+2, elements );
-                set_link( i, i+3, elements );
-                break;
-            case 1 :
-                break;
-            case 2 :
-                break;
-            case 3 :
-                set_link( i, i-1, elements );
-                set_link( i, i-2, elements );
-                break;
-        }
-
-        int j = info.m_size_x;
-
-        // Внешние.
-        switch( i % 4 ) {
-            case 0 :
-                set_link( i, i-j+2, elements );
-                set_link( i, i-j+3, elements );
-                if ( i % info.m_size_x != 0 ) {
-                    set_link( i, i-j-4+3, elements );
-                    set_link( i, i-j-4+1, elements );
-                    set_link( i, i-4+1, elements );
+            if ( i > 0 ) {
+                try_to_add_link( elements, square.get( i, j ), square.get( i-1, j ) );
+                if ( j > 0 ) {
+                    try_to_add_link( elements, square.get( i, j ), square.get( i-1, j-1 ) );
                 }
-                break;
-            case 1 :
-                // Вверх.
-                set_link( i, i-j, elements );
-                if ( (i+3) % info.m_size_x != 0 ) {
-                    // Вверх.
-                    set_link( i, i-j+4+1, elements );
-                    // Вправо.
-                    set_link( i, i+4+1, elements );
-                    set_link( i, i+j+4+1, elements );
-                }
-                break;
-            case 2 :
-                // Вверх.
-                set_link( i, i-j, elements );
-                break;
-            case 3 :
-                set_link( i, i+j-2, elements );
-                if ( (i+1) % info.m_size_x != 0 ) {
-                    set_link( i, i+4-1, elements );
-                    set_link( i, i+j+4-1, elements );
-                }
-                break;
-        }
-
-/*
-        // Вертикальные.
-        if ( i >= static_cast<unsigned int>(info.m_size_x) ) {
-            set_link( i, i - 2*info.m_size_x, elements );
-        }
-
-        // Горизонтальные.
-//        if ( i % info.m_size_x != 0  ) {
-
-            if ( (i / info.m_size_x) % 2 == 0 ) {
-                if ( i >= static_cast<unsigned int>(info.m_size_x) ) {
-                    set_link( i, i - info.m_size_x, elements );
-                }
-                set_link( i, i + info.m_size_x, elements );
-            }
-            else {
-                if ( (i+1) % info.m_size_x != 0 ) {
-                    if ( i >= static_cast<unsigned int>(info.m_size_x)  ) {
-                        set_link( i, i - info.m_size_x + 1, elements );
-                    }
-                    set_link( i, i + info.m_size_x + 1, elements );
+                if ( j < square.size_y()-1 ) {
+                    try_to_add_link( elements, square.get( i, j ), square.get( i-1, j+1 ) );
                 }
             }
-//        }
+            if ( j > 0 ) {
+                try_to_add_link( elements, square.get( i, j ), square.get( i, j-1 ) );
+            }
+            if ( i < square.size_x()-1 ) {
+                try_to_add_link( elements, square.get( i, j ), square.get( i+1, j ) );
+                if ( j > 0 ) {
+                    try_to_add_link( elements, square.get( i, j ), square.get( i+1, j-1 ) );
+                }
+                if ( j < square.size_y()-1 ) {
+                    try_to_add_link( elements, square.get( i, j ), square.get( i+1, j+1 ) );
+                }
+            }
+            if ( j < square.size_y()-1 ) {
+                try_to_add_link( elements, square.get( i, j ), square.get( i, j+1 ) );
+            }
 
+        }
     }
-*/
 
     // Все элементы отправляем в result.
 	for( unsigned int i = 0; i < elements.size(); ++i ) {

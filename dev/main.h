@@ -61,6 +61,9 @@ __published:	// IDE-managed Components
     TMenuItem *OptOpalesce;
     TMenuItem *OptLoad;
     TOpenPictureDialog *OpenPictureDialog1;
+    TMenuItem *Block1;
+    TMenuItem *Duplex1;
+    TMenuItem *Triplex1;
     TMenuItem *Tetris1;
     void __fastcall Exit1Click(TObject *Sender);
     void __fastcall Beginner1Click(TObject *Sender);
@@ -96,6 +99,8 @@ __published:	// IDE-managed Components
     void __fastcall OptOpalesceClick(TObject *Sender);
     void __fastcall OptLoadClick(TObject *Sender);
     void __fastcall Tetris1Click(TObject *Sender);
+    void __fastcall Duplex1Click(TObject *Sender);
+    void __fastcall Triplex1Click(TObject *Sender);
 private:	// User declarations
 
     //! Это то самое поле, с которым мы играем с игроком.
