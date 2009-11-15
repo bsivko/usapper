@@ -228,6 +228,9 @@ private:
     //! Info по игре.
     field::info_t m_info;
 
+    //! Идет процесс создания игры или нет.
+    bool m_game_is_creating;
+
     __fastcall TMain_Form(TComponent* Owner);
 };
 

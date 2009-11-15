@@ -28,7 +28,7 @@ __fastcall TMain_Form::TMain_Form(TComponent* Owner)
     : TForm(Owner), m_game_condition( wait ), m_game_type( "" ), m_level(0),
     m_game_is_active( false ), m_high_score_filename("usapper.scr"),
     m_first_refresh(true), m_help_filename( "help.htm" ), m_name("Инкогнито"),
-    m_level_is_active( false )
+    m_level_is_active( false ), m_game_is_creating( false )
 {
     global_options_t::get_instance().set_background_type(
         global_options_t::picture );
@@ -301,6 +301,7 @@ TMain_Form::start_game() {
     Main_Form->Refresh();
     m_game_is_active = true;
     m_level_is_active = false;
+    m_game_is_creating = false;
     refresh_info();
 }
 
@@ -742,6 +743,11 @@ void __fastcall TMain_Form::Name1Click(TObject *Sender)
 
 void __fastcall TMain_Form::NewGameClick(TObject *Sender)
 {
+    if (m_game_is_creating)
+        return;
+        
+    m_game_is_creating = true;
+
     if ( m_game_is_active ) {
         end_game();
     }
