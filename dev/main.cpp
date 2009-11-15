@@ -26,7 +26,7 @@ TMain_Form *Main_Form;
 //---------------------------------------------------------------------------
 __fastcall TMain_Form::TMain_Form(TComponent* Owner)
     : TForm(Owner), m_game_condition( wait ), m_game_type( "" ), m_level(0),
-    m_game_is_active( false ), m_high_score_filename("sapper.scr"),
+    m_game_is_active( false ), m_high_score_filename("usapper.scr"),
     m_first_refresh(true), m_help_filename( "help.htm" ), m_name("Инкогнито"),
     m_level_is_active( false )
 {

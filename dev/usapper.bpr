@@ -40,13 +40,13 @@
     <USERDEFINES value="_DEBUG"/>
     <SYSDEFINES value="NO_STRICT"/>
     <MAINSOURCE value="usapper.cpp"/>
-    <INCLUDEPATH value="..\;dev\high_scores;dev\field\generators;dev\draw_tools\builder;dev\field;dev;high_scores;field\generators;draw_tools\builder;field;&quot;C:\Program Files\Borland\CBuilder6\Projects&quot;;E:\miner;$(BCB)\include;$(BCB)\include\vcl"/>
-    <LIBPATH value="..\;dev\high_scores;dev\field\generators;dev\draw_tools\builder;dev\field;dev;high_scores;field\generators;draw_tools\builder;field;&quot;C:\Program Files\Borland\CBuilder6\Projects&quot;;E:\miner;$(BCB)\lib\obj;$(BCB)\lib"/>
+    <INCLUDEPATH value="..;dev\high_scores;dev\field\generators;dev\draw_tools\builder;dev\field;dev;high_scores;field\generators;draw_tools\builder;field;&quot;C:\Program Files\Borland\CBuilder6\Projects&quot;;E:\miner;$(BCB)\include;$(BCB)\include\vcl"/>
+    <LIBPATH value="..;dev\high_scores;dev\field\generators;dev\draw_tools\builder;dev\field;dev;high_scores;field\generators;draw_tools\builder;field;&quot;C:\Program Files\Borland\CBuilder6\Projects&quot;;E:\miner;$(BCB)\lib\obj;$(BCB)\lib"/>
     <WARNINGS value="-w-par"/>
     <OTHERFILES value=""/>
   </MACROS>
   <OPTIONS>
-    <IDLCFLAGS value="-I..\. -Idev\high_scores -Idev\field\generators -Idev\draw_tools\builder 
+    <IDLCFLAGS value="-I.. -Idev\high_scores -Idev\field\generators -Idev\draw_tools\builder 
       -Idev\field -Idev -Ihigh_scores -Ifield\generators -Idraw_tools\builder 
       -Ifield -I&quot;C:\Program Files\Borland\CBuilder6\Projects&quot; -IE:\miner 
       -I$(BCB)\include -I$(BCB)\include\vcl -src_suffix cpp -D_DEBUG -boa"/>
@@ -125,14 +125,16 @@ ProductVersion=1.0.0.0
 Comments=
 
 [HistoryLists\hlIncludePath]
-Count=2
-Item0=high_scores;field\generators;draw_tools\builder;field;C:\Program Files\Borland\CBuilder6\Projects;E:\miner;$(BCB)\include;$(BCB)\include\vcl
-Item1=field\generators;draw_tools\builder;field;C:\Program Files\Borland\CBuilder6\Projects;E:\miner;$(BCB)\include;$(BCB)\include\vcl
+Count=3
+Item0=..\;dev\high_scores;dev\field\generators;dev\draw_tools\builder;dev\field;dev;high_scores;field\generators;draw_tools\builder;field;C:\Program Files\Borland\CBuilder6\Projects;E:\miner;$(BCB)\include;$(BCB)\include\vcl
+Item1=high_scores;field\generators;draw_tools\builder;field;C:\Program Files\Borland\CBuilder6\Projects;E:\miner;$(BCB)\include;$(BCB)\include\vcl
+Item2=field\generators;draw_tools\builder;field;C:\Program Files\Borland\CBuilder6\Projects;E:\miner;$(BCB)\include;$(BCB)\include\vcl
 
 [HistoryLists\hlLibraryPath]
-Count=2
-Item0=high_scores;field\generators;draw_tools\builder;field;C:\Program Files\Borland\CBuilder6\Projects;E:\miner;$(BCB)\lib\obj;$(BCB)\lib
-Item1=field\generators;draw_tools\builder;field;C:\Program Files\Borland\CBuilder6\Projects;E:\miner;$(BCB)\lib\obj;$(BCB)\lib
+Count=3
+Item0=..\;dev\high_scores;dev\field\generators;dev\draw_tools\builder;dev\field;dev;high_scores;field\generators;draw_tools\builder;field;C:\Program Files\Borland\CBuilder6\Projects;E:\miner;$(BCB)\lib\obj;$(BCB)\lib
+Item1=high_scores;field\generators;draw_tools\builder;field;C:\Program Files\Borland\CBuilder6\Projects;E:\miner;$(BCB)\lib\obj;$(BCB)\lib
+Item2=field\generators;draw_tools\builder;field;C:\Program Files\Borland\CBuilder6\Projects;E:\miner;$(BCB)\lib\obj;$(BCB)\lib
 
 [HistoryLists\hlDebugSourcePath]
 Count=1
