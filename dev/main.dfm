@@ -172,6 +172,15 @@ object Main_Form: TMain_Form
     SimpleText = '123'
     UseSystemFont = False
   end
+  object Button1: TButton
+    Left = 48
+    Top = 40
+    Width = 75
+    Height = 25
+    Caption = 'Button1'
+    TabOrder = 1
+    OnClick = Button1Click
+  end
   object MainMenu1: TMainMenu
     Left = 552
     Top = 72

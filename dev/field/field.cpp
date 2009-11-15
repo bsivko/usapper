@@ -257,7 +257,7 @@ field_t::think() {
             // Открываем любой не открытый без флага.
             for( unsigned int j = 0; j < m_elements[i].near_elements().size(); ++j ) {
                 int index = m_elements[i].near_elements()[j];
-                if ( !m_elements[i].is_open() && !m_elements[i].is_flag() ) {
+                if ( !m_elements[index].is_open() && !m_elements[index].is_flag() ) {
                     results.push_back(
                         think_result_t( index, think_result_t::open_element ) );
                 }
@@ -276,7 +276,7 @@ field_t::think() {
             // Ставим флаг в любом неоткрытом без флага.
             for( unsigned int j = 0; j < m_elements[i].near_elements().size(); ++j ) {
                 int index = m_elements[i].near_elements()[j];
-                if ( !m_elements[i].is_open() && !m_elements[i].is_flag() ) {
+                if ( !m_elements[index].is_open() && !m_elements[index].is_flag() ) {
                     results.push_back(
                         think_result_t( index, think_result_t::set_flag )
                     );
@@ -313,7 +313,7 @@ field_t::think() {
         do {
             number = random( m_elements.size() );
         }
-        while( !m_elements[number].is_open() && !m_elements[number].is_flag() );
+        while( m_elements[number].is_open() || m_elements[number].is_flag() );
 
         return think_result_t( number, think_result_t::no_solution );
     }

@@ -1175,3 +1175,41 @@ void __fastcall TMain_Form::Triplex1Click(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TMain_Form::Button1Click(TObject *Sender)
+{
+    if (!m_field)
+        return;
+
+    field::think_result_t think = m_field->think();
+
+    switch(think.m_result) {
+        case field::think_result_t::open_element : {
+            StatusBar1->Panels->Items[4]->Text = "Открываю поле.";
+
+            m_field->open( think.m_index );
+
+            break;
+        }
+        case field::think_result_t::set_flag : {
+            StatusBar1->Panels->Items[4]->Text = "Ставлю флаг.";
+            m_field->elements()[think.m_index].set_flag();
+            break;
+        }
+        case field::think_result_t::error : {
+            StatusBar1->Panels->Items[4]->Text = "Ошибка установки флага!";
+            break;
+        }
+        case field::think_result_t::no_solution : {
+            StatusBar1->Panels->Items[4]->Text = "Ходим наугад.";
+            m_field->open( think.m_index );
+            break;
+        }
+        case field::think_result_t::cant_do : {
+            StatusBar1->Panels->Items[4]->Text = "Нечего тут поделать.";
+            break;
+        }
+    }
+}
+//---------------------------------------------------------------------------
+
+

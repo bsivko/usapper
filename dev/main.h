@@ -65,6 +65,7 @@ __published:	// IDE-managed Components
     TMenuItem *Duplex1;
     TMenuItem *Triplex1;
     TMenuItem *Tetris1;
+    TButton *Button1;
     void __fastcall Exit1Click(TObject *Sender);
     void __fastcall Beginner1Click(TObject *Sender);
     void __fastcall Intermediate1Click(TObject *Sender);
@@ -101,6 +102,7 @@ __published:	// IDE-managed Components
     void __fastcall Tetris1Click(TObject *Sender);
     void __fastcall Duplex1Click(TObject *Sender);
     void __fastcall Triplex1Click(TObject *Sender);
+    void __fastcall Button1Click(TObject *Sender);
 private:	// User declarations
 
     //! Это то самое поле, с которым мы играем с игроком.
