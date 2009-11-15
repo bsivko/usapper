@@ -65,7 +65,9 @@ __published:	// IDE-managed Components
     TMenuItem *Duplex1;
     TMenuItem *Triplex1;
     TMenuItem *Tetris1;
-    TButton *Button1;
+    TMenuItem *GType;
+    TMenuItem *UsualGame;
+    TMenuItem *DemoGame;
     void __fastcall Exit1Click(TObject *Sender);
     void __fastcall Beginner1Click(TObject *Sender);
     void __fastcall Intermediate1Click(TObject *Sender);
@@ -102,7 +104,8 @@ __published:	// IDE-managed Components
     void __fastcall Tetris1Click(TObject *Sender);
     void __fastcall Duplex1Click(TObject *Sender);
     void __fastcall Triplex1Click(TObject *Sender);
-    void __fastcall Button1Click(TObject *Sender);
+    void __fastcall UsualGameClick(TObject *Sender);
+    void __fastcall DemoGameClick(TObject *Sender);
 private:	// User declarations
 
     //! Это то самое поле, с которым мы играем с игроком.
@@ -185,9 +188,20 @@ public:		// User declarations
         custom
     };
 
+    //! Тип процесса игры.
+    enum game_process_t {
+        //! Играет пользователь.
+        player,
+        //! Играет компьютер.
+        demo
+    };
+
 private:
     //! В каком состоянии сейчас находится игра.
     game_condition_t m_game_condition;
+
+    //! Процесс текущей игры.
+    game_process_t m_game_process;
 
     //! Тип игры или уровня (название).
     std::string m_game_type;

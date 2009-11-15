@@ -172,15 +172,6 @@ object Main_Form: TMain_Form
     SimpleText = '123'
     UseSystemFont = False
   end
-  object Button1: TButton
-    Left = 48
-    Top = 40
-    Width = 75
-    Height = 25
-    Caption = 'Button1'
-    TabOrder = 1
-    OnClick = Button1Click
-  end
   object MainMenu1: TMainMenu
     Left = 552
     Top = 72
@@ -307,6 +298,20 @@ object Main_Form: TMain_Form
           RadioItem = True
           OnClick = OptLoadClick
         end
+      end
+    end
+    object GType: TMenuItem
+      Caption = #1056#1077#1078#1080#1084' '#1080#1075#1088#1099
+      object UsualGame: TMenuItem
+        Caption = #1054#1073#1099#1095#1085#1072#1103' '#1080#1075#1088#1072
+        Checked = True
+        RadioItem = True
+        OnClick = UsualGameClick
+      end
+      object DemoGame: TMenuItem
+        Caption = #1044#1077#1084#1086#1085#1089#1090#1088#1072#1094#1080#1103
+        RadioItem = True
+        OnClick = DemoGameClick
       end
     end
     object Info1: TMenuItem
