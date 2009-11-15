@@ -26,10 +26,9 @@ TMain_Form *Main_Form;
 //---------------------------------------------------------------------------
 __fastcall TMain_Form::TMain_Form(TComponent* Owner)
     : TForm(Owner), m_game_condition( wait ), m_game_type( "" ), m_level(0),
-    m_game_is_active( false ), m_high_score_filename("usapper.scr"),
+    m_game_is_active( false ), m_high_score_filename("sapper.scr"),
     m_first_refresh(true), m_help_filename( "help.htm" ), m_name("Инкогнито"),
-    m_level_is_active( false ), m_game_is_creating( false ),
-    m_game_process( player )
+    m_level_is_active( false )
 {
     global_options_t::get_instance().set_background_type(
         global_options_t::picture );
@@ -192,15 +191,11 @@ TMain_Form::kill_miner() {
 
     if ( m_game_condition == one_level ) {
         try {
-            std::string name = m_name;
-            if ( m_game_process == demo )
-                name = "Компьютер";
-
             // Сохраняем результат.
             high_scores::high_scores_t::get_instance().add_record(
                 m_high_score_filename
             ,   high_scores::record_t(
-                    name
+                    m_name
                 ,   m_score
                 ,   str_time( m_level_time )
                 ,   false
@@ -229,11 +224,6 @@ void __fastcall TMain_Form::FormMouseDown(TObject *Sender,
     if (!m_game_is_active) {
         NewGameClick( Sender );
         // Игра неактивна.
-        return;
-    }
-
-    if ( m_game_process == demo ) {
-        // Не мешаем демо.
         return;
     }
 
@@ -307,12 +297,10 @@ void __fastcall TMain_Form::FormMouseDown(TObject *Sender,
 
 void
 TMain_Form::start_game() {
-    StatusBar1->Panels->Items[4]->Text = "";
     m_score = 0;
     Main_Form->Refresh();
     m_game_is_active = true;
     m_level_is_active = false;
-    m_game_is_creating = false;
     refresh_info();
 }
 
@@ -329,17 +317,8 @@ TMain_Form::end_game() {
 void
 TMain_Form::refresh_info() {
 
-    String name = "";
-    if ( m_game_process == player ) {
-        name = m_name.c_str();
-    }
-    else
-    if ( m_game_process == demo ) {
-        name = "Компьютер";
-    }
-
     StatusBar1->Panels->Items[0]->Text =
-        String("Играет: ") + name ;
+        String("Играет: ") + m_name.c_str();
 
     StatusBar1->Panels->Items[1]->Text =
         String("Очки: ") + IntToStr(m_score);
@@ -354,6 +333,9 @@ TMain_Form::refresh_info() {
     }
     StatusBar1->Panels->Items[3]->Text =
         String("Мин: ") + bombs;
+
+//    StatusBar1->Panels->Items[4]->Text =
+//        String("Флагов: ") + flags;
 }
 
 void __fastcall TMain_Form::Timer1Timer(TObject *Sender)
@@ -386,89 +368,7 @@ void __fastcall TMain_Form::Timer1Timer(TObject *Sender)
         m_first_refresh = false;
     }
 
-    if ( m_field && m_game_is_active && ( m_game_process == demo ) && ( tick % 20 == 0 )) {
-        // Ходит компьютер.
-
-        // Думает.
-        field::think_result_t think = m_field->think();
-
-        switch(think.m_result) {
-            case field::think_result_t::open_element : {
-                StatusBar1->Panels->Items[4]->Text = "Открываю поле.";
-
-                if (!m_level_is_active) {
-                    m_level_is_active = true;
-                    // Необхидимо расставить мины.
-                    m_generator->set_bombs( *m_field, think.m_index );
-                }
-
-                // По флагу кликать бесполезно.
-                if ( !m_field->elements()[think.m_index].is_flag() ) {
-                    if (m_field->open( think.m_index )) {
-                        kill_miner();
-                        return;
-                    }
-
-                    int score = m_field->count_of_near_bombs( think.m_index );
-                    m_score += score;
-                    if ( score == 0 ) {
-                        m_score += 10;
-                    }
-                    refresh_info();
-                }
-
-                break;
-            }
-            case field::think_result_t::set_flag : {
-                StatusBar1->Panels->Items[4]->Text = "Ставлю флаг.";
-
-                if ( m_field->elements()[think.m_index].is_flag() ) {
-                    m_field->elements()[think.m_index].unset_flag();
-                }
-                else {
-                    if ( !m_field->elements()[think.m_index].is_open() ) {
-                        m_field->elements()[think.m_index].set_flag();
-                    }
-                }
-                break;
-            }
-            case field::think_result_t::error : {
-                StatusBar1->Panels->Items[4]->Text = "Ошибка!";
-                break;
-            }
-            case field::think_result_t::no_solution : {
-                StatusBar1->Panels->Items[4]->Text = "Ходим наугад.";
-                if (!m_level_is_active) {
-                    m_level_is_active = true;
-                    // Необхидимо расставить мины.
-                    m_generator->set_bombs( *m_field, think.m_index );
-                }
-
-                // По флагу кликать бесполезно.
-                if ( !m_field->elements()[think.m_index].is_flag() ) {
-                    if (m_field->open( think.m_index )) {
-                        kill_miner();
-                        return;
-                    }
-
-                    int score = m_field->count_of_near_bombs( think.m_index );
-                    m_score += score;
-                    if ( score == 0 ) {
-                        m_score += 10;
-                    }
-                    refresh_info();
-                }
-
-                break;
-            }
-            case field::think_result_t::cant_do : {
-                StatusBar1->Panels->Items[4]->Text = "Все.";
-                break;
-            }
-        }
-
-        draw_field();
-    }
+    draw_field();
 }
 //---------------------------------------------------------------------------
 
@@ -540,15 +440,11 @@ TMain_Form::level_complete() {
     if ( m_game_condition == one_level ) {
 
         try {
-            std::string name = m_name;
-            if ( m_game_process == demo )
-                name = "Компьютер";
-
             // Сохраняем результат.
             high_scores::high_scores_t::get_instance().add_record(
                 m_high_score_filename
             ,   high_scores::record_t(
-                    name
+                    m_name
                 ,   m_score
                 ,   str_time( m_level_time )
                 ,   true
@@ -846,11 +742,6 @@ void __fastcall TMain_Form::Name1Click(TObject *Sender)
 
 void __fastcall TMain_Form::NewGameClick(TObject *Sender)
 {
-    if (m_game_is_creating)
-        return;
-        
-    m_game_is_creating = true;
-
     if ( m_game_is_active ) {
         end_game();
     }
@@ -1274,60 +1165,6 @@ void __fastcall TMain_Form::Triplex1Click(TObject *Sender)
     m_game_type = "Блоковая: триплекс";
     m_game_condition = one_level;
 
-    NewGameClick( Sender );
-}
-//---------------------------------------------------------------------------
-
-
-
-
-void __fastcall TMain_Form::UsualGameClick(TObject *Sender)
-{
-    if ( m_game_process == player )
-        return;
-
-    // Попытка изменения процесса игры.
-    // Если уже есть запущенная игра, то надо её закончить.
-    if ( m_game_is_active ) {
-        int res = MessageDlg(
-            "Имеется активная игра. "
-            "В случае изменения режима она будет закончена. "
-            "Продолжить?",
-            mtWarning, TMsgDlgButtons() << mbYes << mbNo, 0);
-
-        if ( res != mrYes  )
-            return;
-
-        end_game();
-    }
-
-    m_game_process = player;
-    UsualGame->Checked = true;
-    NewGameClick( Sender );
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TMain_Form::DemoGameClick(TObject *Sender)
-{
-    if ( m_game_process == demo )
-        return;
-
-    // Попытка изменения процесса игры.
-    // Если уже есть запущенная игра, то надо её закончить.
-    if ( m_game_is_active ) {
-        int res = MessageDlg(
-            "Имеется активная игра. "
-            "В случае изменения режима она будет закончена. "
-            "Продолжить?",
-            mtWarning, TMsgDlgButtons() << mbYes << mbNo, 0);
-
-        if ( res != mrYes  )
-            return;
-
-        end_game();
-    }
-    m_game_process = demo;
-    DemoGame->Checked = true;
     NewGameClick( Sender );
 }
 //---------------------------------------------------------------------------

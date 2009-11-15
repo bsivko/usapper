@@ -5,8 +5,6 @@
 #include <string>
 #include <stdlib.h>
 
-#include <fstream>
-
 namespace field {
 
 namespace generators {
@@ -201,7 +199,7 @@ tetris_t::generate( const info_t & info ) {
 
     std::vector<element_t> elements;
     // Устанавливаем по числу фигур.
-    elements.resize( info.m_size_x * info.m_size_y / c_blocks_count );
+    elements.resize( info.m_size_x * info.m_size_x / c_blocks_count );
 
     int center_x = info.m_size_px_x / 2;
     int center_y = info.m_size_px_y / 2;
