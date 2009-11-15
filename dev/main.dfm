@@ -296,6 +296,7 @@ object Main_Form: TMain_Form
         object OptLoad: TMenuItem
           Caption = #1047#1072#1075#1088#1091#1079#1080#1090#1100' '#1080#1079' '#1092#1072#1081#1083#1072
           RadioItem = True
+          Visible = False
           OnClick = OptLoadClick
         end
       end
@@ -347,6 +348,10 @@ object Main_Form: TMain_Form
     Top = 144
   end
   object OpenPictureDialog1: TOpenPictureDialog
+    Filter = 
+      'All (*.jpg;*.jpeg;*.bmp)|*.jpg;*.jpeg;*.bmp;|JPEG Image File (*.' +
+      'jpg)|*.jpg|JPEG Image File (*.jpeg)|*.jpeg|Bitmaps (*.bmp)|*.bmp' +
+      '|All files (*.*)|*.*'
     Left = 392
     Top = 120
   end

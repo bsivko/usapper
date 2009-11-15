@@ -437,7 +437,7 @@ void __fastcall TMain_Form::Timer1Timer(TObject *Sender)
                 break;
             }
             case field::think_result_t::no_solution : {
-                StatusBar1->Panels->Items[4]->Text = "Ходим наугад.";
+                StatusBar1->Panels->Items[4]->Text = "Хожу наугад.";
                 if (!m_level_is_active) {
                     m_level_is_active = true;
                     // Необхидимо расставить мины.
