@@ -1,5 +1,7 @@
 #include "field/field.hpp"
 
+#include <stdlib.h>
+
 namespace field {
 
 field_t::field_t( const info_t & info ) : m_info(info) {
@@ -232,6 +234,92 @@ field_t::is_complete() {
     return true;
 }
 
+think_result_t
+field_t::think() {
+
+    std::vector <think_result_t> results;
+
+    for( unsigned int i = 0; i < m_elements.size(); ++i ) {
+
+        int near_bombs = count_of_near_bombs( i );
+        int near_not_open = count_of_near_not_open( i );
+        int near_flags = count_of_near_flags( i );
+
+        if (
+            // Элемент открыт.
+            m_elements[i].is_open() &&
+            // Число рядом стоящих мин равно числу флагов.
+            ( near_bombs == near_flags ) &&
+            // И при этом есть что открывать.
+            ( near_not_open > near_flags )
+            ) {
+
+            // Открываем любой не открытый без флага.
+            for( unsigned int j = 0; j < m_elements[i].near_elements().size(); ++j ) {
+                int index = m_elements[i].near_elements()[j];
+                if ( !m_elements[i].is_open() && !m_elements[i].is_flag() ) {
+                    results.push_back(
+                        think_result_t( index, think_result_t::open_element ) );
+                }
+            }
+        }
+
+        if (
+            // Элемент открыт.
+            m_elements[i].is_open() &&
+            // Число закрытых равно числу бомб.
+            ( near_bombs == near_not_open ) &&
+            // И при этом есть куда ставить флаги.
+            ( near_not_open > near_flags )
+        )
+        {
+            // Ставим флаг в любом неоткрытом без флага.
+            for( unsigned int j = 0; j < m_elements[i].near_elements().size(); ++j ) {
+                int index = m_elements[i].near_elements()[j];
+                if ( !m_elements[i].is_open() && !m_elements[i].is_flag() ) {
+                    results.push_back(
+                        think_result_t( index, think_result_t::set_flag )
+                    );
+                }
+            }
+        }
+
+        if (
+            // Элемент открыт.
+            m_elements[i].is_open() &&
+            // Число флагов больше числа рядом стоящих мин.
+            ( near_flags > near_bombs )
+         ) {
+            return think_result_t( i, think_result_t::error );
+        }
+    }
+
+    // Ничего не нашли.
+    if (results.size() == 0) {
+
+        // Можем ли мы вернуть что-то?
+        bool can_to_return = false;
+        for( unsigned int i = 0; i < m_elements.size(); ++i ) {
+            if  ( !m_elements[i].is_open() && !m_elements[i].is_flag() ) {
+                can_to_return = true;
+            }
+        }
+
+        int number = -1;
+
+        if ( !can_to_return ) {
+            return think_result_t( -1, think_result_t::cant_do );
+        }
+        do {
+            number = random( m_elements.size() );
+        }
+        while( !m_elements[number].is_open() && !m_elements[number].is_flag() );
+
+        return think_result_t( number, think_result_t::no_solution );
+    }
+
+    return results[ random(results.size()) ];
+}
 
 } // namespace field
 

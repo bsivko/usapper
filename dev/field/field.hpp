@@ -29,6 +29,36 @@ struct info_t {
     int m_tag;
 };
 
+//! Результат обдумывания поля.
+struct think_result_t {
+
+    //! Тип ответа.
+    enum type_t {
+        //! Открыть указанный элемент.
+        open_element,
+        //! Установить флаг.
+        set_flag,
+        //! Нет решения. Возвращается рандом.
+        no_solution,
+        //! Не могу ничего сделать (например поле заполнено).
+        cant_do,
+        //! Ошибка в поле (неправильно установленные флаги).
+        error
+    };
+
+    think_result_t( int index, type_t result ) :
+    m_index( index ), m_result(result)
+    { }
+
+    //! Элемент, к которому относится результат.
+    int m_index;
+    //! Сам результат.
+    type_t m_result;
+
+
+
+};
+
 //! Класс всего поля.
 class field_t {
 
@@ -136,6 +166,10 @@ class field_t {
         //! Выполнено все поле или нет.
         bool
         is_complete();
+
+        //! Подумать надо полем.
+        think_result_t
+        think();
 
 	private:
 
