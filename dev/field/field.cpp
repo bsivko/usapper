@@ -1,7 +1,7 @@
 #include "field/field.hpp"
 
 #include <stdlib.h>
-
+#include <math.h>
 #include <fstream>
 
 #include <vector>
@@ -434,7 +434,8 @@ field_t::think() {
         }
     }
 
-    // Ничего не нашли. Призываем на помощь более мощный AI.
+    // Ничего не нашли. Призываем на помощь более мощный AI
+    // (на точных с N множествах).
     if (results.size() == 0) {
         // Ключ - число мин во множестве.
         // Вектор - множество ID элементов, в которых содержатся мины.
@@ -474,8 +475,6 @@ field_t::think() {
             }
         }
 
-        dump_set( std::string("start"), sets );
-
         // Находим разности всех множеств друг с другом.
         // Только тех, кто полностью включает другое.
         bool is_insert = true;
@@ -497,8 +496,6 @@ field_t::think() {
                 }
             }
         }
-
-        dump_set( std::string("proc_diffs"), sets );
 
         // Смотрим те множества, в которых число мин равно числу клеток.
         // Это означает, что в нем все - мины.
@@ -530,6 +527,49 @@ field_t::think() {
                 }
             }
         }
+
+        // Опять ничего не нашли.
+        // Призываем на помощь ещё более мощный AI
+        // (Дирихле).
+        if (results.size() == 0) {
+            unsigned int size = sets.size();
+            for( unsigned int i = 0; i < size; ++i ) {
+                for( unsigned int j = 0; j < size; ++j ) {
+                    if (i == j) continue;
+                    // Любые два пересекающихся множества.
+                    one_set_t diff = sets[i] - sets[j];
+                    if ((diff.m_ids.size() < sets[i].m_ids.size())&&(diff.m_ids.size() > 0)) {
+                        // Данные множества перескаются.
+                        // Если N(A-B) = M(B) - M(A), то (B-A) в минах.
+                        if ( diff.m_ids.size() == static_cast<unsigned int>(sets[i].m_bombs - sets[j].m_bombs) ) {
+                            for( unsigned int l = 0; l < diff.m_ids.size(); ++l ) {
+                                results.push_back(
+                                    think_result_t(
+                                        diff.m_ids[l]
+                                    ,   think_result_t::set_flag )
+                                );
+                            }
+                        }
+                        // Если N(A-B) = P(B) - P(A), то (B-A) без мин.
+                        if (
+                            diff.m_ids.size()
+                            ==
+                            (sets[i].m_ids.size() - sets[i].m_bombs)
+                                -
+                                (sets[j].m_ids.size() - sets[j].m_bombs)
+                        ) {
+                            for( unsigned int l = 0; l < diff.m_ids.size(); ++l ) {
+                                results.push_back(
+                                    think_result_t(
+                                        diff.m_ids[l]
+                                    ,   think_result_t::open_element )
+                                );
+                            }
+                        }
+                    }
+                } // for j
+            } // for i
+        }
     }
 
     // Совсем ничего не нашли.
@@ -548,12 +588,87 @@ field_t::think() {
         if ( !can_to_return ) {
             return think_result_t( -1, think_result_t::cant_do );
         }
+
+        // Считаем вероятности для различных мест с минами.
+
+        // Считаем число закрытых клеток без флагов.
+        int closed = 0;
+        // И общее число флагов.
+        int flags = 0;
+        // Общее число мин.
+        int bombs = 0;
+        for( unsigned int i = 0; i < m_elements.size(); ++i ) {
+            if ( !m_elements[i].is_open() ) {
+                if ( !m_elements[i].is_flag() ) {
+                    ++closed;
+                }
+                else {
+                    ++flags;
+                }
+            }
+            if ( m_elements[i].is_bomb() ) {
+                ++bombs;
+            }
+        }
+
+        // Стандартная вероятность по полю.
+        float standard_probability = static_cast<float>(bombs - flags) / closed;
+
+        // Обрабатываем все ячейки, куда можно походить.
+        // Формируем множество ячеек с одинаковой вероятностью.
+        float minimum_probability = 1;
+        std::vector <unsigned int> indexes;
+        for( unsigned int i = 0; i < m_elements.size(); ++i ) {
+            if ( !m_elements[i].is_open() && !m_elements[i].is_flag() ) {
+                // Считаем вероятность для данной ячейки.
+                // По умолчанию стандартная.
+                float probability = standard_probability;
+                // Смотрим все соседние.
+                for( unsigned int j = 0; j < m_elements[i].near_elements().size(); ++j ) {
+                    // Сосед должен быть открыт.
+                    float max_value = 0;
+                    unsigned near = m_elements[i].near_elements()[j];
+                    if ( m_elements[ near ].is_open() ) {
+                        // Считаем вероятность по его числу и числу флагов.
+                        float value =
+                            static_cast<float> (count_of_near_bombs( near ) )
+                            /
+                            (
+                                count_of_near_not_open( near )
+                                -
+                                count_of_near_flags( near )
+                            );
+                        if (value > max_value) {
+                            max_value = value;
+                        }
+                    }
+                    if ((max_value > 0)&&(max_value < probability) && (max_value < standard_probability))
+                        probability = max_value;
+                }
+
+                // Нашли такую же вероятность?
+                if ( fabs( probability - minimum_probability ) < 1e-5 ) {
+                    // Да. Добавляем в индексы.
+                    indexes.push_back( i );
+                }
+                // Нашли поменьше?
+                else if ( probability < minimum_probability ) {
+                    // Новый минимум.
+                    minimum_probability = probability;
+                    // И новые элементы.
+                    indexes.clear();
+                    indexes.push_back( i );
+                }
+
+            }
+        }
+
         do {
-            number = random( m_elements.size() );
+            number = random( indexes.size() );
         }
         while( m_elements[number].is_open() || m_elements[number].is_flag() );
 
-        return think_result_t( number, think_result_t::no_solution );
+        return think_result_t( indexes[number], think_result_t::no_solution );
     }
 
     return results[ random(results.size()) ];

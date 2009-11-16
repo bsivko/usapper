@@ -1213,7 +1213,7 @@ void __fastcall TMain_Form::Tetris1Click(TObject *Sender)
     m_info.m_element_size_y = 18;
     m_info.m_size_x = 40;
     m_info.m_size_y = 26;
-    m_info.m_bomb_number = 80;
+    m_info.m_bomb_number = 60;
     m_info.m_size_px_x = Image1->Width;
     m_info.m_size_px_y = Image1->Height - c_dy_menu;
     // Тетрис.
@@ -1239,7 +1239,7 @@ void __fastcall TMain_Form::Duplex1Click(TObject *Sender)
     m_info.m_element_size_y = 18;
     m_info.m_size_x = 40;
     m_info.m_size_y = 26;
-    m_info.m_bomb_number = 100;
+    m_info.m_bomb_number = 90;
     m_info.m_size_px_x = Image1->Width;
     m_info.m_size_px_y = Image1->Height - c_dy_menu;
     // Duplex.
@@ -1265,7 +1265,7 @@ void __fastcall TMain_Form::Triplex1Click(TObject *Sender)
     m_info.m_element_size_y = 18;
     m_info.m_size_x = 40;
     m_info.m_size_y = 27;
-    m_info.m_bomb_number = 100;
+    m_info.m_bomb_number = 80;
     m_info.m_size_px_x = Image1->Width;
     m_info.m_size_px_y = Image1->Height - c_dy_menu;
     // Triplex.
