@@ -29,7 +29,7 @@ __fastcall TMain_Form::TMain_Form(TComponent* Owner)
     m_game_is_active( false ), m_high_score_filename("usapper.scr"),
     m_first_refresh(true), m_help_filename( "help.htm" ), m_name("Инкогнито"),
     m_level_is_active( false ), m_game_is_creating( false ),
-    m_game_process( player )
+    m_game_process( player ), m_demo_tick(20)
 {
     global_options_t::get_instance().set_background_type(
         global_options_t::picture );
@@ -386,7 +386,12 @@ void __fastcall TMain_Form::Timer1Timer(TObject *Sender)
         m_first_refresh = false;
     }
 
-    if ( m_field && m_game_is_active && ( m_game_process == demo ) && ( tick % 20 == 0 )) {
+    if (
+        m_field &&
+        m_game_is_active &&
+        ( m_game_process == demo ) &&
+        ( tick % m_demo_tick == 0 )
+    ) {
         // Ходит компьютер.
 
         // Думает.
@@ -1329,6 +1334,29 @@ void __fastcall TMain_Form::DemoGameClick(TObject *Sender)
     m_game_process = demo;
     DemoGame->Checked = true;
     NewGameClick( Sender );
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMain_Form::N2Click(TObject *Sender)
+{
+    try {
+        AnsiString InputString = InputBox(
+            "Настройки",
+            "Введите частоту хода компьютера. \n"
+            "Это время между событиями хода во время демонстрационного режима.\n"
+            "(натуральное число в тактах, 1 такт ~50 мс)",
+            IntToStr( m_demo_tick )
+        );
+        InputString = InputString.Trim();
+        int value = StrToInt(InputString);
+        if (value < 1) {
+            ShowMessage( "Ввести нужно было натуральное число.");
+        }
+        m_demo_tick = value;
+    }
+    catch( EConvertError & ex ) {
+        ShowMessage( "Ошибка преобразования. \nВводить нужно корректные данные.");
+    }
 }
 //---------------------------------------------------------------------------
 

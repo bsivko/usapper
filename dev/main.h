@@ -68,6 +68,7 @@ __published:	// IDE-managed Components
     TMenuItem *GType;
     TMenuItem *UsualGame;
     TMenuItem *DemoGame;
+    TMenuItem *N2;
     void __fastcall Exit1Click(TObject *Sender);
     void __fastcall Beginner1Click(TObject *Sender);
     void __fastcall Intermediate1Click(TObject *Sender);
@@ -106,6 +107,7 @@ __published:	// IDE-managed Components
     void __fastcall Triplex1Click(TObject *Sender);
     void __fastcall UsualGameClick(TObject *Sender);
     void __fastcall DemoGameClick(TObject *Sender);
+    void __fastcall N2Click(TObject *Sender);
 private:	// User declarations
 
     //! Это то самое поле, с которым мы играем с игроком.
@@ -246,6 +248,9 @@ private:
 
     //! Идет процесс создания игры или нет.
     bool m_game_is_creating;
+
+    //! Частота ходов в тактах во время демонстрации.
+    unsigned int m_demo_tick;
 
     __fastcall TMain_Form(TComponent* Owner);
 };

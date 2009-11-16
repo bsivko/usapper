@@ -270,6 +270,10 @@ object Main_Form: TMain_Form
         Caption = #1059#1089#1090#1072#1085#1086#1074#1080#1090#1100' '#1074#1088#1077#1084#1103' '#1084#1077#1088#1094#1072#1085#1080#1103
         OnClick = OptBlinkTimeClick
       end
+      object N2: TMenuItem
+        Caption = #1063#1072#1089#1090#1086#1090#1072' '#1093#1086#1076#1072'  '#1082#1086#1084#1087#1100#1102#1090#1077#1088#1072
+        OnClick = N2Click
+      end
       object N1: TMenuItem
         Caption = #1060#1086#1085
         object OptMono: TMenuItem

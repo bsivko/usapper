@@ -589,86 +589,12 @@ field_t::think() {
             return think_result_t( -1, think_result_t::cant_do );
         }
 
-        // Считаем вероятности для различных мест с минами.
-
-        // Считаем число закрытых клеток без флагов.
-        int closed = 0;
-        // И общее число флагов.
-        int flags = 0;
-        // Общее число мин.
-        int bombs = 0;
-        for( unsigned int i = 0; i < m_elements.size(); ++i ) {
-            if ( !m_elements[i].is_open() ) {
-                if ( !m_elements[i].is_flag() ) {
-                    ++closed;
-                }
-                else {
-                    ++flags;
-                }
-            }
-            if ( m_elements[i].is_bomb() ) {
-                ++bombs;
-            }
-        }
-
-        // Стандартная вероятность по полю.
-        float standard_probability = static_cast<float>(bombs - flags) / closed;
-
-        // Обрабатываем все ячейки, куда можно походить.
-        // Формируем множество ячеек с одинаковой вероятностью.
-        float minimum_probability = 1;
-        std::vector <unsigned int> indexes;
-        for( unsigned int i = 0; i < m_elements.size(); ++i ) {
-            if ( !m_elements[i].is_open() && !m_elements[i].is_flag() ) {
-                // Считаем вероятность для данной ячейки.
-                // По умолчанию стандартная.
-                float probability = standard_probability;
-                // Смотрим все соседние.
-                for( unsigned int j = 0; j < m_elements[i].near_elements().size(); ++j ) {
-                    // Сосед должен быть открыт.
-                    float max_value = 0;
-                    unsigned near = m_elements[i].near_elements()[j];
-                    if ( m_elements[ near ].is_open() ) {
-                        // Считаем вероятность по его числу и числу флагов.
-                        float value =
-                            static_cast<float> (count_of_near_bombs( near ) )
-                            /
-                            (
-                                count_of_near_not_open( near )
-                                -
-                                count_of_near_flags( near )
-                            );
-                        if (value > max_value) {
-                            max_value = value;
-                        }
-                    }
-                    if ((max_value > 0)&&(max_value < probability) && (max_value < standard_probability))
-                        probability = max_value;
-                }
-
-                // Нашли такую же вероятность?
-                if ( fabs( probability - minimum_probability ) < 1e-5 ) {
-                    // Да. Добавляем в индексы.
-                    indexes.push_back( i );
-                }
-                // Нашли поменьше?
-                else if ( probability < minimum_probability ) {
-                    // Новый минимум.
-                    minimum_probability = probability;
-                    // И новые элементы.
-                    indexes.clear();
-                    indexes.push_back( i );
-                }
-
-            }
-        }
-
         do {
-            number = random( indexes.size() );
+            number = random( m_elements.size() );
         }
         while( m_elements[number].is_open() || m_elements[number].is_flag() );
 
-        return think_result_t( indexes[number], think_result_t::no_solution );
+        return think_result_t( number, think_result_t::no_solution );
     }
 
     return results[ random(results.size()) ];
