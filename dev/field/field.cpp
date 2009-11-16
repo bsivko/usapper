@@ -2,7 +2,147 @@
 
 #include <stdlib.h>
 
+#include <fstream>
+
+#include <vector>
+#include <algorithm>
+
 namespace field {
+
+//! Множество одного элемента для think'a.
+struct one_set_t {
+
+    //! Число мин в множестве.
+    int m_bombs;
+
+    //! ID элементов множества. Хранятся с отсортированном виде.
+    std::vector <int> m_ids;
+
+    one_set_t( int bombs, const std::vector<int> ids ) :
+        m_bombs(bombs), m_ids(ids)
+    {
+        std::sort( m_ids.begin(), m_ids.end() );
+    }
+
+    //! Пустое множество.
+    one_set_t() : m_bombs(0), m_ids(0) {}
+
+    //! Включено ли то что in в *this ?
+    bool
+    is_in( const one_set_t & in ) {
+        // Бежит по this.
+        unsigned int i = 0;
+        // Бежит по in.
+        unsigned int j = 0;
+        while( i < m_ids.size() ) {
+
+            int ids_i = m_ids[i];
+            int ids_j = in.m_ids[j];
+
+            while(
+                ( j < in.m_ids.size() )&&
+                ( i < m_ids.size() )&&
+                ( in.m_ids[j] == m_ids[i] ) ) {
+                ++j;
+                ++i;
+            }
+
+            if ( j >= in.m_ids.size() ) {
+                return true;
+            }
+
+            if ( i >= m_ids.size() ) {
+                return false;
+            }
+
+            ++i;
+        }
+        return (j >= in.m_ids.size());
+    }
+
+};
+
+//! Сравнить множества на идентичность.
+bool
+operator != ( const one_set_t & left, const one_set_t & right ) {
+
+    if ( left.m_bombs != right.m_bombs )
+        return true;
+
+    if ( left.m_ids.size() != right.m_ids.size() )
+        return true;
+
+    for( unsigned int i = 0; i < left.m_ids.size(); ++i ) {
+        if ( left.m_ids[i] != right.m_ids[i] )
+            return true;
+    }
+
+    return false;
+}
+
+//! Сравнить множества на идентичность.
+bool
+operator == ( const one_set_t & left, const one_set_t & right ) {
+    return !( left != right );
+}
+
+bool
+insert_one_set( const one_set_t & to_insert, std::vector< one_set_t > & vec ) {
+    if ( std::find( vec.begin(), vec.end(), to_insert ) == vec.end() ) {
+        vec.push_back( to_insert );
+        return true;
+    }
+    return false;
+}
+
+//! Поиск разности между множествами.
+/*!
+    От левого отнимается правое.
+    Предназначена для операций, когда правое полностью включено в левое.
+*/
+one_set_t
+operator - ( const one_set_t & left, const one_set_t & right  ) {
+
+    one_set_t result;
+
+    result.m_bombs = left.m_bombs - right.m_bombs;
+
+    unsigned int j = 0;
+    for( unsigned int i = 0; i < left.m_ids.size(); ++i ) {
+
+        while(
+            ( j < right.m_ids.size() )
+            &&
+            ( right.m_ids[j] < left.m_ids[i] )
+        ) {
+            ++j;
+        }
+
+        if (
+            ( j == right.m_ids.size() )
+            ||
+            ( right.m_ids[j] != left.m_ids[i] )
+        ) {
+            result.m_ids.push_back( left.m_ids[i] );
+        }
+    }
+
+    return result;
+}
+
+void
+dump_set( std::string & msg, const std::vector<one_set_t> & sets ) {
+    std::ofstream dump( "dump", std::ios::out | std::ios::app );
+    dump << msg << std::endl;
+    for( unsigned int i = 0; i < sets.size(); ++i ) {
+        dump << sets[i].m_bombs << "\t";
+        for( unsigned int j = 0; j < sets[i].m_ids.size(); ++j ) {
+            dump << sets[i].m_ids[j] << "\t";
+        }
+        dump << std::endl;
+    }
+    dump.close();
+}
 
 field_t::field_t( const info_t & info ) : m_info(info) {
 }
@@ -294,7 +434,105 @@ field_t::think() {
         }
     }
 
-    // Ничего не нашли.
+    // Ничего не нашли. Призываем на помощь более мощный AI.
+    if (results.size() == 0) {
+        // Ключ - число мин во множестве.
+        // Вектор - множество ID элементов, в которых содержатся мины.
+        std::vector<one_set_t> sets;
+
+        // Формируем множества.
+        for( unsigned int i = 0; i < m_elements.size(); ++i ) {
+            if  (
+                // Для каждого открытого элемента будет потенциально свое множество.
+                m_elements[i].is_open()
+                &&
+                // При этом элемент должен граничить с неизвестными элементами.
+                (count_of_near_not_open( i ) > 0)
+                &&
+                // И кол-во неизвестных не должно покрываться флагами.
+                (count_of_near_flags( i ) < count_of_near_not_open( i ) )
+                ) {
+
+                // Формируем.
+
+                std::vector <int> ids;
+                for( unsigned int j = 0; j < m_elements[i].near_elements().size(); ++j ) {
+                    if (
+                        (!m_elements[ m_elements[i].near_elements()[j] ].is_open())
+                        &&
+                        (!m_elements[ m_elements[i].near_elements()[j] ].is_flag())
+                    ) {
+                        ids.push_back( m_elements[i].near_elements()[j] );
+                    }
+                }
+
+                // Добавляем в общий котел.
+                insert_one_set(
+                    one_set_t( count_of_near_bombs( i ) - count_of_near_flags( i ), ids )
+                ,   sets
+                );
+            }
+        }
+
+        dump_set( std::string("start"), sets );
+
+        // Находим разности всех множеств друг с другом.
+        // Только тех, кто полностью включает другое.
+        bool is_insert = true;
+        while( is_insert ) {
+            is_insert = false;
+            unsigned int size = sets.size();
+            for( unsigned int i = 0; i < size; ++i ) {
+                for( unsigned int j = 0; j < size; ++j ) {
+                    if (i == j) continue;
+                    if ( sets[i].is_in( sets[j] ) ) {
+
+                        one_set_t diff = sets[i] - sets[j];
+
+                        // Пытаемся добавить эту разность.
+                        if (diff.m_ids.size() > 0) {
+                            is_insert |= insert_one_set( diff, sets );
+                        }
+                    }
+                }
+            }
+        }
+
+        dump_set( std::string("proc_diffs"), sets );
+
+        // Смотрим те множества, в которых число мин равно числу клеток.
+        // Это означает, что в нем все - мины.
+        for( unsigned int i = 0; i < sets.size(); ++i ) {
+            if ( static_cast<unsigned int>(sets[i].m_bombs) == sets[i].m_ids.size() ) {
+                for( unsigned j = 0; j < sets[i].m_ids.size(); ++j ) {
+                    // Если уже стоит флаг, то ставить его не нужно.
+                    if ( !m_elements[sets[i].m_ids[j]].is_flag() ) {
+                        results.push_back(
+                            think_result_t(
+                                sets[i].m_ids[j]
+                            ,   think_result_t::set_flag )
+                        );
+                    }
+                }
+            }
+        }
+
+        // Смотрим те множества, в которых число мин равно нулю.
+        // Это означает, что в нем все - без мин.
+        for( unsigned int i = 0; i < sets.size(); ++i ) {
+            if ( static_cast<unsigned int>(sets[i].m_bombs) == 0 ) {
+                for( unsigned j = 0; j < sets[i].m_ids.size(); ++j ) {
+                    results.push_back(
+                        think_result_t(
+                            sets[i].m_ids[j]
+                        ,   think_result_t::open_element )
+                    );
+                }
+            }
+        }
+    }
+
+    // Совсем ничего не нашли.
     if (results.size() == 0) {
 
         // Можем ли мы вернуть что-то?
